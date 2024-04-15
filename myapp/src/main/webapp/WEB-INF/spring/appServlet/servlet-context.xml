@@ -30,7 +30,7 @@
   <interceptors>
     <interceptor>
       <mapping path="/bbs/write.page"/>
-      <mapping path="/blog/write.page"/>
+      <mapping path="/post/write.page"/>
       <mapping path="/upload/write.page" />
       <beans:bean class="com.gdu.myapp.interceptor.RequiredSigninInterceptor" />
     </interceptor>
