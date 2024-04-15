@@ -1,5 +1,6 @@
 package com.gdu.myapp.dto;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -12,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class CommentDto {
-	private int commentNo, depth, groupNo, blogNo, state;
+	private int commentNo, depth, groupNo, postNo, state;
 	private String contents;
-	private Timestamp createDt;
+	private Date createDt;
 	private UserDto user;
 }
