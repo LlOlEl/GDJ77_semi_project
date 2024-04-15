@@ -14,9 +14,9 @@
  
   <h1 class="title">블로그 작성화면</h1>
   
-  <form id="frm-blog-register"
+  <form id="frm-post-register"
         method="POST"
-        action="${contextPath}/blog/register.do">
+        action="${contextPath}/post/register.do">
         
     <div>
       <span>작성자</span>
@@ -34,8 +34,8 @@
     
     <div>
       <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
-      <button type="submit">작성완료</button>
-      <a href="${contextPath}/blog/list.page"><button type="button">작성취소</button></a>
+      <button class="btn btn-success" type="submit">작성완료</button>
+      <a href="${contextPath}/post/list.page"><button class="btn btn-warning" type="button">작성취소</button></a>
     </div>
   </form>
   
@@ -52,7 +52,7 @@
            for(let i = 0; i < images.length; i++){
              let formData = new FormData();
              formData.append('image', images[i]);
-             fetch('${contextPath}/blog/summernote/imageUpload.do', {
+             fetch('${contextPath}/post/summernote/imageUpload.do', {
                      method: 'POST',
                      body: formData
              })
@@ -75,7 +75,7 @@
 	  }
   }
   
-  document.getElementById('frm-blog-register').addEventListener('submit', (evt) => {
+  document.getElementById('frm-post-register').addEventListener('submit', (evt) => {
 	  fnRegisterBbs(evt);
 	})
   

@@ -11,34 +11,44 @@
  
  <style>
  
-  .blog{
-    width: 640px;
-    height: 180px;
+  #post-list{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .post{
+    width: 24%;
+    height: 300px;
     margin: 10px auto;
-    border: 1px solid gray;
     cursor: pointer;
+
   }
   
-  .blog > span {
+  .post > post-bottom {
+    display: flex;
+    width: 100%;
+  }
+  
+  .post span {
     color: tomato;
-    display: inline-block;
-    box-sizing: border-box;
   }
   
-  .blog > span:nth-of-type(1){
+  .post span:nth-of-type(1){
     width: 150px;
 
   }
   
-  .blog > span:nth-of-type(2){
+  .post span:nth-of-type(2){
     width: 250px;
   }
   
-  .blog > span:nth-of-type(3){
+  .post span:nth-of-type(3){
     width: 50px;
   }
   
-  .blog > span:nth-of-type(4){
+  .post span:nth-of-type(4){
     width: 150px;
   }
  
@@ -46,9 +56,9 @@
  
   <h1 class="title">블로그 목록</h1>
   
-  <a href="${contextPath}/blog/write.page">블로그작성</a>
+  <a href="${contextPath}/post/write.page">블로그작성</a>
   
-  <div id="blog-list">
+  <div id="post-list">
   
   </div>
   
@@ -61,34 +71,57 @@
     var page = 1;
     var totalPage = 0;
     
-    const fnGetBlogList = () => {
-    	
+    const fnGetPostList = () => {
     	// page에 해당하는 목록 요청	
     	  $.ajax({
   		    // 요청
   		    type: 'GET',
-  		    url: '${contextPath}/blog/getBlogList.do',
+  		    url: '${contextPath}/post/getPostList.do',
   		    data: 'page=' + page,
   		    // 응답
   		    dataType: 'json',
-  		    success: (resData) => {  // resData = {"blogList": [], "totalPage": 10}
+  		    success: (resData) => {  // resData = {"postList": [], "totalPage": 10}
   		      totalPage = resData.totalPage;
-  		      $.each(resData.blogList, (i, blog) => {
-  		        let str = '<div class="blog" data-user-no="' + blog.user.userNo + '"data-blog-no="' + blog.blogNo + '">';
-  		        str += '<span>' + blog.title + '</span>';
-  		        str += '<span>' + blog.user.email + '</span>';
-  		        str += '<span>' + blog.hit + '</span>';
-  		        str += '<span>' + moment(blog.createDt).format('YYYY.MM.DD.') + '</span>';
+  		      $.each(resData.postList, (i, post) => {
+              var thumbnailUrl = extractFirstImage(post.contents);
+
+  		        let str = '<div class="post" data-user-no="' + post.user.userNo + '"data-post-no="' + post.postNo + '">';
+              if (thumbnailUrl) {
+                  str += displayThumbnail(thumbnailUrl);
+              }
+              str += '<div class="post-bottom">';
+  		        str += '<span>' + post.title + '</span>';
+  		        str += '<span>' + post.user.email + '</span>';
+  		        str += '<span>' + post.hit + '</span>';
+  		        str += '<span>' + moment(post.createDt).format('YYYY.MM.DD.') + '</span>';
   		        str += '</div>';
-  		        $('#blog-list').append(str);
+  		        str += '</div>';
+  		        $('#post-list').append(str);
   		      })
   		    },
   		    error: (jqXHR) => {
   		      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
   		    }
   		  });
-      
     }
+    
+    // HTML 문자열에서 첫 번째 <img> 태그의 src 속성을 추출
+    function extractFirstImage(htmlContent) {
+        var div = document.createElement('div');
+        div.innerHTML = htmlContent; // HTML 문자열을 DOM으로 변환
+        var image = div.querySelector('img'); // 첫 번째 이미지 태그 선택
+        return image ? image.src : null; // 이미지의 src 속성 반환
+    }
+
+    // 추출한 이미지 URL로 썸네일을 화면에 표시
+    function displayThumbnail(imageUrl) {
+        var imgElement = document.createElement('img');
+        imgElement.src = imageUrl;
+        imgElement.alt = 'Thumbnail';
+        imgElement.style.width = '100%'; // 썸네일 크기 설정
+        return imgElement.outerHTML;
+    }
+    
     
     const fnScrollHander = () => {
     	// 스크롤이 바닥에 닿으면 page 증가(최대 totalPage 까지) 후 새로운 목록 요청
@@ -110,26 +143,26 @@
     	          return;
     	        }
     	        page++;
-    	        fnGetBlogList();
+    	        fnGetPostList();
     	      }
     	    }, 500);
     	})
     }
   
-    const fnBlogDetail = () => {
+    const fnPostDetail = () => {
     	
-    	$(document).on('click', '.blog', (evt) => {
+    	$(document).on('click', '.post', (evt) => {
     		
-    		// <div class="blog"> 중 클릭 이벤트가 발생한 <div> : 이벤트 대상 evt.target
-    		// evt.target.dataset.blogNo === $(evt.target).data('blogNo')
+    		// <div class="post"> 중 클릭 이벤트가 발생한 <div> : 이벤트 대상 evt.target
+    		// evt.target.dataset.postNo === $(evt.target).data('postNo')
     		// evt.target.dataset.userNo === $(evt.target).data('userNo')
     		
     		// 내가 작성한 블로그는 /detail.do 요청 (조회수 증가가 없음)
     		// 남이 작성한 블로그는 /updateHit.do 요청 (조회수 증가가 있음)
     		if('${sessionScope.user.userNo}' === evt.target.dataset.userNo) {
-  			  location.href = '${contextPath}/blog/detail.do?blogNo=' + evt.target.dataset.blogNo;
+  			  location.href = '${contextPath}/post/detail.do?postNo=' + evt.target.dataset.postNo;
     		} else { 
-  			  location.href = '${contextPath}/blog/updateHit.do?blogNo=' + evt.target.dataset.blogNo;
+  			  location.href = '${contextPath}/post/updateHit.do?postNo=' + evt.target.dataset.postNo;
     		}
     		
     	})
@@ -148,9 +181,9 @@
   	  }
     }
     
-    fnGetBlogList();
+    fnGetPostList();
     fnScrollHander();
-    fnBlogDetail();
+    fnPostDetail();
     fnInsertCount();
     
   </script>

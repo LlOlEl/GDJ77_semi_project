@@ -19,77 +19,82 @@ import com.gdu.myapp.service.PostService;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/blog")
+@RequestMapping("/post")
 @RequiredArgsConstructor
 @Controller
 public class PostController {
 
-	private final PostService blogSerivce;
-	
-	@GetMapping("/list.page")
-	public String list() {
-		return "blog/list";
-	}
-	
-	@GetMapping("/write.page")
-	public String writePage() {
-		return "blog/write";
-	}
-	
-	@PostMapping(value="/summernote/imageUpload.do", produces="application/json")
-	public ResponseEntity<Map<String, Object>> summernoteImageUpload(@RequestParam("image") MultipartFile multipartFile){
-		return blogSerivce.summernoteImageUpload(multipartFile);
-	}
-	
-	@PostMapping("/register.do")
-	public String register(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("insertCount", blogSerivce.registerBlog(request));
-		return "redirect:/blog/list.page";
-	}
-	
-	@GetMapping(value="/getBlogList.do", produces="application/json")
-	public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
-		return blogSerivce.getBlogList(request);
-	}
-	
-	@GetMapping("/updateHit.do")
-	public String updateHit(@RequestParam int blogNo) {
-		blogSerivce.updateHit(blogNo);
-		return "redirect:/blog/detail.do?blogNo=" + blogNo;
-	}
-	
-	@GetMapping("/detail.do")
-	public String detail(@RequestParam int blogNo, Model model) {
-		model.addAttribute("blog", blogSerivce.getBlogByNo(blogNo));
-		return "blog/detail";
-	}
-	
-	@PostMapping(value="/registerComment.do", produces="application/json")
-	public ResponseEntity<Map<String, Object>> registerComment(HttpServletRequest request) {
-		return new ResponseEntity<>(Map.of("insertCount", blogSerivce.registerComment(request))
-														  , HttpStatus.OK);
-	}
-	
-	@GetMapping(value="/comment/list.do", produces="application/json")
-	public ResponseEntity<Map<String, Object>> commentList(HttpServletRequest request) {
-		/*
-		 * return new ResponseEntity<>(blogSerivce.getCommentList(request) ,
-		 * HttpStatus.OK);
-		 */
-		return ResponseEntity.ok(blogSerivce.getCommentList(request));
-	}
-	
-	@PostMapping(value="/registerReply.do", produces="application/json")
-	public ResponseEntity<Map<String, Object>> registerReply(HttpServletRequest request) {
-		return new ResponseEntity<>(Map.of("insertCount", blogSerivce.registerReply(request))
-														  , HttpStatus.OK);
-	}
-	
-	@GetMapping("/removeComment.do")
-	public String removeComment(@RequestParam("commentNo") int commentNo,
-															@RequestParam("blogNo") int blogNo) {
-		blogSerivce.removeComment(commentNo);
-		return "redirect:/blog/detail.do?blogNo=" + blogNo;
-	}
-	
+  private final PostService postSerivce;
+  
+  @GetMapping("/list.page")
+  public String list() {
+    return "post/list";
+  }
+  
+  @GetMapping("/write.page")
+  public String writePage() {
+    return "post/write";
+  }
+  
+  @PostMapping(value="/summernote/imageUpload.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> summernoteImageUpload(@RequestParam("image") MultipartFile multipartFile){
+    return postSerivce.summernoteImageUpload(multipartFile);
+  }
+  
+  @PostMapping("/register.do")
+  public String register(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    redirectAttributes.addFlashAttribute("insertCount", postSerivce.registerPost(request));
+    return "redirect:/post/list.page";
+  }
+  
+  @GetMapping(value="/getPostList.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> getPostList(HttpServletRequest request) {
+    return postSerivce.getPostList(request);
+  }
+  
+  @GetMapping("/updateHit.do")
+  public String updateHit(@RequestParam int postNo) {
+    postSerivce.updateHit(postNo);
+    return "redirect:/post/detail.do?postNo=" + postNo;
+  }
+  
+  @GetMapping("/detail.do")
+  public String detail(@RequestParam int postNo, Model model) {
+    model.addAttribute("post", postSerivce.getPostByNo(postNo));
+    return "post/detail";
+  }
+  
+  @PostMapping(value="/registerComment.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> registerComment(HttpServletRequest request) {
+    return new ResponseEntity<>(Map.of("insertCount", postSerivce.registerComment(request))
+                              , HttpStatus.OK);
+  }
+  
+  @GetMapping(value="/comment/list.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> commentList(HttpServletRequest request) {
+    /*
+     * return new ResponseEntity<>(postSerivce.getCommentList(request) ,
+     * HttpStatus.OK);
+     */
+    return ResponseEntity.ok(postSerivce.getCommentList(request));
+  }
+  
+  @PostMapping(value="/registerReply.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> registerReply(HttpServletRequest request) {
+    return new ResponseEntity<>(Map.of("insertCount", postSerivce.registerReply(request))
+                              , HttpStatus.OK);
+  }
+  
+  @GetMapping("/removeComment.do")
+  public String removeComment(@RequestParam("commentNo") int commentNo,
+                              @RequestParam("postNo") int postNo) {
+    postSerivce.removeComment(commentNo);
+    return "redirect:/post/detail.do?postNo=" + postNo;
+  }
+  
+  @PostMapping("/edit.do")
+  public String edit(@RequestParam int postNo, Model model) {
+    model.addAttribute("post", postSerivce.getPostByNo(postNo));
+    return "post/edit";
+  }
 }
