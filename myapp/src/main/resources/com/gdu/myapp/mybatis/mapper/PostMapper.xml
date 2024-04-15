@@ -5,7 +5,7 @@
 
 <mapper namespace="com.gdu.myapp.mapper.BlogMapper">
 
-  <resultMap type="BlogDto" id="BlogMap">
+  <resultMap type="PostDto" id="PostMap">
    <id     property="blogNo"      column="BLOG_NO"/>
    <result property="title"   column="TITLE"/>
    <result property="contents"   column="CONTENTS"/>

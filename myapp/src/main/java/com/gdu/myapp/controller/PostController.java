@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.gdu.myapp.service.BlogService;
+import com.gdu.myapp.service.PostService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/blog")
 @RequiredArgsConstructor
 @Controller
-public class BlogController {
+public class PostController {
 
-	private final BlogService blogSerivce;
+	private final PostService blogSerivce;
 	
 	@GetMapping("/list.page")
 	public String list() {

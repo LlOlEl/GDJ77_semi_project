@@ -9,7 +9,7 @@ import com.gdu.myapp.dto.PostDto;
 import com.gdu.myapp.dto.CommentDto;
 
 @Mapper
-public interface BlogMapper {
+public interface PostMapper {
   int insertBlog(PostDto blog);
   int getBlogCount();
   List<PostDto> getBlogList(Map<String, Object> map);
