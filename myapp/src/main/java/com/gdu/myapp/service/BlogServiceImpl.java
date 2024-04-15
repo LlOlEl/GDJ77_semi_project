@@ -18,7 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.myapp.dto.BbsDto;
-import com.gdu.myapp.dto.BlogDto;
+import com.gdu.myapp.dto.PostDto;
 import com.gdu.myapp.dto.CommentDto;
 import com.gdu.myapp.dto.UserDto;
 import com.gdu.myapp.mapper.BlogMapper;
@@ -79,7 +79,7 @@ public class BlogServiceImpl implements BlogService {
     // UserDto + BlogDto 객체 생성
     UserDto user = new UserDto();
     user.setUserNo(userNo);
-    BlogDto blog = BlogDto.builder()
+    PostDto blog = PostDto.builder()
                      .title(MySecurityUtils.getPreventXss(title))
                      .contents(MySecurityUtils.getPreventXss(contents))
                      .user(user)
@@ -121,7 +121,7 @@ public class BlogServiceImpl implements BlogService {
 																	  ,"end", myPageUtils.getEnd());
 		
 		// DB 에서 목록 가져오기
-		List<BlogDto> blogList = blogMapper.getBlogList(map);
+		List<PostDto> blogList = blogMapper.getBlogList(map);
 		
 		return new ResponseEntity<Map<String,Object>>(Map.of("blogList", blogList,
 																												 "totalPage", myPageUtils.getTotalPage())
@@ -134,7 +134,7 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public BlogDto getBlogByNo(int blogNo) {
+	public PostDto getBlogByNo(int blogNo) {
 		return blogMapper.getBlogByNo(blogNo);
 	}
 	
