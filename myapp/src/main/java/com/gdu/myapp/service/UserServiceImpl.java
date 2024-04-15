@@ -87,17 +87,13 @@ public class UserServiceImpl implements UserService {
   	String pw = MySecurityUtils.getSha256(request.getParameter("pw"));
   	String name = MySecurityUtils.getPreventXss(request.getParameter("name")) ;
   	String mobile = request.getParameter("mobile");
-  	String gender = request.getParameter("gender");
-  	String event = request.getParameter("event");
   	
   	UserDto user = UserDto.builder()
-  										 .email(email)
-  										 .pw(pw)
-  										 .name(name)
-  										 .mobile(mobile)
-  										 .gender(gender)
-                       .eventAgree(event == null ? 0 : 1)
-  										.build();
+					 .email(email)
+					 .pw(pw)
+					 .name(name)
+					 .mobile(mobile)
+					.build();
   	
   	// 회원 가입
   	int insertCount = userMapper.insertUser(user);
@@ -405,7 +401,6 @@ public class UserServiceImpl implements UserService {
       user = UserDto.builder()
               		.email(response.getString("email"))
       						.name(response.has("name") ? response.getString("name") : null)
-      						.gender(response.has("gender") ? response.getString("gender") : null)
       						.mobile(response.has("mobile") ? response.getString("mobile") : null)
       					.build();
       

@@ -2,12 +2,11 @@
  * 
  */
  
- var emailCheck = false;
+var emailCheck = false;
 var passwordCheck = false;
 var passwordConfirm = false
 var nameCheck = false;
 var mobileCheck = false;
-var agreeCheck = false;
 
 const fnGetContextPath = ()=>{
   const host = location.host;  /* localhost:8080 */
@@ -159,10 +158,10 @@ const fnCheckName = () => {
       totalByte++;
     }
   }
-  nameCheck = (totalByte <= 100);
+  nameCheck = (totalByte <= 60);
   let msgName = document.getElementById('msg-name');
   if(!nameCheck){
-    msgName.innerHTML = '이름은 100 바이트를 초과할 수 없습니다.'
+    msgName.innerHTML = '이름은 30글자를 초과할 수 없습니다.'
   } else {
     msgName.innerHTML = ''
   }
@@ -179,11 +178,6 @@ const fnCheckMobile = () => {
   } else {
     msgMobile.innerHTML = ''
   }
-}
-
-const fnCheckAgree = () => {
-  let chkService = document.getElementById('chk-service');
-  agreeCheck = chkService.checked;
 }
 
 const fnSignup = () => {
@@ -205,11 +199,7 @@ const fnSignup = () => {
         alert('휴대전화를 확인하세요.');
         evt.preventDefault();
         return;
-      } else if(!agreeCheck) {
-        alert('서비스 약관에 동의해야 서비스를 이용할 수 있습니다.');
-        evt.preventDefault();
-        return;
-      }
+      } 
     });
   }
 
