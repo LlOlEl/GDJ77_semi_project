@@ -6,7 +6,7 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
  <jsp:include page="../layout/header.jsp">
-   <jsp:param value="${blog.blogNo}번 블로그" name="title"/>
+   <jsp:param value="${post.postNo}번 블로그" name="title"/>
  </jsp:include>
  
  <style>
@@ -16,7 +16,7 @@
     display: none;
   }
  
-  .blog-detail {
+  .post-detail {
     
     border: 1px solid gray;
   
@@ -26,31 +26,31 @@
  
   <h1 class="title">블로그 상세화면</h1>
   
-  <a href="${contextPath}/blog/list.page">블로그 리스트</a>
+  <a href="${contextPath}/post/list.page">블로그 리스트</a>
   
-  <div class="blog-detail">
+  <div class="post-detail">
     <div>
       <span>작성자</span>
-      <span>${blog.user.email}</span>
+      <span>${post.user.email}</span>
     </div>
     
     <div>
       <span>조회수</span>
-      <span>${blog.hit}</span>
+      <span>${post.hit}</span>
     </div>
     
     <div>
       <span>제목</span>
-      <span>${blog.title}</span>
+      <span>${post.title}</span>
     </div>
     
     <div>
       <span>내용</span>
-      <span>${blog.contents}</span>
+      <span>${post.contents}</span>
     </div>
-    <c:if test="${sessionScope.user.userNo == blog.user.userNo}">
+    <c:if test="${sessionScope.user.userNo == post.user.userNo}">
       <form id="frm-btn" method="POST">  
-        <input type="hidden" name="blogNo" value="${blog.blogNo}">
+        <input type="hidden" name="postNo" value="${post.postNo}">
         <button type="button" id="btn-edit" class="btn btn-warning btn-sm">편집</button>
         <button type="button" id="btn-remove" class="btn btn-danger btn-sm">삭제</button>
       </form>
@@ -61,7 +61,7 @@
   
   <form id="frm-comment">
     <textarea id="contents" name="contents"></textarea>
-    <input type="hidden" name="blogNo" value="${blog.blogNo}">
+    <input type="hidden" name="postNo" value="${post.postNo}">
     <c:if test="${not empty sessionScope.user}">
       <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
     </c:if>
@@ -92,7 +92,7 @@
       	  $.ajax({
       		  // 요청
       		  type: 'POST',
-      		  url: '${contextPath}/blog/registerComment.do',
+      		  url: '${contextPath}/post/registerComment.do',
       		  // <form> 내부의 모든 입력을 파라미터 형식으로 보낼 때 사용
       		  // 입력 요소들은 name 속성을 가지고 있어야 함
       		  data: $('#frm-comment').serialize(),
@@ -123,8 +123,8 @@
     const fnCommentList = () => {
     	$.ajax({
     		type: 'GET',
-    		url: '${contextPath}/blog/comment/list.do',
-    		data: 'blogNo=${blog.blogNo}&page=' + page,
+    		url: '${contextPath}/post/comment/list.do',
+    		data: 'postNo=${post.postNo}&page=' + page,
     		dataType: 'json',
     		success: (resData) => { // resData = {"commentList": [], "paging": "< 1 2 3 4 5 >"}
     			let commentList = $('#comment-list');
@@ -160,7 +160,7 @@
       				str += '<div class="blind">';
       				str += '  <form class="frm-reply">';
       				str += '    <input type="hidden" name="groupNo" value="' + comment.groupNo + '">';
-      				str += '    <input type="hidden" name="blogNo" value="${blog.blogNo}">';
+      				str += '    <input type="hidden" name="postNo" value="${post.postNo}">';
       				str += '    <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">';
       				str += '    <textarea name="contents" placeholder="답글 입력"></textarea>';
       				str += '    <button type="button" class="btn btn-warning btn-register-reply">작성완료</button>';
@@ -206,7 +206,7 @@
     const fnBtnRemove = () => {
     	$(document).on('click', '.btn-remove', (evt) => {
   	     if(confirm('댓글을 삭제할까요?')) {
-  	       location.href = '${contextPath}/blog/removeComment.do?commentNo=' + evt.target.dataset.commentNo + '&blogNo=${blog.blogNo}';
+  	       location.href = '${contextPath}/post/removeComment.do?commentNo=' + evt.target.dataset.commentNo + '&postNo=${post.postNo}';
   	     }
   	   })
   	 }
@@ -225,7 +225,7 @@
           $.ajax({
             // 요청
             type: 'POST',
-            url: '${contextPath}/blog/registerReply.do',
+            url: '${contextPath}/post/registerReply.do',
             data: $(evt.target).closest('.frm-reply').serialize(),
             // 응답
             dataType: 'json',
@@ -250,17 +250,17 @@
     
     // 전역 객체
     var frmBtn = $('#frm-btn');
-    const fnEditBlog = () => {
+    const fnEditPost = () => {
       $('#btn-edit').on('click', (evt) => {
-        frmBtn.attr('action', '${contextPath}/blog/edit.do');
+        frmBtn.attr('action', '${contextPath}/post/edit.do');
         frmBtn.submit();
       })
     }
     
-    const fnRemoveBlog = () => {
+    const fnRemovePost = () => {
       $('#btn-remove').on('click', (evt) => {
         if(confirm('블로그를 삭제하면 모든 댓글이 함께 삭제됩니다. 삭제할까요?')){
-          frmBtn.attr('action', '${contextPath}/blog/remove.do');
+          frmBtn.attr('action', '${contextPath}/post/remove.do');
           frmBtn.submit();
         }
       })
@@ -272,8 +272,8 @@
     fnCommentList();
     fnBtnReply();
     fnRegisterReply();
-    fnEditBlog();
-    fnRemoveBlog();
+    fnEditPost();
+    fnRemovePost();
   </script>
   
 <%@ include file="../layout/footer.jsp" %>

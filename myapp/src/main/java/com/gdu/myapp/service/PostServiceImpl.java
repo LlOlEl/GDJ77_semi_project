@@ -3,7 +3,6 @@ package com.gdu.myapp.service;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,14 +13,12 @@ import org.jsoup.select.Elements;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.gdu.myapp.dto.BbsDto;
-import com.gdu.myapp.dto.PostDto;
 import com.gdu.myapp.dto.CommentDto;
+import com.gdu.myapp.dto.PostDto;
 import com.gdu.myapp.dto.UserDto;
-import com.gdu.myapp.mapper.BlogMapper;
+import com.gdu.myapp.mapper.PostMapper;
 import com.gdu.myapp.utils.MyFileUtils;
 import com.gdu.myapp.utils.MyPageUtils;
 import com.gdu.myapp.utils.MySecurityUtils;
@@ -30,9 +27,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class BlogServiceImpl implements BlogService {
+public class PostServiceImpl implements PostService {
 
-	private final BlogMapper blogMapper;
+	private final PostMapper postMapper;
 	private final MyPageUtils myPageUtils;
 	private final MyFileUtils myFileUtils;
 	
@@ -69,17 +66,17 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public int registerBlog(HttpServletRequest request) {
+	public int registerPost(HttpServletRequest request) {
 		
     // 요청 파라미터
     String title = request.getParameter("title");
     String contents = request.getParameter("contents");
     int userNo = Integer.parseInt(request.getParameter("userNo"));
 
-    // UserDto + BlogDto 객체 생성
+    // UserDto + PostDto 객체 생성
     UserDto user = new UserDto();
     user.setUserNo(userNo);
-    PostDto blog = PostDto.builder()
+    PostDto post = PostDto.builder()
                      .title(MySecurityUtils.getPreventXss(title))
                      .contents(MySecurityUtils.getPreventXss(contents))
                      .user(user)
@@ -96,16 +93,16 @@ public class BlogServiceImpl implements BlogService {
       }
     }
 
-    // DB에 blog 저장
-    return blogMapper.insertBlog(blog);
+    // DB에 post 저장
+    return postMapper.insertPost(post);
     
 	}
 	
 	@Override
-	public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> getPostList(HttpServletRequest request) {
 		
-		// 전체 Blog 게시글 수
-		int total = blogMapper.getBlogCount();
+		// 전체 Post 게시글 수
+		int total = postMapper.getPostCount();
 		
 		// 스크롤 이벤트마다 가져갈 목록 개수
 		int display = 10;
@@ -121,21 +118,21 @@ public class BlogServiceImpl implements BlogService {
 																	  ,"end", myPageUtils.getEnd());
 		
 		// DB 에서 목록 가져오기
-		List<PostDto> blogList = blogMapper.getBlogList(map);
+		List<PostDto> postList = postMapper.getPostList(map);
 		
-		return new ResponseEntity<Map<String,Object>>(Map.of("blogList", blogList,
+		return new ResponseEntity<Map<String,Object>>(Map.of("postList", postList,
 																												 "totalPage", myPageUtils.getTotalPage())
 																						  	, HttpStatus.OK);
 	}
 	
 	@Override
-	public int updateHit(int blogNo) {
-		return blogMapper.updateHit(blogNo);
+	public int updateHit(int postNo) {
+		return postMapper.updateHit(postNo);
 	}
 
 	@Override
-	public PostDto getBlogByNo(int blogNo) {
-		return blogMapper.getBlogByNo(blogNo);
+	public PostDto getPostByNo(int postNo) {
+		return postMapper.getPostByNo(postNo);
 	}
 	
 	@Override
@@ -143,7 +140,7 @@ public class BlogServiceImpl implements BlogService {
 		
 		// 요청 파라미터
 		String contents = MySecurityUtils.getPreventXss(request.getParameter("contents"));
-		int blogNo = Integer.parseInt(request.getParameter("blogNo"));
+		int postNo = Integer.parseInt(request.getParameter("postNo"));
 		int userNo = Integer.parseInt(request.getParameter("userNo"));
 		
 		// UserDto 객체 생성
@@ -154,21 +151,21 @@ public class BlogServiceImpl implements BlogService {
 		CommentDto comment = CommentDto.builder()
 																.contents(contents)
 																.user(user)
-																.blogNo(blogNo)
+																.postNo(postNo)
 															.build();
 		
-		return blogMapper.insertComment(comment);
+		return postMapper.insertComment(comment);
 	}
 	
 	@Override
 	public Map<String, Object> getCommentList(HttpServletRequest request) {
 		
 		// 요청 파라미터
-		int blogNo = Integer.parseInt(request.getParameter("blogNo"));
+		int postNo = Integer.parseInt(request.getParameter("postNo"));
 		int page = Integer.parseInt(request.getParameter("page"));
 		
 		// 전체 댓글수
-		int total = blogMapper.getCommentCount(blogNo);
+		int total = postMapper.getCommentCount(postNo);
 		
 		// 한 페이지에 표시할 댓글 개수
 		int display = 10;
@@ -177,14 +174,14 @@ public class BlogServiceImpl implements BlogService {
 		myPageUtils.setPaging(total, display, page);
 		
 		// 목록을 가져올 때 사용할 Map 생성
-		Map<String, Object> map = Map.of("blogNo", blogNo
+		Map<String, Object> map = Map.of("postNo", postNo
 																		 ,"begin", myPageUtils.getBegin()
 				                             , "end", myPageUtils.getEnd());
 		
 		// 결과 (목록, 페이징) 반환
 		
 		
-		return Map.of("commentList", blogMapper.getCommentList(map)
+		return Map.of("commentList", postMapper.getCommentList(map)
 								, "paging", myPageUtils.getAsyncPaging());
 	}
 	
@@ -192,7 +189,7 @@ public class BlogServiceImpl implements BlogService {
 	public int registerReply(HttpServletRequest request) {
 		// 요청 파라미터
 		String contents = MySecurityUtils.getPreventXss(request.getParameter("contents"));
-		int blogNo = Integer.parseInt(request.getParameter("blogNo"));
+		int postNo = Integer.parseInt(request.getParameter("postNo"));
 		int userNo = Integer.parseInt(request.getParameter("userNo"));
 		int groupNo = Integer.parseInt(request.getParameter("groupNo"));
 	
@@ -204,15 +201,15 @@ public class BlogServiceImpl implements BlogService {
 		CommentDto comment = CommentDto.builder()
 																.contents(contents)
 																.user(user)
-																.blogNo(blogNo)
+																.postNo(postNo)
 																.groupNo(groupNo)
 															.build();
 		
-		return blogMapper.insertReply(comment);
+		return postMapper.insertReply(comment);
 	}
 	
 	@Override
 	public int removeComment(int commentNo) {
-		return blogMapper.removeComment(commentNo);
+		return postMapper.removeComment(commentNo);
 	}
 }
