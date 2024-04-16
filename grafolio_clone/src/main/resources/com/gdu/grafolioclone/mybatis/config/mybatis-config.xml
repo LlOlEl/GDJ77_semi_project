@@ -17,6 +17,7 @@
     <typeAlias alias="UserDto"           type="com.gdu.grafolioclone.dto.UserDto"/>
     <typeAlias alias="PostDto"            type="com.gdu.grafolioclone.dto.PostDto"/>
     <typeAlias alias="CommentDto"            type="com.gdu.grafolioclone.dto.CommentDto"/>
+    <typeAlias alias="LikeDto"            type="com.gdu.grafolioclone.dto.LikeDto"/>
   </typeAliases>
   
 </configuration>

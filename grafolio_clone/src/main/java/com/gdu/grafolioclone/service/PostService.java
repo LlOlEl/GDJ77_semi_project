@@ -19,4 +19,6 @@ public interface PostService {
 	Map<String, Object> getCommentList(HttpServletRequest request);
 	int registerReply(HttpServletRequest request);
 	int removeComment(int commentNo);
+	int registerLike(HttpServletRequest request);
+	int getLikeCount(int postNo);
 }

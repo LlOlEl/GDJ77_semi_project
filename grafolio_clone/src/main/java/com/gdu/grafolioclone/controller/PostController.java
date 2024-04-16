@@ -98,4 +98,10 @@ public class PostController {
     model.addAttribute("post", postSerivce.getPostByNo(postNo));
     return "post/edit";
   }
+  
+	@PostMapping(value="/registerLike.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> registerLike(HttpServletRequest request) {
+		return new ResponseEntity<>(Map.of("insertCount", postSerivce.registerLike(request))
+														  , HttpStatus.OK);
+	}
 }

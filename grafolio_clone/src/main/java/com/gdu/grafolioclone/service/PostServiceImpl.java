@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.grafolioclone.dto.CommentDto;
+import com.gdu.grafolioclone.dto.LikeDto;
 import com.gdu.grafolioclone.dto.PostDto;
 import com.gdu.grafolioclone.dto.UserDto;
 import com.gdu.grafolioclone.mapper.PostMapper;
@@ -222,5 +223,23 @@ public class PostServiceImpl implements PostService {
   @Override
   public int removeComment(int commentNo) {
     return postMapper.removeComment(commentNo);
+  }
+  
+  @Override
+  public int registerLike(HttpServletRequest request) {
+    int postNo = Integer.parseInt(request.getParameter("postNo"));
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    
+    LikeDto like = LikeDto.builder()
+    										.postNo(postNo)
+    										.userNo(userNo)
+    									.build();
+    									
+  	return postMapper.insertLike(like);
+  }
+  
+  @Override
+  public int getLikeCount(int postNo) {
+  	return postMapper.getLikeCountByPostNo(postNo);
   }
 }

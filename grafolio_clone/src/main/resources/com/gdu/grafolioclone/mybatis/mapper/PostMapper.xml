@@ -175,4 +175,26 @@
      WHERE COMMENT_NO = #{commentNo}
   </update>
    
+   <insert id="insertLike"
+           parameterType="LikeDto">
+   INSERT INTO LIKE_T (
+     LIKE_NO,
+     POST_NO,
+     USER_NO,
+     CREATE_DT
+   ) VALUES (
+     LIKE_SEQ.NEXTVAL,
+     #{postNo},
+     #{userNo},
+     CURRENT_TIMESTAMP
+   )        
+   </insert>
+   
+   <select id="getLikeCountByPostNo"
+           resultType="int">
+     SELECT COUNT(*)
+       FROM LIKE_T
+      WHERE POST_NO = #{postNo}
+   </select>
+   
 </mapper>
