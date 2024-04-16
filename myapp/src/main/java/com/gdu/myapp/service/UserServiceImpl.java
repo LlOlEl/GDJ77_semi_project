@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -108,8 +109,12 @@ public class UserServiceImpl implements UserService {
       
       // 일치하는 회원이 있음 (Sign In 성공)
       if(insertCount == 1) {
-        Map<String, Object> params = Map.of("email", email,"pw", pw , "ip", request.getRemoteAddr());
+        Map<String, Object> params = Map.of("email", email,"pw", pw 
+                                          , "ip", request.getRemoteAddr()
+                                          , "userAgent", request.getHeader("User-Agent")
+                                          , "sessionId", request.getSession().getId());
 
+        
         // 접속 기록 ACCESS_HISTORY_T 에 남기기
         userMapper.insertAccessHistory(params);
 
