@@ -41,6 +41,47 @@
   <div>
     <textarea id="contents" name="contents">${post.contents}</textarea>
   </div>
+  
+    <!-- 1 일러스트 2 사진 3 디자인 4 회화 5 조소/공예 6 사운드 7 애니메이션 8 캘리그라피 9 기타 --> 
+    <div class="row mb-3">
+      <label class="col-sm-3 form-label">카테고리</label>
+      <div class="col-sm-3">
+        <input type="radio" name="category" value="1" id="rdo-illust" class="form-check-input" checked>
+        <label class="form-check-label" for="rdo-illust">선택안함</label>
+      </div>
+      <div class="col-sm-3">
+        <input type="radio" name="category" value="2" id="rdo-pic" class="form-check-input">
+        <label class="form-check-label" for="rdo-pic">일러스트</label>
+      </div>
+      <div class="col-sm-3">
+        <input type="radio" name="category" value="3" id="rdo-design" class="form-check-input">
+        <label class="form-check-label" for="rdo-design">사진</label>
+      </div>
+      <div class="col-sm-3">
+        <input type="radio" name="category" value="4" id="rdo-painting" class="form-check-input">
+        <label class="form-check-label" for="rdo-painting">디자인</label>
+      </div>
+      <div class="col-sm-3">
+        <input type="radio" name="category" value="5" id="rdo-sculpture-craft" class="form-check-input">
+        <label class="form-check-label" for="rdo-sculpture-craft">조소/공예</label>
+      </div>
+      <div class="col-sm-3">
+        <input type="radio" name="category" value="6" id="rdo-sound" class="form-check-input">
+        <label class="form-check-label" for="rdo-sound">사운드</label>
+      </div>
+      <div class="col-sm-3">
+        <input type="radio" name="category" value="7" id="rdo-animation" class="form-check-input">
+        <label class="form-check-label" for="rdo-animation">애니메이션</label>
+      </div>
+      <div class="col-sm-3">
+        <input type="radio" name="category" value="8" id="rdo-calligraphy" class="form-check-input">
+        <label class="form-check-label" for="rdo-calligraphy">조소/공예</label>
+      </div>
+      <div class="col-sm-3">
+        <input type="radio" name="category" value="9" id="rdo-etc" class="form-check-input">
+        <label class="form-check-label" for="rdo-etc">기타</label>
+      </div>
+    </div>
     
   <div>
     <input type="hidden" name="postNo" value="${post.postNo}">

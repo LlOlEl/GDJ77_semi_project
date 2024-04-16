@@ -49,6 +49,7 @@ public class PostController {
 	
 	@GetMapping(value="/getPostList.do", produces="application/json")
 	public ResponseEntity<Map<String, Object>> getPostList(HttpServletRequest request) {
+		System.out.println(request.getParameter("category"));
 		return postSerivce.getPostList(request);
 	}
 	

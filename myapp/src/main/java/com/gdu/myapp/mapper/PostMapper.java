@@ -13,6 +13,7 @@ public interface PostMapper {
   int insertPost(PostDto post);
   int getPostCount();
   List<PostDto> getPostList(Map<String, Object> map);
+  List<PostDto> getPostListByCategory(Map<String, Object> map);
   int updateHit(int postNo);
   PostDto getPostByNo(int postNo);
   int insertComment(CommentDto comment);

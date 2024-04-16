@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class PostDto {
-	private int postNo, hit;
-	private String title, contents, tag;
+	private int postNo, hit, category;
+	private String title, contents;
 	private Date createDt, modifyDt;
 	private UserDto user;
 }

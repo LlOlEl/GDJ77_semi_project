@@ -12,6 +12,7 @@
    <result property="hit"   column="HIT"/>
    <result property="createDt"   column="CREATE_DT"/>
    <result property="modifyDt"      column="MODIFY_DT"/>
+   <result property="category" column="CATEGORY"/>
    <association property="user" javaType="UserDto">
      <id     property="userNo" column="USER_NO" />
      <result property="email"  column="EMAIL" />
@@ -42,6 +43,7 @@
       , USER_NO
       , CREATE_DT
       , MODIFY_DT
+      , CATEGORY
     ) VALUES (
         POST_SEQ.NEXTVAL
       , #{title}
@@ -49,6 +51,7 @@
       , #{user.userNo}
       , CURRENT_TIMESTAMP
       , CURRENT_TIMESTAMP
+      , #{category}
     )
   </insert>
   
@@ -64,10 +67,22 @@
   <select id="getPostList"
           parameterType="Map"
           resultMap="PostMap">
-    SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, CREATE_DT, MODIFY_DT
-      FROM (SELECT ROW_NUMBER() OVER(ORDER BY B.POST_NO DESC) AS RN, B.POST_NO, B.TITLE, B.CONTENTS, B.HIT, U.USER_NO, U.EMAIL, B.CREATE_DT, B.MODIFY_DT
-              FROM USER_T U INNER JOIN POST_T B
-                ON U.USER_NO = B.USER_NO)
+    SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, CREATE_DT, MODIFY_DT, CATEGORY
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY P.POST_NO DESC) AS RN, P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+              FROM USER_T U INNER JOIN POST_T P
+                ON U.USER_NO = P.USER_NO)
+     WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
+  
+  <!-- 블로그 게시글 목록 카테고리로 검색 -->
+  <select id="getPostListByCategory"
+          parameterType="Map"
+          resultMap="PostMap">
+    SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, CREATE_DT, MODIFY_DT, CATEGORY
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY P.POST_NO DESC) AS RN, P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+              FROM USER_T U INNER JOIN POST_T P
+                ON U.USER_NO = P.USER_NO
+             WHERE P.CATEGORY = #{category})
      WHERE RN BETWEEN #{begin} AND #{end}
   </select>
   
@@ -81,11 +96,11 @@
   <!-- 블로그 게시글 내용 -->
   <select id="getPostByNo"
           resultMap="PostMap">
-    SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, CREATE_DT, MODIFY_DT
-      FROM (SELECT B.POST_NO, B.TITLE, B.CONTENTS, B.HIT, U.USER_NO, U.EMAIL, B.CREATE_DT, B.MODIFY_DT
-              FROM USER_T U INNER JOIN POST_T B
-                ON U.USER_NO = B.USER_NO
-             WHERE B.POST_NO = #{postNO})
+    SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, CREATE_DT, MODIFY_DT, CATEGORY
+      FROM (SELECT P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+              FROM USER_T U INNER JOIN POST_T P
+                ON U.USER_NO = P.USER_NO
+             WHERE P.POST_NO = #{postNO})
    </select>
    
    <insert id="insertComment"
