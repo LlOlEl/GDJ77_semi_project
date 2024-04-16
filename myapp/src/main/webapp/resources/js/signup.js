@@ -2,12 +2,21 @@
  * 
  */
  
- var emailCheck = false;
+var emailCheck = false;
 var passwordCheck = false;
 var passwordConfirm = false
 var nameCheck = false;
 var mobileCheck = false;
-var agreeCheck = false;
+var secEmail = document.getElementById('section-email');
+var secPw = document.getElementById('section-pw');
+var secName = document.getElementById('section-name');
+var secMobile = document.getElementById('section-mobile');
+var btnConfirmCode = document.getElementById('btn-confirmCode');
+var btnConfirmPw = document.getElementById('btn-confirmPw');
+var btnConfirmName = document.getElementById('btn-confirmName');
+
+
+
 
 const fnGetContextPath = ()=>{
   const host = location.host;  /* localhost:8080 */
@@ -101,6 +110,9 @@ const fnCheckEmail = ()=>{
           if(resData.code === inpCode.value) {
             alert('인증되었습니다.');
             emailCheck = true;
+            secEmail.style.display = 'none';
+            secPw.style.display = '';
+            
           } else {
             alert('인증되지 않았습니다.');
             emailCheck = false;
@@ -143,6 +155,7 @@ const fnConfirmPassword = () => {
     let msgPw2 = document.getElementById('msg-pw2');
     if(passwordConfirm) {
       msgPw2.innerHTML = ''; 
+      btnConfirmPw.removeAttribute('disabled');
     } else {
       msgPw2.innerHTML = '비밀번호 입력을 확인하세요';
     }
@@ -159,11 +172,12 @@ const fnCheckName = () => {
       totalByte++;
     }
   }
-  nameCheck = (totalByte <= 100);
+  nameCheck = (totalByte <= 60);
   let msgName = document.getElementById('msg-name');
   if(!nameCheck){
-    msgName.innerHTML = '이름은 100 바이트를 초과할 수 없습니다.'
+    msgName.innerHTML = '이름은 30글자를 초과할 수 없습니다.'
   } else {
+    btnConfirmName.removeAttribute('disabled');
     msgName.innerHTML = ''
   }
 }
@@ -179,11 +193,6 @@ const fnCheckMobile = () => {
   } else {
     msgMobile.innerHTML = ''
   }
-}
-
-const fnCheckAgree = () => {
-  let chkService = document.getElementById('chk-service');
-  agreeCheck = chkService.checked;
 }
 
 const fnSignup = () => {
@@ -205,11 +214,7 @@ const fnSignup = () => {
         alert('휴대전화를 확인하세요.');
         evt.preventDefault();
         return;
-      } else if(!agreeCheck) {
-        alert('서비스 약관에 동의해야 서비스를 이용할 수 있습니다.');
-        evt.preventDefault();
-        return;
-      }
+      } 
     });
   }
 
@@ -218,4 +223,20 @@ document.getElementById('inp-pw').addEventListener('keyup', fnCheckPassword);
 document.getElementById('inp-pw2').addEventListener('blur', fnConfirmPassword); 
 document.getElementById('inp-name').addEventListener('blur', fnCheckName);
 document.getElementById('inp-mobile').addEventListener('blur', fnCheckMobile);
+
+btnConfirmCode.addEventListener('click', () => {
+    secCode.style.display = 'none';
+    secName.style.display = '';
+})
+btnConfirmPw.addEventListener('click', () => {
+    secPw.style.display = 'none';
+    secName.style.display = '';
+})
+btnConfirmName.addEventListener('click', () => {
+    secName.style.display = 'none';
+    secMobile.style.display = '';
+    
+})
+
+
 fnSignup();
