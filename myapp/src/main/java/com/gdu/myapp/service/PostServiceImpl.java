@@ -71,6 +71,7 @@ public class PostServiceImpl implements PostService {
     // 요청 파라미터
     String title = request.getParameter("title");
     String contents = request.getParameter("contents");
+    int category = Integer.parseInt(request.getParameter("category"));
     int userNo = Integer.parseInt(request.getParameter("userNo"));
 
     // UserDto + PostDto 객체 생성
@@ -79,6 +80,7 @@ public class PostServiceImpl implements PostService {
     PostDto post = PostDto.builder()
                      .title(MySecurityUtils.getPreventXss(title))
                      .contents(MySecurityUtils.getPreventXss(contents))
+                     .category(category)
                      .user(user)
                    .build();
 
@@ -95,36 +97,45 @@ public class PostServiceImpl implements PostService {
 
     // DB에 post 저장
     return postMapper.insertPost(post);
-    
-  }
-  
-  @Override
-  public ResponseEntity<Map<String, Object>> getPostList(HttpServletRequest request) {
-    
-    // 전체 Post 게시글 수
-    int total = postMapper.getPostCount();
-    
-    // 스크롤 이벤트마다 가져갈 목록 개수
-    int display = 10;
-    
-    // 현재 페이지 번호
-    int page = Integer.parseInt(request.getParameter("page"));
-    
-    // 페이징 처리에 필요한 정보 처리
-    myPageUtils.setPaging(total, display, page);
-    
-    // DB 로 보낼 Map 생성
-    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
-                                    ,"end", myPageUtils.getEnd());
-    
-    // DB 에서 목록 가져오기
-    List<PostDto> postList = postMapper.getPostList(map);
-    
-    return new ResponseEntity<Map<String,Object>>(Map.of("postList", postList,
-                                                         "totalPage", myPageUtils.getTotalPage())
-                                                , HttpStatus.OK);
-  }
-  
+	}
+	
+	@Override
+	public ResponseEntity<Map<String, Object>> getPostList(HttpServletRequest request) {
+		
+		// 전체 Post 게시글 수
+		int total = postMapper.getPostCount();
+		
+		// 스크롤 이벤트마다 가져갈 목록 개수
+		int display = 10;
+		
+		// 현재 페이지 번호
+		int page = Integer.parseInt(request.getParameter("page"));
+		
+		// 카테고리 번호
+		int category = Integer.parseInt(request.getParameter("category") == null ? "0" : request.getParameter("category"));
+		
+		// 페이징 처리에 필요한 정보 처리
+		myPageUtils.setPaging(total, display, page);
+		
+		// DB 로 보낼 Map 생성
+		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+																	  ,"end", myPageUtils.getEnd()
+																	  ,"category", category);
+		List<PostDto> postList = null;
+		
+		// DB 에서 목록 가져오기
+		if(category == 0) {
+			postList = postMapper.getPostList(map);
+		} else {
+			postList = postMapper.getPostListByCategory(map);
+		}
+			
+		
+		return new ResponseEntity<Map<String,Object>>(Map.of("postList", postList,
+																												 "totalPage", myPageUtils.getTotalPage())
+																						  	, HttpStatus.OK);
+	}
+	
   @Override
   public int updateHit(int postNo) {
     return postMapper.updateHit(postNo);
