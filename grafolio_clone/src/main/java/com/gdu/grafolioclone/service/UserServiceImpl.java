@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
         request.getSession().setAttribute("user", userMapper.getUserByMap(params));
         
         // Sign In 후 페이지 이동
-        out.println("location.href='" + request.getContextPath() + "/main.page';");
+        out.println("location.href='" + request.getContextPath() + "/user/modify.page';");
         
         // 일치하는 회원이 없음 (Sign In 실패)
       } else {

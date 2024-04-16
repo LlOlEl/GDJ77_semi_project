@@ -2,12 +2,23 @@
  * 
  */
  
- var emailCheck = false;
+var emailCheck = false;
 var passwordCheck = false;
 var passwordConfirm = false
 var nameCheck = false;
 var mobileCheck = false;
-var agreeCheck = false;
+var secEmail = document.getElementById('section-email');
+var secPw = document.getElementById('section-pw');
+var secName = document.getElementById('section-name');
+var secMobile = document.getElementById('section-mobile');
+var btnConfirmCode = document.getElementById('btn-confirmCode');
+var btnVerifyCode = document.getElementById('btn-verify-code');
+var btnConfirmPw = document.getElementById('btn-confirmPw');
+var btnConfirmName = document.getElementById('btn-confirmName');
+var msg = document.querySelector('span');
+
+
+
 
 const fnGetContextPath = ()=>{
   const host = location.host;  /* localhost:8080 */
@@ -101,6 +112,7 @@ const fnCheckEmail = ()=>{
           if(resData.code === inpCode.value) {
             alert('인증되었습니다.');
             emailCheck = true;
+            
           } else {
             alert('인증되지 않았습니다.');
             emailCheck = false;
@@ -143,8 +155,10 @@ const fnConfirmPassword = () => {
     let msgPw2 = document.getElementById('msg-pw2');
     if(passwordConfirm) {
       msgPw2.innerHTML = ''; 
+      btnConfirmPw.removeAttribute('disabled');
     } else {
       msgPw2.innerHTML = '비밀번호 입력을 확인하세요';
+      btnConfirmPw.setAttribute('disabled', true);
     }
 }
 
@@ -159,11 +173,12 @@ const fnCheckName = () => {
       totalByte++;
     }
   }
-  nameCheck = (totalByte <= 100);
+  nameCheck = (totalByte <= 60);
   let msgName = document.getElementById('msg-name');
   if(!nameCheck){
-    msgName.innerHTML = '이름은 100 바이트를 초과할 수 없습니다.'
+    msgName.innerHTML = '이름은 30글자를 초과할 수 없습니다.'
   } else {
+    btnConfirmName.removeAttribute('disabled');
     msgName.innerHTML = ''
   }
 }
@@ -179,11 +194,6 @@ const fnCheckMobile = () => {
   } else {
     msgMobile.innerHTML = ''
   }
-}
-
-const fnCheckAgree = () => {
-  let chkService = document.getElementById('chk-service');
-  agreeCheck = chkService.checked;
 }
 
 const fnSignup = () => {
@@ -205,11 +215,7 @@ const fnSignup = () => {
         alert('휴대전화를 확인하세요.');
         evt.preventDefault();
         return;
-      } else if(!agreeCheck) {
-        alert('서비스 약관에 동의해야 서비스를 이용할 수 있습니다.');
-        evt.preventDefault();
-        return;
-      }
+      } 
     });
   }
 
@@ -218,4 +224,29 @@ document.getElementById('inp-pw').addEventListener('keyup', fnCheckPassword);
 document.getElementById('inp-pw2').addEventListener('blur', fnConfirmPassword); 
 document.getElementById('inp-name').addEventListener('blur', fnCheckName);
 document.getElementById('inp-mobile').addEventListener('blur', fnCheckMobile);
+
+
+btnVerifyCode.addEventListener('click', () => {
+	btnConfirmCode.removeAttribute('disabled');
+})
+
+btnConfirmCode.addEventListener('click', () => {
+    secEmail.style.display = 'none';
+    secPw.style.display = '';
+    msg.textContent = 'OGQ 계정으로 사용할 비밀번호를 등록해주세요';
+})
+btnConfirmPw.addEventListener('click', () => {
+    secPw.style.display = 'none';
+    secName.style.display = '';
+    msg.textContent = 'OGQ 계정 닉네임을 입력해 주세요.';
+})
+btnConfirmName.addEventListener('click', () => {
+    secName.style.display = 'none';
+    secMobile.style.display = '';
+    msg.textContent = '회원정보 확인 및 계정찾기를 위해 휴대폰 본인인증을 해주세요.';
+    
+    
+})
+
+
 fnSignup();

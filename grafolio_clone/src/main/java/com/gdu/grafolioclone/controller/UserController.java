@@ -53,6 +53,11 @@ public class UserController {
   	return "user/signup";
   }
   
+  @GetMapping("/modify.page")
+  public String modifyPage() {
+    return "user/modify";
+  }
+  
   @PostMapping(value="/checkEmail.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> checkEmail(@RequestBody Map<String, Object> params){
   	return userService.checkEmail(params);
@@ -106,5 +111,16 @@ public class UserController {
   	
   	return path;
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 }
