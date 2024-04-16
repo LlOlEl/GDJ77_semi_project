@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+  <!-- settings -->
+  <settings>
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+  </settings>
+  
+  <!-- typeAliases -->
+  <typeAliases>
+    <typeAlias alias="AccessHistoryDto"  type="com.gdu.grafolioclone.dto.AccessHistoryDto"/>
+    <typeAlias alias="LeaveUserDto"      type="com.gdu.grafolioclone.dto.LeaveUserDto"/>
+    <typeAlias alias="UserDto"           type="com.gdu.grafolioclone.dto.UserDto"/>
+    <typeAlias alias="PostDto"            type="com.gdu.grafolioclone.dto.PostDto"/>
+    <typeAlias alias="CommentDto"            type="com.gdu.grafolioclone.dto.CommentDto"/>
+  </typeAliases>
+  
+</configuration>
