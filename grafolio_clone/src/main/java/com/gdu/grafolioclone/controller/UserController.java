@@ -55,8 +55,10 @@ public class UserController {
   	return "user/signup";
   }
   
-  @GetMapping("/modify.page")
-  public String modifyPage() {
+  @GetMapping("/modify.do")
+  public String modifyProfile(HttpServletRequest request, Model model) {
+    UserDto profile = userService.getProfileByUserNo(request);
+    model.addAttribute("profile", profile);
     return "user/modify";
   }
   

@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 
-import com.gdu.grafolioclone.dto.FollowDto;
 import com.gdu.grafolioclone.dto.UserDto;
 
 public interface UserService {
