@@ -30,7 +30,7 @@
       </div>
    	</div>
    	
-   	<div class="user-body">
+   	<div class="user-body" data-user-no="${profile.userNo}">
    	  <span class="user-nickname">${profile.name}</span>
    	<div class="user-category">${profile.profileCategory}</div> <!-- 유저가 선택한 태그(사진, 일러스트 등) -->
    	<div class="user-description">${profile.descript}</div> <!-- 유저 프로필 설명 -->
@@ -96,49 +96,73 @@ const fnGetContextPath = ()=>{
 
 // 버튼 변경
 const fnChangeBtn = () => {
-	console.log("changeBtn");
-	if(checkFollow) {
-	  $('#btn-follow').text('팔로잉');
-	  $('#btn-follow').css('background-color', 'black');
-	  $('#btn-follow').attr('id', 'btn-unfollow');
-	}
+  console.log("changeBtn");
+  if(checkFollow) {
+	$('#btn-follow').off('click');
+    $('#btn-follow').text('팔로잉');
+    $('#btn-follow').css('background-color', 'black');
+    $('#btn-follow').attr('id', 'btn-unfollow');
+    fnUnfollow();
+  } else{
+	$('#btn-unfollow').off('click');
+    $('#btn-follow').text('팔로우하기');
+    $('#btn-follow').css('background-color', '');
+    $('#btn-follow').attr('id', 'btn-follow');
+    fnFollwing();
+  }
 }
 
 // 팔로우
 const fnFollwing = () => {
 	
-$('#btn-follow').on('click', (evt) => {
-	
-	fnCheckSignin();
-	
-	// 팔로우를 신청받은 user의 userNo 전송
-	fetch(fnGetContextPath() + '/user/follow.do', {
-		method: 'POST',
-		headers: {
-		  'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-		  'toUser': $('#btn-follow').data('userNo')
-		})
-	})
-	.then(response=> response.json())
-	.then(resData=> {
-		
-		console.log("resData insertFollowCount", resData.insertFollowCount)
-		
-	  if(resData.insertFollowCount === 1) {
-		  fnCheckFollow();
-		  $('#btn-follow').text('팔로잉');
-		  $('#btn-follow').css('background-color', 'black');
-		  $('#btn-follow').attr('id', 'btn-unfollow');
-	  }
-	})
-})
+  $('#btn-follow').on('click', (evt) => {
+    // 로그인 여부 검사
+    fnCheckSignin();
 
+    // 팔로우를 신청받은 user의 userNo 전송
+    fetch(fnGetContextPath() + '/user/follow.do', {
+	  method: 'POST',
+	  headers: {
+        'Content-Type': 'application/json'
+	  },
+	  body: JSON.stringify({
+	    'toUser': $('#btn-follow').data('userNo')
+	  })
+    })
+    .then(response=> response.json())
+    .then(resData=> {
+      if(resData.insertFollowCount === 1) {
+        fnCheckFollow();
+      }
+    })
+  })
 }
 
-
-
+// 언팔로우
+const fnUnfollow = () => {
+  
+  
+  
+  $('.change-btn').children().on('click', (evt) => {
+    
+    fetch(fnGetContextPath() + '/user/unfollow.do', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'toUser': $('#btn-unfollow').data('userNo')
+      })
+    })
+    .then(response=>response.json())
+    .then(resData=>{
+      if(resData.deleteFollowCount === 1) {
+        fnCheckFollow();
+      }
+    })
+	  
+  })
+}
 
 // 팔로우 조회
 const fnCheckFollow = () => {
@@ -151,24 +175,23 @@ const fnCheckFollow = () => {
 		  'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-		  'toUser': $('#btn-follow').data('userNo')
+		  'toUser': $('.user-body').data('userNo')
 		})
 	})
 	.then(response=> response.json())
 	.then(resData=> {
 		console.log(resData.hasFollow);
-		if(resData.hasFollow !== 0) {
+		if(resData.hasFollow != 0) {
 			checkFollow = true;
 			fnChangeBtn();
 			console.log("checkFollow값", checkFollow);
 		} else {
 			checkFollow = false;
+			fnChangeBtn();
 			console.log("checkFollow값", checkFollow);
 		}
 	})
 }
-
-
 
 // 조회수 가져오기
 const fnGetHitCount = () => {
@@ -200,6 +223,7 @@ const fnCheckSignin = () => {
 fnCheckFollow();
 fnChangeBtn();
 fnFollwing();
+fnUnfollow();
 
  
  

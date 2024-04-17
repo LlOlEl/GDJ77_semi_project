@@ -36,7 +36,10 @@ public interface UserService {
   UserDto getProfileByUserNo(HttpServletRequest request);
   
   // 팔로우
-  ResponseEntity<Map<String, Object>> follow (Map<String, Object> params);
+  ResponseEntity<Map<String, Object>> follow (Map<String, Object> params, HttpSession session);
+  // 언팔로우
+  ResponseEntity<Map<String, Object>> unfollow(Map<String, Object> params, HttpSession session);
+  
   // 팔로우 조회
   ResponseEntity<Map<String, Object>> checkFollow(Map<String, Object> params, HttpSession session);
   

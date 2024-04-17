@@ -450,17 +450,46 @@ public class UserServiceImpl implements UserService {
   
   // 팔로우 구현
   @Override
-  public ResponseEntity<Map<String, Object>> follow(Map<String, Object> params) {
+  public ResponseEntity<Map<String, Object>> follow(Map<String, Object> params, HttpSession session) {
     
+    UserDto user = (UserDto)session.getAttribute("user");
+
+    Optional<UserDto> opt = Optional.ofNullable(user);
+    int userNo = opt.map(UserDto::getUserNo).orElse(0);
     
-    Map<String, Object> map = Map.of("fromUser", params.get("fromUser")
-                                   , "toUser", params.get("toUser"));
+    Map<String, Object> map = new HashMap<String, Object>();
+    
+    map.put("fromUser", userNo);
+    map.put("toUser", params.get("toUser"));
     
     int insertFollowCount = userMapper.follow(map);
     
     return ResponseEntity.ok(Map.of("insertFollowCount", insertFollowCount));
     
   }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> unfollow(Map<String, Object> params, HttpSession session) {
+    UserDto user = (UserDto)session.getAttribute("user");
+
+    Optional<UserDto> opt = Optional.ofNullable(user);
+    int userNo = opt.map(UserDto::getUserNo).orElse(0);
+    
+    Map<String, Object> map = new HashMap<String, Object>();
+    
+    map.put("fromUser", userNo);
+    map.put("toUser", params.get("toUser"));
+    
+    int deleteFollowCount = userMapper.unfollow(map);
+    
+    return ResponseEntity.ok(Map.of("deleteFollowCount", deleteFollowCount));
+  }
+  
+  
+  
+  
+  
+  
   
   // 팔로우 조회
   @Override
@@ -471,15 +500,15 @@ public class UserServiceImpl implements UserService {
     Optional<UserDto> opt = Optional.ofNullable(user);
     int userNo = opt.map(UserDto::getUserNo).orElse(0);
     
-
     Map<String, Object> map = new HashMap<String, Object>();
+    
     map.put("fromUser", userNo);
     map.put("toUser", params.get("toUser"));
     
     int hasFollow = userMapper.checkFollow(map);
     // 팔로잉이 되어있다면 hasFollow값은 1, 아니면 0
     
-    System.out.println("hasFollow" + hasFollow);
+    System.out.println("hasFollow=" + hasFollow);
     
     return ResponseEntity.ok(Map.of("hasFollow", hasFollow));
     

@@ -22,7 +22,13 @@ public interface UserMapper {
   
   // 팔로우
   int follow(Map<String, Object> map);
+  
+  // 언팔로우
+  int unfollow(Map<String, Object> map);
+  
   // 팔로우 조회
   int checkFollow(Map<String, Object> map);
+  
+  
   
 }

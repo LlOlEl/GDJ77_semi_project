@@ -2,6 +2,7 @@ package com.gdu.grafolioclone.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -74,17 +76,19 @@ public class UserController {
   }
   
 
-  // 팔로잉
+  // 팔로우
   @PostMapping("/follow.do")
   public ResponseEntity<Map<String, Object>> follow(@RequestBody Map<String, Object> params, HttpSession session) {
-    
-    UserDto user = (UserDto)session.getAttribute("user");
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("fromUser", user.getUserNo());
-    map.put("toUser", params.get("toUser"));
-    
-    return userService.follow(map);
+    return userService.follow(params, session);
   }
+  
+  // 언팔로우
+  @PostMapping("/unfollow.do")
+  public ResponseEntity<Map<String, Object>> unfollow(@RequestBody Map<String, Object> params, HttpSession session) {
+    return userService.unfollow(params, session);
+  }
+  
+  
   
   // 팔로우 조회
   @PostMapping("/checkFollow.do")
