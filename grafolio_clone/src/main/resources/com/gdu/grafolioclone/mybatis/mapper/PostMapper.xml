@@ -175,4 +175,43 @@
      WHERE COMMENT_NO = #{commentNo}
   </update>
    
+   <insert id="insertLike"
+           parameterType="LikeDto">
+     INSERT INTO LIKE_T (
+       LIKE_NO,
+       POST_NO,
+       USER_NO,
+       CREATE_DT
+     ) VALUES (
+       LIKE_SEQ.NEXTVAL,
+       #{postNo},
+       #{userNo},
+       CURRENT_TIMESTAMP
+     )        
+   </insert>
+   
+   <delete id="removeLike"
+           parameterType="LikeDto">
+     DELETE 
+       FROM LIKE_T
+      WHERE POST_NO = #{postNo}
+        AND USER_NO = #{userNo}
+   </delete>
+   
+   <select id="getLikeCountByPostNo"
+           resultType="int">
+     SELECT COUNT(*)
+       FROM LIKE_T
+      WHERE POST_NO = #{postNo}
+   </select>
+   
+   <select id="checkLikeStatus"
+           parameterType="LikeDto"
+           resultType="int">
+     SELECT COUNT(*)
+       FROM LIKE_T
+      WHERE POST_NO = #{postNo}
+        AND USER_NO = #{userNo}
+   </select>
+   
 </mapper>
