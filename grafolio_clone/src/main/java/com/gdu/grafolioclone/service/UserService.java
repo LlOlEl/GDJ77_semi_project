@@ -4,9 +4,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 
+import com.gdu.grafolioclone.dto.FollowDto;
 import com.gdu.grafolioclone.dto.UserDto;
 
 public interface UserService {
@@ -32,5 +34,10 @@ public interface UserService {
   
   // 프로필 정보 가져오기
   UserDto getProfileByUserNo(HttpServletRequest request);
+  
+  // 팔로우
+  ResponseEntity<Map<String, Object>> follow (Map<String, Object> params);
+  // 팔로우 조회
+  ResponseEntity<Map<String, Object>> checkFollow(Map<String, Object> params, HttpSession session);
   
 }

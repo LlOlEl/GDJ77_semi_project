@@ -1,9 +1,11 @@
 package com.gdu.grafolioclone.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -58,6 +60,11 @@ public class UserController {
     return "user/modify";
   }
   
+  
+  
+  
+  
+  
   // 유저 프로필 - 유저 상세 정보 가져오기
   @GetMapping("/profile.do")
   public String profilePage(HttpServletRequest request, Model model) {
@@ -67,6 +74,24 @@ public class UserController {
   }
   
 
+  // 팔로잉
+  @PostMapping("/follow.do")
+  public ResponseEntity<Map<String, Object>> follow(@RequestBody Map<String, Object> params, HttpSession session) {
+    
+    UserDto user = (UserDto)session.getAttribute("user");
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("fromUser", user.getUserNo());
+    map.put("toUser", params.get("toUser"));
+    
+    return userService.follow(map);
+  }
+  
+  // 팔로우 조회
+  @PostMapping("/checkFollow.do")
+  public ResponseEntity<Map<String, Object>> checkFollow(@RequestBody Map<String, Object> params, HttpSession session) {
+    return userService.checkFollow(params, session);
+  }
+  
   
   
   
