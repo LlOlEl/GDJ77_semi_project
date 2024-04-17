@@ -437,4 +437,32 @@ public class UserServiceImpl implements UserService {
     userMapper.insertAccessHistory(map);
     
   }
+  
+  // 유저 프로필 가져오기 - userNo값 받아서
+  @Override
+  public UserDto getProfileByUserNo(HttpServletRequest request) {
+    
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    UserDto user = userMapper.getProfileByUserNo(userNo);
+    return user;
+  }
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }

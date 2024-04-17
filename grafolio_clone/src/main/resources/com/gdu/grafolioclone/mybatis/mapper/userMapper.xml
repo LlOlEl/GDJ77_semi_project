@@ -81,5 +81,13 @@
        SET SIGNOUT_DT = CURRENT_DATE
      WHERE SESSION_ID = #{sessionID}
   </update>
+  
+    <select id="getProfileByUserNo"
+          resultType="UserDto">
+    SELECT USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+      FROM USER_T
+     WHERE USER_NO = #{userNo}
+  </select>
+  
 
 </mapper>
