@@ -20,4 +20,9 @@ public interface UserMapper {
   // 프로필 정보 가져오기
   UserDto getProfileByUserNo(int userNo);
   
+  // 팔로우
+  int follow(Map<String, Object> map);
+  // 팔로우 조회
+  int checkFollow(Map<String, Object> map);
+  
 }
