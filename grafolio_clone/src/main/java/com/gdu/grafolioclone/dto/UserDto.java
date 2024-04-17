@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserDto {
 	private int userNo, signupKind;
-	private String email, pw, name, mobile, miniProfilePicturePath, mainProfilePicturePath, descript, category;
+	private String email, pw, name, mobile, miniProfilePicturePath, mainProfilePicturePath, descript, profileCategory;
 	private Date pwModifyDt, signupDt;
 }

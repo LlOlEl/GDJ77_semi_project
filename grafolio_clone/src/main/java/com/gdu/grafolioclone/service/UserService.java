@@ -29,4 +29,8 @@ public interface UserService {
   UserDto getNaverLoginProfile(String accessToken);
   boolean hasUser(UserDto user);
   void naverSignin(HttpServletRequest request, UserDto naverUser);
+  
+  // 프로필 정보 가져오기
+  UserDto getProfileByUserNo(HttpServletRequest request);
+  
 }
