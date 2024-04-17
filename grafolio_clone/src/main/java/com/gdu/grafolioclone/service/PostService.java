@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.grafolioclone.dto.PostDto;
@@ -19,6 +20,8 @@ public interface PostService {
 	Map<String, Object> getCommentList(HttpServletRequest request);
 	int registerReply(HttpServletRequest request);
 	int removeComment(int commentNo);
-	int registerLike(HttpServletRequest request);
+	int registerLike(Map<String, Object> params);
+	int removeLike(Map<String, Object> params);
 	int getLikeCount(int postNo);
+	int checkLikeStatus(int postNo, int userNo);
 }

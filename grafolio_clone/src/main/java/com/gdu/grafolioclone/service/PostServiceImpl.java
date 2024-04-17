@@ -226,9 +226,9 @@ public class PostServiceImpl implements PostService {
   }
   
   @Override
-  public int registerLike(HttpServletRequest request) {
-    int postNo = Integer.parseInt(request.getParameter("postNo"));
-    int userNo = Integer.parseInt(request.getParameter("userNo"));
+  public int registerLike(Map<String, Object> params) {
+    int postNo = (int) params.get("postNo");
+    int userNo = (int) params.get("userNo");
     
     LikeDto like = LikeDto.builder()
     										.postNo(postNo)
@@ -239,7 +239,32 @@ public class PostServiceImpl implements PostService {
   }
   
   @Override
+  public int removeLike(Map<String, Object> params) {
+    int postNo = (int) params.get("postNo");
+    int userNo = (int) params.get("userNo");
+    
+    LikeDto like = LikeDto.builder()
+    										.postNo(postNo)
+    										.userNo(userNo)
+    									.build();
+    									
+  	return postMapper.removeLike(like);
+  }
+  
+  @Override
   public int getLikeCount(int postNo) {
   	return postMapper.getLikeCountByPostNo(postNo);
   }
+  
+  @Override
+  public int checkLikeStatus(int postNo, int userNo) {
+  	
+    LikeDto like = LikeDto.builder()
+    										.postNo(postNo)
+    										.userNo(userNo)
+    									.build();
+    									
+  	return postMapper.checkLikeStatus(like);
+  }
+  
 }

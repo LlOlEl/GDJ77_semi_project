@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,9 +100,24 @@ public class PostController {
     return "post/edit";
   }
   
-	@PostMapping(value="/registerLike.do", produces="application/json")
-	public ResponseEntity<Map<String, Object>> registerLike(HttpServletRequest request) {
-		return new ResponseEntity<>(Map.of("insertCount", postSerivce.registerLike(request))
+	@PostMapping(value="/likepost.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> likePost(@RequestBody Map<String, Object> params) {
+		return new ResponseEntity<>(Map.of("insertCount", postSerivce.registerLike(params))
+														  , HttpStatus.OK);
+	}
+	
+	@PostMapping(value="/deletelikepost.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> deletelike(@RequestBody Map<String, Object> params) {
+		return new ResponseEntity<>(Map.of("insertCount", postSerivce.removeLike(params))
+														  , HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/check-like-status", produces="application/json")
+	public ResponseEntity<Map<String, Object>> checklLikeStatus(@RequestParam("postNo") int postNo,
+																															@RequestParam("userNo") int userNo) {
+		System.out.println(postNo);
+		System.out.println(userNo);
+		return new ResponseEntity<>(Map.of("likeCount", postSerivce.checkLikeStatus(postNo, userNo))
 														  , HttpStatus.OK);
 	}
 }
