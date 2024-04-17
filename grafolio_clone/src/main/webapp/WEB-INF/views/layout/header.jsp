@@ -58,7 +58,7 @@
     <div class="gnb-wrap">
       <ul class="gnb">
         <li><a href="${contextPath}/post/list.page">댓글형게시판</a></li>
-        <li><a href="${contextPath}/">마이페이지</a></li>
+        <div class="profile-test" data-user-no="${sessionScope.user.userNo}">마이페이지</div>
       </ul>
     </div>
     

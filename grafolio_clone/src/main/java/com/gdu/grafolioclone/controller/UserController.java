@@ -53,6 +53,27 @@ public class UserController {
   	return "user/signup";
   }
   
+  @GetMapping("/modify.page")
+  public String modifyPage() {
+    return "user/modify";
+  }
+  
+  // 유저 프로필 - 유저 상세 정보 가져오기
+  @GetMapping("/profile.do")
+  public String profilePage(HttpServletRequest request, Model model) {
+    UserDto profile = userService.getProfileByUserNo(request);
+    model.addAttribute("profile", profile);
+    return "user/profile"; 
+  }
+  
+
+  
+  
+  
+  
+  
+  
+  
   @PostMapping(value="/checkEmail.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> checkEmail(@RequestBody Map<String, Object> params){
   	return userService.checkEmail(params);
@@ -106,5 +127,16 @@ public class UserController {
   	
   	return path;
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 }

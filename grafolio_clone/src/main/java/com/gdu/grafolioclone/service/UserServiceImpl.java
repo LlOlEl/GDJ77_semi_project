@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
         request.getSession().setAttribute("user", userMapper.getUserByMap(params));
         
         // Sign In 후 페이지 이동
-        out.println("location.href='" + request.getContextPath() + "/main.page';");
+        out.println("location.href='" + request.getContextPath() + "/user/modify.page';");
         
         // 일치하는 회원이 없음 (Sign In 실패)
       } else {
@@ -437,4 +437,32 @@ public class UserServiceImpl implements UserService {
     userMapper.insertAccessHistory(map);
     
   }
+  
+  // 유저 프로필 가져오기 - userNo값 받아서
+  @Override
+  public UserDto getProfileByUserNo(HttpServletRequest request) {
+    
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    UserDto user = userMapper.getProfileByUserNo(userNo);
+    return user;
+  }
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }

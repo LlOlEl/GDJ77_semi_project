@@ -16,4 +16,8 @@ public interface UserMapper {
 	
   int insertAccessHistory(Map<String, Object> map);
   int updateAccessHistory(String sessionId);
+  
+  // 프로필 정보 가져오기
+  UserDto getProfileByUserNo(int userNo);
+  
 }
