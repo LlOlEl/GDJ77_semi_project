@@ -1,8 +1,6 @@
 package com.gdu.grafolioclone.controller;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,11 +9,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.grafolioclone.dto.UserDto;
 import com.gdu.grafolioclone.service.UserService;
@@ -55,11 +53,19 @@ public class UserController {
   	return "user/signup";
   }
   
-  @GetMapping("/modify.do")
-  public String modifyProfile(HttpServletRequest request, Model model) {
+  @GetMapping("/modifyPage.do")
+  public String modifyPage(HttpServletRequest request, Model model) {
     UserDto profile = userService.getProfileByUserNo(request);
     model.addAttribute("profile", profile);
     return "user/modify";
+  }
+  
+  @PostMapping("/modify.do")
+  public String modify(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    int modifyCount = userService.updateUser(request);
+    redirectAttributes.addAttribute("userNo", request.getParameter("userNo"))
+                      .addFlashAttribute("modifyResult", modifyCount == 1 ? "수정되었습니다." : "수정 실패했습니다.");
+    return "redirect:/user/profile.do?userNo={userNo}";
   }
   
   // 유저 프로필 가져오기 - 오채원
@@ -147,16 +153,5 @@ public class UserController {
   	
   	return path;
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
 }

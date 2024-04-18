@@ -4,14 +4,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
- <jsp:include page="../layout/header.jsp">
-   <jsp:param value="Sign In" name="title"/>
- </jsp:include>
+<jsp:include page="../layout/header.jsp">
+  <jsp:param value="Modify" name="title"/>
+</jsp:include>
  
 <div class="m-3">   <!-- signup.jsp 와 이 부분 수정할지 확인하기 -->
 
   <form method="POST"
-        action="${contextPath}/user/signup.do"
+        action="${contextPath}/user/modify.do"
         id="frm-modify">
         
 	  <div class="profile_picture">
@@ -47,7 +47,11 @@
 		  </div>
 		  <div class="row">
 		    <span>비밀번호</span>
-		    <div></div>
+		    <div>
+		      <input type="password" name="" placeholder="현재 비밀번호를 입력해 주세요.">
+		      <input type="password" id="" name="" placeholder="새 비밀번호를 입력해 주세요.(8~20자리)">
+		      <input type="password" id="" placeholder="확인을 위해 새 비밀번호를 재입력해 주세요.">
+		    </div>
 		  </div>
 		  <div class="row">
 		    <span>한줄 소개</span>
@@ -75,8 +79,11 @@
 		      <input type="checkbox" name="profileCategory" value="기타">기타
 		    </div>
 		  </div>
-	   <button type="submit" id="btn-modify" class="btn btn-primary">저장하기</button>
-	   <button type="button" id="btn-next" class="btn btn-secondary">나중에 추가하기</button>
+	    <div>
+	      <input type="hidden" name="userNo" value="${user.userNo}">
+		    <button type="submit" id="btn-modify" class="btn btn-primary">저장하기</button>
+		    <button type="button" id="btn-next" class="btn btn-secondary">나중에 추가하기</button>
+	    </div>
 	   
 	  </div>
     

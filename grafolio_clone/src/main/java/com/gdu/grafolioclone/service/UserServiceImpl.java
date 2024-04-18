@@ -114,7 +114,6 @@ public class UserServiceImpl implements UserService {
                                           , "ip", request.getRemoteAddr()
                                           , "userAgent", request.getHeader("User-Agent")
                                           , "sessionId", request.getSession().getId());
-
         
         // 접속 기록 ACCESS_HISTORY_T 에 남기기
         userMapper.insertAccessHistory(params);
@@ -127,7 +126,7 @@ public class UserServiceImpl implements UserService {
         UserDto user1 = (UserDto) session.getAttribute("user");
         
         // Sign In 후 페이지 이동
-        out.println("location.href='" + request.getContextPath() + "/user/modify.do?userNo=" + user1.getUserNo() + "';");
+        out.println("location.href='" + request.getContextPath() + "/user/modifyPage.do?userNo=" + user1.getUserNo() + "';");
         
         // 일치하는 회원이 없음 (Sign In 실패)
       } else {
@@ -441,6 +440,33 @@ public class UserServiceImpl implements UserService {
     request.getSession().setAttribute("user", user);
     userMapper.insertAccessHistory(map);
     
+  }
+  
+  @Override
+  public int updateUser(HttpServletRequest request) {
+    
+    // 전달된 파라미터
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    String name = MySecurityUtils.getPreventXss(request.getParameter("name")) ;
+    String mobile = request.getParameter("mobile");
+    String pw = MySecurityUtils.getSha256(request.getParameter("pw"));
+    String miniProfilePicturePath = request.getParameter("miniProFilePicutrePath");
+    String mainProfilePicturePath = request.getParameter("mainProFilePicutrePath");
+    String descript = request.getParameter("descript");
+    String profileCategory = request.getParameter("profileCategory");
+    
+    UserDto user = UserDto.builder()
+                      .userNo(userNo)
+                      .name(name)
+                      .mobile(mobile)
+                      .pw(pw)
+                      .miniProfilePicturePath(miniProfilePicturePath)
+                      .mainProfilePicturePath(mainProfilePicturePath)
+                      .descript(descript)
+                      .profileCategory(profileCategory)
+                    .build();
+    
+    return userMapper.updateUser(user);
   }
   
   // 유저 프로필 조회 - 오채원
