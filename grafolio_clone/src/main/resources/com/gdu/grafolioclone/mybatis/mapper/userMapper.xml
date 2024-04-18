@@ -81,5 +81,39 @@
        SET SIGNOUT_DT = CURRENT_DATE
      WHERE SESSION_ID = #{sessionID}
   </update>
+  
+  <select id="getProfileByUserNo"
+          resultType="UserDto">
+    SELECT USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+      FROM USER_T
+     WHERE USER_NO = #{userNo}
+  </select>
+  
+  <insert id="follow"
+  		  parameterType="Map">
+    INSERT INTO FOLLOW_T (
+        FOLLOW_NO
+      , FROM_USER
+      , TO_USER
+      , CREATE_DT
+    ) VALUES (
+        FOLLOW_SEQ.NEXTVAL
+      , #{fromUser}
+      , #{toUser}
+      , CURRENT_DATE
+    )
+  </insert>
+  
+  <select id="checkFollow"
+          parameterType="Map"
+          resultType="int">
+    SELECT COUNT(*)
+      FROM FOLLOW_T
+    <where>
+      <if test="toUser!=null">TO_USER = #{toUser}</if>
+      <if test="fromUser!=null">AND FROM_USER = #{fromUser}</if>
+    </where>
+  </select>		  
+  
 
 </mapper>

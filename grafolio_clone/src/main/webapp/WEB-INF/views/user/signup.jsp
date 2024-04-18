@@ -10,7 +10,7 @@
  
 <div class="m-3">
 
-  <img alt="signup-logo" src="">
+  <img alt="signup-logo" src="../resources/img/logo-grapolio.svg">
   <form method="POST"
         action="${contextPath}/user/signup.do"
         id="frm-signup">

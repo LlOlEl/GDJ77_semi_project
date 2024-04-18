@@ -100,7 +100,7 @@
 }
 
 #contents {
-  width: 80%; /* 입력 요소의 너비를 브라우저 너비의 80%로 설정 */
+  
 }
 
 .con img {
@@ -138,6 +138,7 @@
  
  .like{
   font-size:12px;
+  cursor: auto;
  }
  
   #btn-comment-register {
@@ -176,21 +177,7 @@
 #modalContainer.hidden {
   display: none;
 }
-#modalContainer {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-}
 
-#modalContainer.hidden {
-  display: none;
-}
 
  .navigation {
    position: fixed;
@@ -221,7 +208,7 @@
  
  
  .icon-wrapper {
-    background-color: gray;
+    
     border: 1px solid var(--mono-050);
     border-radius: 100%;
     box-shadow: 0 4px 15px #dedede4d;
@@ -232,12 +219,54 @@
     
  }
  
- #icon {
+ .fa-icon {
  cursor: pointer;
     left: 50%;
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
+ }
+ #share-icon {
+ cursor: pointer;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+ }
+ #icon-third {
+ cursor: pointer;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+ }
+ 
+ 
+ #comment-bottom{
+  display: flex;
+  left: 1300px;
+  font-size:12px;
+  cursor:pointer;
+ }
+ 
+ .inputwrapper {
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
+  gap: 10px; /* 이미지와 입력 창 사이의 간격 조절 */
+ }
+ .img-ogq {
+  
+  border-radius: 50%;
+  
+ }
+ 
+ .comment-selection {
+ display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: relative;
+    width: 60%;
+    margin: auto;
  }
   
  </style>
@@ -261,10 +290,7 @@
       <span>${post.user.email}</span>
     </div>
     
-    <div>
-      <span>조회수</span>
-      <span>${post.hit}</span>
-    </div>
+    
     
     
     
@@ -292,13 +318,19 @@
         <div class="hashtag">서울</div>
         <div class="hashtag">거리</div>
     </div>
-    <div>
-      <div class="like">좋아요</div>
+    <div class="like">
+      <div><i class="fa-regular fa-heart" width="10px;"></i>${like.likeNo}</div>
     </div>
+    <div><i class="fa-regular fa-eye" width="10px"></i>${post.hit}</div>
+    <div><i class="fa-regular fa-comment" width="10px"></i>${comment.commentNo}</div>
   </div>
   
-  <hr>
   
+  
+  <hr>
+  <div class="comment-selection">
+  <div class="inputwrapper">
+   <img class="img-ogq" src="https://preview.files.api.ogq.me/v1/profile/LARGE/NEW-PROFILE/default_profile.png" width="20px" height="20px">
   <form id="frm-comment">
     <input type="text" id="contents" name="contents" placeholder="댓글을 입력해주세요"></input>
     <input type="hidden" name="postNo" value="${post.postNo}">
@@ -307,7 +339,12 @@
     </c:if>
     <button id="btn-comment-register" type="button" disabled>등록하기</button>
   </form>
-
+  
+   </div>
+  <div>
+    <button id="comment-bottom">© All Rights Reserved</button>
+  </div>
+  </div>
   <hr>
   
   <div id="comment-list"></div>
@@ -322,13 +359,19 @@
     
     <div class="menu-wrapper">
       <div class="icon-wrapper">
-       <i class="fa-regular fa-heart " id="icon"></i>
+       <div class="fa-icon">
+         <c:if test="${sessionScope.user.userNo == post.user.userNo}">
+         <i class="fa-regular fa-heart" id="icon-heart" ></i>
+         </c:if>       
+       </div>
       </div>
       <div class="icon-wrapper" >
-        <button id="modalOpenButton"><i class="fas fa-thin fa-share-nodes" id="icon"></i></button> 
+        <c:if test="${sessionScope.user.userNo == post.user.userNo}">
+          <button id="modalOpenButton"><i class="fas fa-thin fa-share-nodes" id="share-icon"></i></button> 
+        </c:if> 
       </div>
       <div class="icon-wrapper">
-        <i class="fa-regular fa-bookmark" id="icon"></i>
+        <i class="fa-regular fa-bookmark" id="icon-third"></i>
       </div>
       
     </div>
@@ -337,7 +380,7 @@
   
   <div id="modalContainer" class="hidden">
     <div id="modalContent">
-      <p>모달 창 입니다.</p>
+      <p>링크가 복사되었습니다.</p>
       <button id="modalCloseButton">닫기</button>
       <button type="button" class="copy-btn" onclick="copyUrl()">링크복사</button>
     </div>
@@ -348,18 +391,65 @@
 
 
   <script>
+  
+ 
+ 
+ 
+  
+//아이콘의 초기 색상을 추적합니다.
+
+  // 아이콘을 클릭할 때마다 색상을 변경하고 토글합니다.
+  document.getElementById('icon-heart').addEventListener('click', (evt) => {
+  let iconColor = '#ff'; // 이전 색상을 기본 색상으로 설정
+    // 현재 색상이 이전 색상과 같은지 확인하여 토글합니다.
+    if (evt.target.style.color === iconColor) {
+      // 이전 색상과 같으면 초기 색상으로 변경합니다.
+      evt.target.style.color = '#ff';
+    } else {
+      // 이전 색상과 다르면 새로운 색상을 설정합니다.
+      evt.target.style.color = '#e33861';
+    }
+    // 현재 색상을 업데이트합니다.
+    iconColor = evt.target.style.color;
+  });
+  
+  
  
   const modalOpenButton = document.getElementById('modalOpenButton');
   const modalCloseButton = document.getElementById('modalCloseButton');
   const modal = document.getElementById('modalContainer');
 
+  
   modalOpenButton.addEventListener('click', () => {
     modal.classList.remove('hidden');
-  });
+    
 
+    // 임시 textarea 요소를 생성하여 텍스트를 복사
+    var textarea = document.createElement("textarea");
+    textarea.value = textToCopy;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+
+    // 복사 완료 메시지 표시
+    alert("주소가 복사되었습니다: " + textToCopy);
+  });
+	  
+   
+
+  
+  
   modalCloseButton.addEventListener('click', () => {
     modal.classList.add('hidden');
   });
+  
+  // commentBottom
+  document.getElementById('comment-bottom').onclick = (evt)=>{
+	  alert('저작권자의 허가 없이 무단복제 및 도용, 2차 가공 및 공유 금지');
+	  //modal.classList.remove('hidden');
+	    
+	  }
   
   
   let nowUrl = window.location.href;
@@ -470,7 +560,7 @@
               
               str += '<button type="button" class="btn btn-success btn-reply">답글</button>';
               // 답글 버튼
-                str += '<button type="button" id="btn-comment-show">답글보기</button>';
+                
               if(comment.depth === 0) {
                 	
               }
@@ -488,6 +578,7 @@
               // 삭제 버튼 (내가 작성한 댓글에만 삭제 버튼이 생성됨)
               if(Number('${sessionScope.user.userNo}') === comment.user.userNo) {
                 str += '<button type="button" class="btn btn-danger btn-remove" data-comment-no="' + comment.commentNo + '">삭제</button>'
+                str += '<button type="button" id="btn-comment-show">답글보기</button>';
               }
             } else {
               str += '<span>삭제된 댓글입니다.</span>'
@@ -591,7 +682,7 @@
       })
     }
 
-    
+   
     fnKeyup();
     fnBtnRemove();
     $('#contents').on('click', fnCheckSignin);

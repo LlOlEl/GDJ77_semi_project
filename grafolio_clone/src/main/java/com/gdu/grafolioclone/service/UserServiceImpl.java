@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -122,7 +123,7 @@ public class UserServiceImpl implements UserService {
         request.getSession().setAttribute("user", userMapper.getUserByMap(params));
         
         // Sign In 후 페이지 이동
-        out.println("location.href='" + request.getContextPath() + "/main.page';");
+        out.println("location.href='" + request.getContextPath() + "/user/modify.page';");
         
         // 일치하는 회원이 없음 (Sign In 실패)
       } else {
@@ -437,4 +438,70 @@ public class UserServiceImpl implements UserService {
     userMapper.insertAccessHistory(map);
     
   }
+  
+  // 유저 프로필 가져오기 - userNo값 받아서
+  @Override
+  public UserDto getProfileByUserNo(HttpServletRequest request) {
+    
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    UserDto user = userMapper.getProfileByUserNo(userNo);
+    return user;
+  }
+  
+  // 팔로우 구현
+  @Override
+  public ResponseEntity<Map<String, Object>> follow(Map<String, Object> params) {
+    
+    
+    Map<String, Object> map = Map.of("fromUser", params.get("fromUser")
+                                   , "toUser", params.get("toUser"));
+    
+    int insertFollowCount = userMapper.follow(map);
+    
+    return ResponseEntity.ok(Map.of("insertFollowCount", insertFollowCount));
+    
+  }
+  
+  // 팔로우 조회
+  @Override
+  public ResponseEntity<Map<String, Object>> checkFollow(Map<String, Object> params, HttpSession session) {
+    
+    UserDto user = (UserDto)session.getAttribute("user");
+
+    Optional<UserDto> opt = Optional.ofNullable(user);
+    int userNo = opt.map(UserDto::getUserNo).orElse(0);
+    
+
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("fromUser", userNo);
+    map.put("toUser", params.get("toUser"));
+    
+    int hasFollow = userMapper.checkFollow(map);
+    // 팔로잉이 되어있다면 hasFollow값은 1, 아니면 0
+    
+    System.out.println("hasFollow" + hasFollow);
+    
+    return ResponseEntity.ok(Map.of("hasFollow", hasFollow));
+    
+  }
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }

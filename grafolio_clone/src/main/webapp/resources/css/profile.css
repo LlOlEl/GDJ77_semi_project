@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+.profile-top {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.default-profile-image {
+  width: 75px;
+}
+
+.default-cover-image {
+  width: 910px;
+  height: 360px;
+  object-fit: cover;
+}
+
+.profile-top {
+  align-items: center;
+  justify-content: space-between;
+  margin: 50px 9.5% 80px;
+}
+
+.user-nickname {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.user-category {
+  color: gray;
+  font-size: 14px;
+  margin: 6px 0 10px;
+}
+
+.user-body {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 30px 0 0;
+  width: 450px;
+}
+
+.user-statistic-wrap {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 0;
+  width: 100%;
+}
+
+.user-static {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.txt-card-count {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+

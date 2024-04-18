@@ -12,23 +12,89 @@
  <style>
  
   #post-list{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+
+    -moz-column-gap: 30px;
+    column-gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    margin: 0;
+    padding: 0;
+    row-gap: 40px;
+    width: 100%
   }
+  
+  .post-image {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-position: 50%;
+    background-size: cover;
+    border-radius: 4px; /* 통일된 모서리 반경을 사용합니다 */
+    cursor: pointer;
+    overflow: hidden;
+  }
+  
+  .post-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(128, 128, 128, 0); /* 초기에는 완전 투명 */
+  }
+  
   
   .post{
-    width: 24%;
-    height: 300px;
-    margin: 10px auto;
-    cursor: pointer;
-
+    height: -moz-fit-content;
+    height: fit-content;
+    min-width: 0;
+    position: relative;
+    width: 100%;
   }
   
-  .post > post-bottom {
+  .post-title, .post-date, .like-button {
+      position: absolute;
+      color: white;
+      padding: 5px;
+      visibility: hidden; /* 기본적으로 숨김 */
+  }
+
+  .post-title {
+      left: 10px;
+      bottom: 10px;
+  }
+
+  .post-date {
+      right: 10px;
+      bottom: 10px;
+  }
+
+  .like-button {
+      right: 10px;
+      top: 10px;
+
+      font-size: 25px;
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, 0.0);
+      border: none;
+  }
+  
+  .post-image:hover::before {
+    background-color: rgba(128, 128, 128, 0.5); /* 마우스 호버 시 회색 오버레이 적용 */
+  }
+  
+  .post-image:hover .post-title,
+  .post-image:hover .post-date,
+  .post-image:hover .like-button {
+      visibility: visible; /* 호버 시 보이도록 */
+  }
+
+  
+  .post > .post-bottom {
     display: flex;
     width: 100%;
+    hegiht: 30px;
   }
   
   .post span {
@@ -282,25 +348,22 @@
   		      totalPage = resData.totalPage;
   		      $.each(resData.postList, (i, post) => {
               var thumbnailUrl = extractFirstImage(post.contents);
-
-  		        let str = '<div class="post" data-user-no="' + post.user.userNo + '"data-post-no="' + post.postNo + '">';
-              if (thumbnailUrl) {
-                  str += displayThumbnail(thumbnailUrl);
-              }
+              let str = '<div class="post" data-user-no="' + post.user.userNo + '"data-post-no="' + post.postNo + '">';
+              str += displayThumbnail(thumbnailUrl, post.title, moment(post.createDt).format('YYYY.MM.DD.'));
               str += '<div class="post-bottom">';
-  		        str += '<span>' + post.title + '</span>';
-  		        str += '<span>' + post.user.email + '</span>';
-  		        str += '<span>' + post.hit + '</span>';
-  		        str += '<span>' + moment(post.createDt).format('YYYY.MM.DD.') + '</span>';
-  		        str += '</div>';
-  		        str += '</div>';
-  		        $('#post-list').append(str);
+              str += '<span>' + post.user.email + '</span>';
+              str += '<span>' + post.hit + '</span>';
+              str += '</div>';
+              str += '</div>';
+              $('#post-list').append(str);
   		      })
+  		      fnLikeCheck();
   		    },
   		    error: (jqXHR) => {
   		      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
   		    }
   		  });
+
     }
     
     const fnGetPostListByCategory = () => {
@@ -316,25 +379,22 @@
               totalPage = resData.totalPage;
               $.each(resData.postList, (i, post) => {
                 var thumbnailUrl = extractFirstImage(post.contents);
-
                 let str = '<div class="post" data-user-no="' + post.user.userNo + '"data-post-no="' + post.postNo + '">';
-                if (thumbnailUrl) {
-                    str += displayThumbnail(thumbnailUrl);
-                }
+                str += displayThumbnail(thumbnailUrl, post.title, moment(post.createDt).format('YYYY.MM.DD.'));
                 str += '<div class="post-bottom">';
-                str += '<span>' + post.title + '</span>';
                 str += '<span>' + post.user.email + '</span>';
                 str += '<span>' + post.hit + '</span>';
-                str += '<span>' + moment(post.createDt).format('YYYY.MM.DD.') + '</span>';
                 str += '</div>';
                 str += '</div>';
                 $('#post-list').append(str);
               })
+              fnLikeCheck();
             },
             error: (jqXHR) => {
               alert(jqXHR.statusText + '(' + jqXHR.status + ')');
             }
           });
+
       }
     
     
@@ -346,13 +406,31 @@
         return image ? image.src : null; // 이미지의 src 속성 반환
     }
 
-    // 추출한 이미지 URL로 썸네일을 화면에 표시
-    function displayThumbnail(imageUrl) {
-        var imgElement = document.createElement('img');
-        imgElement.src = imageUrl;
-        imgElement.alt = 'Thumbnail';
-        imgElement.style.width = '100%'; // 썸네일 크기 설정
-        return imgElement.outerHTML;
+    function displayThumbnail(imageUrl, postTitle, postDate) {
+        var thumbnail = document.createElement('div'); // div 요소 생성
+        thumbnail.className = "post-image"; // class 이름 설정
+        thumbnail.style.backgroundImage = 'url("' + imageUrl + '")'; // 배경 이미지 설정
+        thumbnail.alt = 'Thumbnail'; // 대체 텍스트 설정
+        
+        // 타이틀 추가
+        var info = document.createElement('div');
+        info.className = "post-title";
+        info.textContent = postTitle;
+        thumbnail.appendChild(info);
+
+        // 작성 일자 추가
+        var dateElement = document.createElement('div');
+        dateElement.className = "post-date";
+        dateElement.textContent = postDate;
+        thumbnail.appendChild(dateElement);
+
+        // 좋아요 버튼 추가
+        var likeButton = document.createElement('button');
+        likeButton.className = "like-button";
+        likeButton.innerHTML = '<i class="fa-regular fa-heart" style="color: #ffffff;"></i>'; // 이모지나 커스텀 아이콘 사용 가능
+        thumbnail.appendChild(likeButton);
+
+        return thumbnail.outerHTML; // 생성된 HTML 문자열 반환
     }
     
     
@@ -446,12 +524,127 @@
         })
     }
     
+    const fnPostLike = () => {
+      // 좋아요 버튼에 클릭 이벤트 리스너 추가
+      $(document).on('click', '.like-button', (evt) => {
+    	    evt.stopPropagation(); // 이벤트 버블링을 중단
+          var postNo = evt.target.closest('.post').dataset.postNo; // 게시물 번호 추출
+          var likeButton = evt.target.closest('.like-button'); // 좋아요 버튼 참조
+          
+          // 좋아요 버튼에 'liked' 클래스가 있는지 확인
+          if (likeButton.classList.contains('liked')) {
+              // 좋아요 취소 요청
+              fetch('${contextPath}/post/deletelikepost.do', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ 
+                      'postNo': parseInt(postNo, 10),
+                      'userNo': ${sessionScope.user.userNo}
+                  })
+              })
+              .then(response => response.json())
+              .then(resData => {
+                  alert('Like removed!'); // 성공 처리
+                  likeButton.classList.remove('liked');
+                  likeButton.innerHTML = '<i class="fa-regular fa-heart" style="color: #ffffff;"></i>'; // 빈 하트 아이콘으로 변경
+              })
+              .catch(error => {
+                  alert('Error removing like.'); // 에러 처리
+              });
+          } else {
+              // 좋아요 설정 요청
+              fetch('${contextPath}/post/likepost.do', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ 
+                      'postNo': parseInt(postNo, 10),
+                      'userNo': ${sessionScope.user.userNo}
+                  })
+              })
+              .then(response => response.json())
+              .then(resData => {
+                  alert('Liked!'); // 성공 처리
+                  likeButton.classList.add('liked');
+                  likeButton.innerHTML = '<i class="fa-solid fa-heart" style="color: #e33861;"></i>';
+              })
+              .catch(error => {
+                  alert('Error liking the post.'); // 에러 처리
+              });
+          }
+          return false; // 페이지 리로드 방지
+      });
+    };
+    
+   const fnLikeCheck = () => {
+	    const posts = document.querySelectorAll('.post');
+  	  // 모든 게시물에 대해 'Liked' 상태를 확인
+  	  posts.forEach(post => {
+  	    let postNo = post.dataset.postNo;
+  	    // 서버에서 'liked' 상태 정보를 가져오는 fetch 요청
+  	    fetch('${contextPath}/post/check-like-status?postNo=' + postNo +'&userNo=${sessionScope.user.userNo}', {
+  	      method: 'GET',
+  	      headers: {
+  	        'Content-Type': 'application/json',
+  	      }
+  	    })
+  	    .then(response => response.json())
+  	    .then(resData => {
+  	      if (resData.likeCount === 1) {
+  	    	  post.querySelector('.like-button').classList.add('liked');
+  	    	  post.querySelector('.like-button').innerHTML = '<i class="fa-solid fa-heart" style="color: #e33861;"></i>';
+  	      }
+  	    })
+  	    .catch(error => {
+            console.log('Error likeChecking the post.'); // 에러 처리
+        });
+  	  })
+    };
+
+	  // Like 버튼 클릭 이벤트 핸들러
+/*     const fnLikeCheck = () => {
+  	  document.querySelectorAll('.like-button').forEach(button => {
+  	    button.addEventListener('click', function() {
+  	      const post = this.closest('.post');
+  	      const postNo = post.dataset.postNo;
+  	      const isLiked = this.classList.contains('liked');
+
+  	      // 서버에 'Like' 상태 변경 요청
+  	      fetch('/toggle-like', {
+  	        method: 'POST',
+  	        headers: {
+  	          'Content-Type': 'application/json',
+  	        },
+  	          body: JSON.stringify({ 
+  	              'postNo': parseInt(postNo, 10)
+  	             ,'userNo': ${sessionScope.user.userNo}
+  	          })
+  	        })
+  	      .then(response => response.json())
+  	      .then(data => {
+  	        if (data.success) {
+  	          this.classList.toggle('liked');
+  	        }
+  	      })
+  	      .catch(error => console.error('Error:', error));
+  	    });
+  	  });
+  	}; */
+  	
+
     fnGetPostList();
     fnScrollHander();
     fnPostDetail();
     fnInsertCount();
     fnCategorySelect();
-    
+    fnPostLike();
+/*     document.addEventListener('DOMContentLoaded', () => {
+        fnLikeCheck();
+    }); */
+
   </script>
   
   
