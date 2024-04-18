@@ -39,8 +39,6 @@
     </div>
   </div>
   
-  <a href="${contextPath}/post/write.page">블로그작성</a>
-  
   <div id="post-list">
   
   </div>
