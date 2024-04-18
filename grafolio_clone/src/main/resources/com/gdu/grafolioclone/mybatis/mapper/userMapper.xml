@@ -90,7 +90,7 @@
   </select>
   
   <insert id="follow"
-  		  parameterType="Map">
+        parameterType="Map">
     INSERT INTO FOLLOW_T (
         FOLLOW_NO
       , FROM_USER
@@ -104,6 +104,17 @@
     )
   </insert>
   
+  <delete id="unfollow"
+          parameterType="Map">
+    DELETE
+      FROM FOLLOW_T
+    <where>
+      <if test="toUser!=null">TO_USER = #{toUser}</if>
+      <if test="fromUser!=null">AND FROM_USER = #{fromUser}</if>
+    </where>
+  
+  </delete>    
+  
   <select id="checkFollow"
           parameterType="Map"
           resultType="int">
@@ -113,7 +124,8 @@
       <if test="toUser!=null">TO_USER = #{toUser}</if>
       <if test="fromUser!=null">AND FROM_USER = #{fromUser}</if>
     </where>
-  </select>		  
+  </select>
   
-
+  
+  
 </mapper>
