@@ -219,9 +219,6 @@ const fngetFollowingList = () => {
  
 }
 
-
-
-
 // 팔로우
 const fnFollow = () => {
 	
@@ -269,7 +266,7 @@ const fnFollow = () => {
 	
 }
 
-// 버튼 변경
+// 팔로우 버튼 변경
 const fnChangeBtn = () => {
   if(checkFollow) {
     $('#btn-follow').off('click');
