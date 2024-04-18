@@ -1,5 +1,6 @@
 package com.gdu.grafolioclone.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -28,5 +29,10 @@ public interface UserMapper {
   
   // 팔로우 조회 - 오채원
   int checkFollow(Map<String, Object> map);
+  
+  // 팔로잉 리스트 조회 - 오채원
+  List<UserDto> fnGetFollowingList(Map<String, Object> map);
+  // 팔로잉 개수 조회
+  int fnGetFollowingCount(Map<String, Object> map);
 
 }
