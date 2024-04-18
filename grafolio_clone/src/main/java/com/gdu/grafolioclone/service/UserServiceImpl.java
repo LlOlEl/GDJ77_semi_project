@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import com.gdu.grafolioclone.dto.UserDto;
 import com.gdu.grafolioclone.mapper.UserMapper;
 import com.gdu.grafolioclone.utils.MyJavaMailUtils;
+import com.gdu.grafolioclone.utils.MyPageUtils;
 import com.gdu.grafolioclone.utils.MySecurityUtils;
 
 @PropertySource(value = "classpath:naver.properties")
@@ -36,13 +38,17 @@ public class UserServiceImpl implements UserService {
   private Environment env;
   private final UserMapper userMapper;
   private final MyJavaMailUtils myJavaMailUtils;
+  private final MyPageUtils myPageUtils;
   
-  public UserServiceImpl(UserMapper userMapper, MyJavaMailUtils myJavaMailUtils) {
+  public UserServiceImpl(Environment env, UserMapper userMapper, MyJavaMailUtils myJavaMailUtils,
+      MyPageUtils myPageUtils) {
     super();
+    this.env = env;
     this.userMapper = userMapper;
     this.myJavaMailUtils = myJavaMailUtils;
+    this.myPageUtils = myPageUtils;
   }
-  
+
   public ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params) {
     boolean enableEmail = userMapper.getUserByMap(params) == null 
                        && userMapper.getLeaveUserBymap(params) == null;
@@ -519,5 +525,47 @@ public class UserServiceImpl implements UserService {
     return ResponseEntity.ok(Map.of("followingCount", followingCount
                                   , "followerCount", followerCount));
   }
+  
+  // 팔로잉 리스트
+  @Override
+  public ResponseEntity<Map<String, Object>> fnGetFollowingList(Map<String, Object> params) {
+
+    // FollowingCount로 보낼 map
+    Map<String, Object> map = Map.of("fromUser", params.get("fromUser"));
+    
+    // 팔로잉 리스트 게시글 수
+    int total = userMapper.fnGetFollowingCount(map);
+    
+    // 스크롤 1 -> 유저 6
+    int display = 6;
+    
+    // 현재 페이지 번호
+    int page = (Integer)params.get("page");
+    
+    // 팔로잉 수
+    int followingCount = userMapper.checkFollow(map);
+    
+    // 페이징 처리
+    myPageUtils.setPaging(total, display, page);
+
+    // DB로 보낼 Map 생성
+    Map<String, Object> map2 = Map.of("begin", myPageUtils.getBegin()
+                                    , "end", myPageUtils.getEnd()
+                                    , "fromUser", params.get("fromUser"));
+        
+    // 팔로잉 리스트 게시글 리스트
+    List<UserDto> followingList = userMapper.fnGetFollowingList(map2);
+
+    return ResponseEntity.ok(Map.of("followingList", followingList
+                                  , "followingCount", followingCount
+                                  , "totalPage", myPageUtils.getTotalPage()));
+  }
+  
+  
+  
+  
+  
+  
+  
   
 }
