@@ -17,18 +17,16 @@ public interface UserMapper {
   int insertAccessHistory(Map<String, Object> map);
   int updateAccessHistory(String sessionId);
   
-  // 프로필 정보 가져오기
+  // 프로필 정보 가져오기 - 오채원
   UserDto getProfileByUserNo(int userNo);
   
-  // 팔로우
+  // 팔로우 - 오채원
   int follow(Map<String, Object> map);
   
-  // 언팔로우
+  // 언팔로우 - 오채원
   int unfollow(Map<String, Object> map);
   
-  // 팔로우 조회
+  // 팔로우 조회 - 오채원
   int checkFollow(Map<String, Object> map);
-  
-  
-  
+
 }

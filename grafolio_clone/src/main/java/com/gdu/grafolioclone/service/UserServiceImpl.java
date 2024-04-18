@@ -439,16 +439,15 @@ public class UserServiceImpl implements UserService {
     
   }
   
-  // 유저 프로필 가져오기 - userNo값 받아서
+  // 유저 프로필 조회 - 오채원
   @Override
   public UserDto getProfileByUserNo(HttpServletRequest request) {
-    
     int userNo = Integer.parseInt(request.getParameter("userNo"));
     UserDto user = userMapper.getProfileByUserNo(userNo);
     return user;
   }
   
-  // 팔로우 구현
+  // 팔로우 - 오채원
   @Override
   public ResponseEntity<Map<String, Object>> follow(Map<String, Object> params, HttpSession session) {
     
@@ -468,6 +467,7 @@ public class UserServiceImpl implements UserService {
     
   }
   
+  // 언팔로우 - 오채원
   @Override
   public ResponseEntity<Map<String, Object>> unfollow(Map<String, Object> params, HttpSession session) {
     UserDto user = (UserDto)session.getAttribute("user");
@@ -485,13 +485,7 @@ public class UserServiceImpl implements UserService {
     return ResponseEntity.ok(Map.of("deleteFollowCount", deleteFollowCount));
   }
   
-  
-  
-  
-  
-  
-  
-  // 팔로우 조회
+  // 팔로잉 여부 조회 - 오채원
   @Override
   public ResponseEntity<Map<String, Object>> checkFollow(Map<String, Object> params, HttpSession session) {
     
@@ -508,29 +502,22 @@ public class UserServiceImpl implements UserService {
     int hasFollow = userMapper.checkFollow(map);
     // 팔로잉이 되어있다면 hasFollow값은 1, 아니면 0
     
-    System.out.println("hasFollow=" + hasFollow);
-    
     return ResponseEntity.ok(Map.of("hasFollow", hasFollow));
     
   }
   
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  // 팔로잉, 팔로우 수 조회 - 오채원
+  @Override
+  public ResponseEntity<Map<String, Object>> getFollowCount(Map<String, Object> params) {
+    
+    Map<String, Object> FollowingMap = Map.of("fromUser", params.get("userNo"));
+    Map<String, Object> FollowerMap = Map.of("toUser", params.get("userNo"));
+    
+    int followingCount = userMapper.checkFollow(FollowingMap);
+    int followerCount = userMapper.checkFollow(FollowerMap);
+    
+    return ResponseEntity.ok(Map.of("followingCount", followingCount
+                                  , "followerCount", followerCount));
+  }
   
 }

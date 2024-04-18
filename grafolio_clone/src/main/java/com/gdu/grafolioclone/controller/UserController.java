@@ -36,8 +36,6 @@ public class UserController {
   public String signinPage(HttpServletRequest request
                          , Model model) {
     
-
-    
   	// Sign In 페이지로 url 넘겨 주기 (로그인 후 이동할 경로를 의미함)
     model.addAttribute("url",  userService.getRedirectURLAfterSignin(request));
     
@@ -62,12 +60,7 @@ public class UserController {
     return "user/modify";
   }
   
-  
-  
-  
-  
-  
-  // 유저 프로필 - 유저 상세 정보 가져오기
+  // 유저 프로필 가져오기 - 오채원
   @GetMapping("/profile.do")
   public String profilePage(HttpServletRequest request, Model model) {
     UserDto profile = userService.getProfileByUserNo(request);
@@ -75,33 +68,29 @@ public class UserController {
     return "user/profile"; 
   }
   
-
-  // 팔로우
+  // 팔로우 - 오채원
   @PostMapping("/follow.do")
   public ResponseEntity<Map<String, Object>> follow(@RequestBody Map<String, Object> params, HttpSession session) {
     return userService.follow(params, session);
   }
   
-  // 언팔로우
+  // 언팔로우 - 오채원
   @PostMapping("/unfollow.do")
   public ResponseEntity<Map<String, Object>> unfollow(@RequestBody Map<String, Object> params, HttpSession session) {
     return userService.unfollow(params, session);
   }
   
-  
-  
-  // 팔로우 조회
+  // 팔로우 조회 - 오채원
   @PostMapping("/checkFollow.do")
   public ResponseEntity<Map<String, Object>> checkFollow(@RequestBody Map<String, Object> params, HttpSession session) {
     return userService.checkFollow(params, session);
   }
   
-  
-  
-  
-  
-  
-  
+  // 팔로잉, 팔로워 수 조회 - 오채원
+  @PostMapping("/getFollowCount.do")
+  public ResponseEntity<Map<String, Object>> getFollowCount(@RequestBody Map<String, Object> params) {
+    return userService.getFollowCount(params);
+  }
   
   @PostMapping(value="/checkEmail.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> checkEmail(@RequestBody Map<String, Object> params){
