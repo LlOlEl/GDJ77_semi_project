@@ -43,7 +43,7 @@
       <div class="logo">
           <div class="header-brand" >
             <a href="${contextPath}" class="logo-wrapper" >
-              <svg width="167 height="20" viewBox="0 0 127 16" fill="none"
+              <svg width="167" height="20" viewBox="0 0 127 16" fill="none"
                       xmlns="http://www.w3.org/2000/svg" class="logo">
                       <g clip-path="url(#clip0_1_6)">
                           <path

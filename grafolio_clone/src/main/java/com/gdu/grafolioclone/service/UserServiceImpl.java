@@ -530,6 +530,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public ResponseEntity<Map<String, Object>> fnGetFollowingList(Map<String, Object> params) {
 
+    // FollowingCount로 보낼 map
     Map<String, Object> map = Map.of("fromUser", params.get("fromUser"));
     
     // 팔로잉 리스트 게시글 수
@@ -541,14 +542,19 @@ public class UserServiceImpl implements UserService {
     // 현재 페이지 번호
     int page = (Integer)params.get("page");
     
-    // 팔로잉 리스트 게시글 리스트
-    List<UserDto> followingList = userMapper.fnGetFollowingList(map);
-    
     // 팔로잉 수
     int followingCount = userMapper.checkFollow(map);
     
     // 페이징 처리
     myPageUtils.setPaging(total, display, page);
+
+    // DB로 보낼 Map 생성
+    Map<String, Object> map2 = Map.of("begin", myPageUtils.getBegin()
+                                    , "end", myPageUtils.getEnd()
+                                    , "fromUser", params.get("fromUser"));
+        
+    // 팔로잉 리스트 게시글 리스트
+    List<UserDto> followingList = userMapper.fnGetFollowingList(map2);
 
     return ResponseEntity.ok(Map.of("followingList", followingList
                                   , "followingCount", followingCount
