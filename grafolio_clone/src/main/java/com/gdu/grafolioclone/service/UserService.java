@@ -32,12 +32,17 @@ public interface UserService {
   boolean hasUser(UserDto user);
   void naverSignin(HttpServletRequest request, UserDto naverUser);
   
-  // 프로필 정보 가져오기
+  // 프로필 정보 가져오기 - 오채원
   UserDto getProfileByUserNo(HttpServletRequest request);
-  
-  // 팔로우
-  ResponseEntity<Map<String, Object>> follow (Map<String, Object> params);
-  // 팔로우 조회
+  // 팔로우 - 오채원
+  ResponseEntity<Map<String, Object>> follow(Map<String, Object> params, HttpSession session);
+  // 언팔로우 - 오채원
+  ResponseEntity<Map<String, Object>> unfollow(Map<String, Object> params, HttpSession session);
+  // 팔로우 조회 - 오채원
   ResponseEntity<Map<String, Object>> checkFollow(Map<String, Object> params, HttpSession session);
+  // 팔로잉, 팔로워 개수 조회 - 오채원
+  ResponseEntity<Map<String, Object>> getFollowCount(Map<String, Object> params);
+  
+  
   
 }
