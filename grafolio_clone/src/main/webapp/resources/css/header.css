@@ -1,5 +1,27 @@
 @charset "UTF-8";
 
+.header-wrap {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  margin: 0 50px;
+  justify-content: space-between;
+  width: 90%;
+}
+
+.header-left {
+ display: flex;
+ align-items: center;
+ 
+}
+
+.header-menus {
+  align-items: center;
+  display: flex;
+  gap: 25px;
+  margin: 0 40px;
+}
+
 .main-wrap {
   width: 94%;
   min-height: 600px;
