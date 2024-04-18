@@ -115,9 +115,13 @@ public class PostController {
 	@GetMapping(value="/check-like-status", produces="application/json")
 	public ResponseEntity<Map<String, Object>> checklLikeStatus(@RequestParam("postNo") int postNo,
 																															@RequestParam("userNo") int userNo) {
-		System.out.println(postNo);
-		System.out.println(userNo);
 		return new ResponseEntity<>(Map.of("likeCount", postSerivce.checkLikeStatus(postNo, userNo))
+														  , HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/get-like-count-by-postno", produces="application/json")
+	public ResponseEntity<Map<String, Object>> checklLikeStatus(@RequestParam("postNo") int postNo) {
+		return new ResponseEntity<>(Map.of("likeCount", postSerivce.getLikeCount(postNo))
 														  , HttpStatus.OK);
 	}
 }
