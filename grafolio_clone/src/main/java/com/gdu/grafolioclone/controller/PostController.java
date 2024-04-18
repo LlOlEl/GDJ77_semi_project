@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gdu.grafolioclone.dto.PostDto;
 import com.gdu.grafolioclone.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -98,6 +99,19 @@ public class PostController {
   public String edit(@RequestParam int postNo, Model model) {
     model.addAttribute("post", postSerivce.getPostByNo(postNo));
     return "post/edit";
+  }
+  
+  @PostMapping("/modify.do")
+  public String modify(PostDto post, RedirectAttributes redirectAttributes) {
+  	redirectAttributes.addFlashAttribute("updateCount", postSerivce.modifyPost(post));
+  	//  	return "redirect:/upload/list.do";
+  	return "redirect:/post/detail.do?postNo=" + post.getPostNo();
+  }
+  
+  @PostMapping("/remove.do")
+  public String removePost(@RequestParam int postNo ) {
+    postSerivce.deletePost(postNo);
+    return "post/list";
   }
   
 	@PostMapping(value="/likepost.do", produces="application/json")
