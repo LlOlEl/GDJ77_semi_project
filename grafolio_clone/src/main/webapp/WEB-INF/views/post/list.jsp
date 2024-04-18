@@ -67,11 +67,32 @@
               let str = '<div class="post" data-user-no="' + post.user.userNo + '"data-post-no="' + post.postNo + '">';
               str += displayThumbnail(thumbnailUrl, post.title, moment(post.createDt).format('YYYY.MM.DD.'));
               str += '<div class="post-bottom">';
+              str += '<div class="post-bottom-profile">';
               str += '<span>' + post.user.email + '</span>';
+              str += '</div>';
+              str += '<div class="post-bottom-options">';
+              str += '<div class="post-bottom-option">';
+              str += '<i class="fa-regular fa-heart"></i>';
+              str += '<span id="like-count-' + post.postNo + '"></span>';
+              str += '</div>';
+              str += '<div class="post-bottom-option">';
+              str += '<i class="fa-regular fa-eye"></i>';
               str += '<span>' + post.hit + '</span>';
               str += '</div>';
               str += '</div>';
+              str += '</div>';
+              str += '</div>';
               $('#post-list').append(str);
+              
+              // Fetch and update like count asynchronously
+              fnGetLikeCountByPostNo(post.postNo)
+                .then(result => {
+                  $('#like-count-' + post.postNo).html(result); // Update the like count placeholder with actual data
+                })
+                .catch(error => {
+                  console.error(error);
+                  $('#like-count-' + post.postNo).html('Error'); // Display error in the like count placeholder
+                });
             })
             if('${sessionScope.user}' !== ''){
              fnLikeCheck();
@@ -100,11 +121,32 @@
                 let str = '<div class="post" data-user-no="' + post.user.userNo + '"data-post-no="' + post.postNo + '">';
                 str += displayThumbnail(thumbnailUrl, post.title, moment(post.createDt).format('YYYY.MM.DD.'));
                 str += '<div class="post-bottom">';
+                str += '<div class="post-bottom-profile">';
                 str += '<span>' + post.user.email + '</span>';
+                str += '</div>';
+                str += '<div class="post-bottom-options">';
+                str += '<div class="post-bottom-option">';
+                str += '<i class="fa-regular fa-heart"></i>';
+                str += '<span id="like-count-' + post.postNo + '"></span>';
+                str += '</div>';
+                str += '<div class="post-bottom-option">';
+                str += '<i class="fa-regular fa-eye"></i>';
                 str += '<span>' + post.hit + '</span>';
                 str += '</div>';
                 str += '</div>';
+                str += '</div>';
+                str += '</div>';
                 $('#post-list').append(str);
+                
+                // Fetch and update like count asynchronously
+                fnGetLikeCountByPostNo(post.postNo)
+                  .then(result => {
+                    $('#like-count-' + post.postNo).html(result); // Update the like count placeholder with actual data
+                  })
+                  .catch(error => {
+                    console.error(error);
+                    $('#like-count-' + post.postNo).html('Error'); // Display error in the like count placeholder
+                  });
               })
               if('${sessionScope.user}' !== ''){
                 fnLikeCheck();
@@ -114,7 +156,6 @@
               alert(jqXHR.statusText + '(' + jqXHR.status + ')');
             }
           });
-  
       }
     
     
@@ -147,7 +188,7 @@
         // 좋아요 버튼 추가
         var likeButton = document.createElement('button');
         likeButton.className = "like-button";
-        likeButton.innerHTML = '<i class="fa-regular fa-heart" style="color: #ffffff;"></i>'; // 이모지나 커스텀 아이콘 사용 가능
+        likeButton.innerHTML = '<i class="fa-regular fa-heart" style="color: #ffffff;"></i>';
         thumbnail.appendChild(likeButton);
   
         return thumbnail.outerHTML; // 생성된 HTML 문자열 반환
@@ -193,9 +234,9 @@
           // .post 요소에서 데이터셋을 읽음
           const postNo = $post.data('postNo');
           const userNo = $post.data('userNo');
-  
+          
           // 현재 세션의 userNo와 비교
-          if('${sessionScope.user.userNo}' === userNo) {
+          if('${sessionScope.user.userNo}' == userNo) {
               location.href = '${contextPath}/post/detail.do?postNo=' + postNo;
           } else { 
               location.href = '${contextPath}/post/updateHit.do?postNo=' + postNo;
@@ -327,7 +368,24 @@
         });
       })
     };
-  
+
+    const fnGetLikeCountByPostNo = (postNo) => {
+      return fetch('${contextPath}/post/get-like-count-by-postno?postNo=' + postNo, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(response => response.json())
+      .then(resData => {
+    	  return resData.likeCount;
+      })
+      .catch(error => {
+          console.log('Error likecount the post.'); // 에러 처리
+      });
+    }
+    
+    
     const fnCheckSignin = () => {
       if('${sessionScope.user}' === '') {
         if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')) {
