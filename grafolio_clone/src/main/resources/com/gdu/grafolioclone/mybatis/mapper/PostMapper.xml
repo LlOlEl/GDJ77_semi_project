@@ -103,6 +103,23 @@
              WHERE P.POST_NO = #{postNO})
    </select>
    
+   <!-- 포스트 내용 수정 -->
+   <update id="updatePost"
+        parameterType="PostDto">
+    UPDATE POST_T
+       SET TITLE = #{title}
+         , CONTENTS = #{contents}
+         , MODIFY_DT = CURRENT_TIMESTAMP
+         , CATEGORY = #{category}
+     WHERE POST_NO = #{postNo}
+  </update>
+   
+   <delete id="removePost">
+    DELETE
+      FROM POST_T
+     WHERE POST_NO = #{postNo}      
+   </delete>
+   
    <insert id="insertComment"
            parameterType="CommentDto">
      INSERT INTO COMMENT_T (
@@ -174,6 +191,12 @@
        SET STATE = 0
      WHERE COMMENT_NO = #{commentNo}
   </update>
+  
+  <delete id="removeCommentByPostNo">
+    DELETE 
+      FROM COMMENT_T
+     WHERE POST_NO = #{postNo}
+  </delete>
    
    <insert id="insertLike"
            parameterType="LikeDto">

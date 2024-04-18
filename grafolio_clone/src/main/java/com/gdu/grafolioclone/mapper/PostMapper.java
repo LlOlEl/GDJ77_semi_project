@@ -17,11 +17,14 @@ public interface PostMapper {
   List<PostDto> getPostListByCategory(Map<String, Object> map);
   int updateHit(int postNo);
   PostDto getPostByNo(int postNo);
+  int updatePost(PostDto post);
+  int removePost(int postNo);
   int insertComment(CommentDto comment);
   int getCommentCount(int postNo);
   List<CommentDto> getCommentList(Map<String, Object> map);
   int insertReply(CommentDto comment);
   int removeComment(int commentNo);
+  int removeCommentByPostNo(int postNo);
   int insertLike(LikeDto like);
   int removeLike(LikeDto like);
   int getLikeCountByPostNo(int postNo);
