@@ -43,7 +43,7 @@ public interface UserService {
   // 팔로잉, 팔로워 개수 조회 - 오채원
   ResponseEntity<Map<String, Object>> getFollowCount(Map<String, Object> params);
   // 팔로잉 리스트 조회 - 오채원
-  ResponseEntity<Map<String, Object>> fnGetFollowingList(Map<String, Object> params);
+  ResponseEntity<Map<String, Object>> fnGetFollowingList(Map<String, Object> params, HttpSession session);
   
   
   

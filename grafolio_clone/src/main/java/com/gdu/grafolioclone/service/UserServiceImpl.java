@@ -528,8 +528,15 @@ public class UserServiceImpl implements UserService {
   
   // 팔로잉 리스트
   @Override
-  public ResponseEntity<Map<String, Object>> fnGetFollowingList(Map<String, Object> params) {
+  public ResponseEntity<Map<String, Object>> fnGetFollowingList(Map<String, Object> params, HttpSession session) {
 
+    // 로그인 userNo 값
+    UserDto user = (UserDto)session.getAttribute("user");
+
+    Optional<UserDto> opt = Optional.ofNullable(user);
+    int userNo = opt.map(UserDto::getUserNo).orElse(0);
+    
+    
     // FollowingCount로 보낼 map
     Map<String, Object> map = Map.of("fromUser", params.get("fromUser"));
     
@@ -548,13 +555,21 @@ public class UserServiceImpl implements UserService {
     // 페이징 처리
     myPageUtils.setPaging(total, display, page);
 
-    // DB로 보낼 Map 생성
+    // DB로 보낼 Map 생성 - 게시글 리스트 가져올때 사용
     Map<String, Object> map2 = Map.of("begin", myPageUtils.getBegin()
                                     , "end", myPageUtils.getEnd()
                                     , "fromUser", params.get("fromUser"));
         
     // 팔로잉 리스트 게시글 리스트
     List<UserDto> followingList = userMapper.fnGetFollowingList(map2);
+    
+    // 팔로잉 여부 userDto에 추가해서 가져오기
+    for(int i = 0; i < followingList.size(); i++) {
+      
+      Map<String, Object> map3 = Map.of("fromUser", userNo
+                                      , "toUser", followingList.get(i).getUserNo());
+      followingList.get(i).setIsFollow(userMapper.checkFollow(map3));
+    }
 
     return ResponseEntity.ok(Map.of("followingList", followingList
                                   , "followingCount", followingCount

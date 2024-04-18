@@ -90,7 +90,7 @@
 .modal {
   background: white;
   width: 400px;
-  max-height: calc(70% - 40px);
+  max-height: calc(65% - 40px);
   border-radius: 5px;
   box-shadow: 0 15px 40px #1b223f14;
   display: flex;
