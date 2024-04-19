@@ -1,5 +1,6 @@
 package com.gdu.grafolioclone.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,8 @@ public interface UserService {
   
   // 프로필 정보 가져오기 - 오채원
   UserDto getProfileByUserNo(HttpServletRequest request);
+  // 프로필 목록 가져오기 - 최연승
+  ResponseEntity<Map<String, Object>> getProfileList(HttpServletRequest request);;
   // 팔로우 - 오채원
   ResponseEntity<Map<String, Object>> follow(Map<String, Object> params, HttpSession session);
   // 언팔로우 - 오채원
