@@ -14,6 +14,37 @@
  
  <style>
  
+  .title-wraper{
+  position: fixed;
+    top:0;
+    align-items: center; 
+    background-color: var(--mono-000);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    left: 0;
+    margin: 40px 0;
+    padding: 40px 0;
+   
+    width: 100%
+  }
+  
+  .tag-wrapper{
+    align-items: center;
+    background-color: var(--mono-000);
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    z-index: 99;
+    
+  }
+  
+ 
+ 
   #detail-page {
      align-items: center;
     background-color: var(--mono-000);
@@ -82,6 +113,7 @@
     height: 100%;
     weigth: 100%;
     padding: var(--input-gutter);
+    rgba:(210,210,210,0.5);
   }
   
   .con {
@@ -91,7 +123,8 @@
   width: 90%; /* 브라우저 너비의 90%로 설정 */
   padding-bottom: 30px; /* 하단 여백 */
   margin: 0 auto; /* 가운데 정렬을 위해 좌우 마진 자동 설정 */
-  margin-rigth: 20px;
+  margin-right: 20px;
+  padding-top: 40px;
 }
 
 .con span:nth-of-type(1) {
@@ -129,7 +162,7 @@
     
 }
  .hashtag {
- background-color: gray;
+ background-color: rgb(200, 200, 200);
  display: inline-block;
  border-radius: 100px;
  padding: 20px;
@@ -268,6 +301,16 @@
     width: 60%;
     margin: auto;
  }
+ 
+ .content-wrapper {
+    border-bottom: 1px solid rgb(255,255,255);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 80px;
+    position: relative;
+    width: 60%;
+}
   
  </style>
  <div class="detail-page">
@@ -277,40 +320,31 @@
  </div>
   
   
-  <a href="${contextPath}/post/list.page">블로그 리스트</a>
+  
   
   <div class="post-detail">
-    <div class="title-wrapper">
+    <div class="title-wraper">
+     <div class="tag-wrapper">
+       <div class="category-round category-round-size-medium category-round-color-gray category-round-degree-large category-round-pointed category"
+            data-category=1><!--[-->일러스트<!--]--><!----></div>
+     </div>
       <div class="title-inner-wrapper">
       <span class="title-txt">${post.title}</span>
       </div>
     </div>
     <div>
-      <span>작성자</span>
-      <span>${post.user.email}</span>
-    </div>
-    
-    
-    
-    
-    
-    <div class="con">
       
-      <span>${post.contents}</span>
     </div>
-    <c:if test="${sessionScope.user.userNo == post.user.userNo}">
-      <form id="frm-btn" method="POST">  
-        <input type="hidden" name="postNo" value="${post.postNo}">
-        <button type="button" id="btn-edit" class="btn btn-warning btn-sm">편집</button>
-        <button type="button" id="btn-remove" class="btn btn-danger btn-sm">삭제</button>
-      </form>
-    </c:if>
-  </div>
-  
-  <hr>
-  
-  
-  <div class="content-bottom-wrapper">
+    
+    
+    
+    <div class="content-wrapper">
+      <div class="con">
+        
+        <span>${post.contents}</span>
+      </div>
+    
+    <div class="content-bottom-wrapper">
     <div class="tab-wrapper">   
         <div class="hashtag">사진</div>
         <div class="hashtag">인사동</div>
@@ -322,12 +356,29 @@
       <div><i class="fa-regular fa-heart" width="10px;"></i>${like.likeNo}</div>
     </div>
     <div><i class="fa-regular fa-eye" width="10px"></i>${post.hit}</div>
-    <div><i class="fa-regular fa-comment" width="10px"></i>${comment.commentNo}</div>
+    <div><i class="fa-regular fa-comment" width="10px"></i></div>
+  </div>
+    
+    
+    </div>
+    
+    <c:if test="${sessionScope.user.userNo == post.user.userNo}">
+      <form id="frm-btn" method="POST">  
+        <input type="hidden" name="postNo" value="${post.postNo}">
+        <button type="button" id="btn-edit" class="btn btn-warning btn-sm">편집</button>
+        <button type="button" id="btn-remove" class="btn btn-danger btn-sm">삭제</button>
+      </form>
+    </c:if>
   </div>
   
+ 
   
   
-  <hr>
+  
+  
+  
+  
+  
   <div class="comment-selection">
   <div class="inputwrapper">
    <img class="img-ogq" src="https://preview.files.api.ogq.me/v1/profile/LARGE/NEW-PROFILE/default_profile.png" width="20px" height="20px">
@@ -345,12 +396,12 @@
     <button id="comment-bottom">© All Rights Reserved</button>
   </div>
   </div>
-  <hr>
+ 
   
   <div id="comment-list"></div>
   <div id="paging"></div>
   
-  <hr>
+  
   
   <div class="navigation"  >
     <div class="profile-wrapper" width="24" height="24"> 
@@ -397,20 +448,16 @@
  
   
 //아이콘의 초기 색상을 추적합니다.
-
-  // 아이콘을 클릭할 때마다 색상을 변경하고 토글합니다.
   document.getElementById('icon-heart').addEventListener('click', (evt) => {
-  let iconColor = '#ff'; // 이전 색상을 기본 색상으로 설정
-    // 현재 색상이 이전 색상과 같은지 확인하여 토글합니다.
+    let iconColor = 'rgb(0, 0, 0)'; // 초기 색상 설정
+    // 현재 색상이 초기 색상과 같은지 확인하여 토글합니다.
     if (evt.target.style.color === iconColor) {
-      // 이전 색상과 같으면 초기 색상으로 변경합니다.
-      evt.target.style.color = '#ff';
+      // 초기 색상과 같으면 다른 색상으로 변경합니다.
+      evt.target.style.color = '#e33861'; // 새로운 색상
     } else {
-      // 이전 색상과 다르면 새로운 색상을 설정합니다.
-      evt.target.style.color = '#e33861';
+      // 초기 색상과 다르면 초기 색상으로 변경합니다.
+      evt.target.style.color = 'rgb(0, 0, 0)'; // 초기 색상
     }
-    // 현재 색상을 업데이트합니다.
-    iconColor = evt.target.style.color;
   });
   
   
@@ -466,11 +513,11 @@
 	  let btnChange = document.getElementById('btn-comment-register');
 	  document.getElementById('contents').addEventListener('input', (evt)=>{
 		  if( evt.target.value !== ''){
-			  btnChange.style.backgroundColor = 'green';
+			  btnChange.style.backgroundColor = 'rbg(130,130,130)';
 			  btnChange.disabled = false;
 		  } else {
 			  btnChange.disabled = true;
-			  btnChange.style.backgroundColor = 'gray';
+			  btnChange.style.backgroundColor = 'rgba(210,210,210,0.5)';
 		  }
 	  })
   }
