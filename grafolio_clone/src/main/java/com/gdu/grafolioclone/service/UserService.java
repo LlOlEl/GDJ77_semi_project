@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 
-import com.gdu.grafolioclone.dto.FollowDto;
 import com.gdu.grafolioclone.dto.UserDto;
 
 public interface UserService {
@@ -23,7 +22,6 @@ public interface UserService {
 	String getRedirectURLAfterSignin(HttpServletRequest request);
 	void signin(HttpServletRequest request, HttpServletResponse response);
 	void signout(HttpServletRequest request, HttpServletResponse response);
-
   
   // 네이버 로그인
 	String getNaverLoginURL(HttpServletRequest request);
@@ -31,6 +29,8 @@ public interface UserService {
   UserDto getNaverLoginProfile(String accessToken);
   boolean hasUser(UserDto user);
   void naverSignin(HttpServletRequest request, UserDto naverUser);
+  
+  int updateUser(HttpServletRequest request);
   
   // 프로필 정보 가져오기 - 오채원
   UserDto getProfileByUserNo(HttpServletRequest request);

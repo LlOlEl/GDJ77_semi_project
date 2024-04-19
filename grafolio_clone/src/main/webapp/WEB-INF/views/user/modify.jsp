@@ -4,47 +4,102 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
- <jsp:include page="../layout/header.jsp">
-   <jsp:param value="Sign In" name="title"/>
- </jsp:include>
+<jsp:include page="../layout/header.jsp">
+  <jsp:param value="Modify" name="title"/>
+</jsp:include>
  
-<div class="m-3">
+<div class="m-3">   <!-- signup.jsp 와 이 부분 수정할지 확인하기 -->
 
   <form method="POST"
-        action="${contextPath}/user/signup.do"
-        id="frm-profile">
+        action="${contextPath}/user/modify.do"
+        id="frm-modify">
+        
+	  <div class="profile_picture">
+	   <div class="main">
+	     <img src="${contextPath}/resources/img/default_cover.png">
+	     <img class="main-edit-btn" src="${contextPath}/resources/img/btn-edit.png">
+	   </div>
+     <div class="mini">
+       <img src="${contextPath}/resources/img/default_profile_image.png">
+       <img class="mini-edit-btn" src="${contextPath}/resources/img/btn-edit.png">
+     </div>
+	  </div>
 
-  <div id="section-profile">
-   <div class="row mb-4">
-     <h3>환영합니다!</h3>
-     <span>OGQ 계정 가입이 완료되었습니다.<br>크리에이터 프로필을 설정하고<br>다양한 서비스를 편리하게 이용해 보세요!</span>
-   </div>
-   <div class="row mb-2"></div>
-   <div class="row mb-8">
-     <span>프로필 수정을 통해 언제든지 변경할 수 있어요.</span>
-     <div class="row-mb-4">
-       <img >
-     </div>
-     <div class="row mb-4">
-       <div class="col-sm-4"></div>
-       <div class="col-sm-2">
-         <img src="${contextPath}/resources/img/profile.png">
-         <div>
-           <i class="fa-solid fa-pen-to-square"><input type="file" name="profile" id="profile"></i>
-         </div>
-       </div>
-     <div class="col-sm-4"></div>
-     </div>
-     
-   </div>
-   <button type="submit" id="btn-profile" class="btn btn-primary">시작하기</button>
-  </div>
+	  <div id="section-profile">
+	    <div class="row">
+		    <span>이메일</span>
+		    <div>
+		      <span>${sessionScope.user.email}</span>
+		      <div><a href="${contextPath}/user/signout.do">로그아웃</a></div>
+		    </div>
+		  </div>
+		  <div class="row">
+		    <span>닉네임</span>
+		    <div>
+		      <input type="text" name="name" id="name" value="${profile.name}">
+		    </div>
+		  </div>
+		  <div class="row">
+		    <span>휴대전화번호</span>
+		    <div>
+		      <input type="text" name="mobile" id="mobile" value="${profile.mobile}">
+		    </div>
+		  </div>
+		  <div class="row">
+		    <span>비밀번호</span>
+		    <div>
+		      <input type="password" name="" placeholder="현재 비밀번호를 입력해 주세요.">
+		      <input type="password" id="" name="" placeholder="새 비밀번호를 입력해 주세요.(8~20자리)">
+		      <input type="password" id="" placeholder="확인을 위해 새 비밀번호를 재입력해 주세요.">
+		    </div>
+		  </div>
+		  <div class="row">
+		    <span>한줄 소개</span>
+		    <c:if test="${profile.descript == ''}">
+		      <div><input type="text" id="descript" name="descript" placeholder="작가님을 한 마디로 표현해주세요. (100자 이내)"></div>
+		    </c:if>
+		    <c:if test="${profile.descript != ''}">
+		      <div><input type="text" id="descript" name="descript" value="${profile.descript}"></div>
+		    </c:if>
+		  </div>
+		  <div class="row">
+		    <div>
+		      <span>관심 카테고리</span>
+		      <p>3개 이하로 선택 가능합니다.</p>
+		    </div>
+		    <div>
+		      <input type="checkbox" name="profileCategory" value="일러스트">일러스트
+		      <input type="checkbox" name="profileCategory" value="사진">사진
+		      <input type="checkbox" name="profileCategory" value="디자인">디자인
+		      <input type="checkbox" name="profileCategory" value="회화">회화
+		      <input type="checkbox" name="profileCategory" value="조소/공예">조소/공예
+		      <input type="checkbox" name="profileCategory" value="사운드">사운드
+		      <input type="checkbox" name="profileCategory" value="애니메이션">애니메이션
+		      <input type="checkbox" name="profileCategory" value="캘리그라피">캘리그라피
+		      <input type="checkbox" name="profileCategory" value="기타">기타
+		    </div>
+		  </div>
+	    <div>
+	      <input type="hidden" name="userNo" value="${user.userNo}">
+		    <button type="submit" id="btn-modify" class="btn btn-primary">저장하기</button>
+		    <button type="button" id="btn-next" class="btn btn-secondary">나중에 추가하기</button>
+	    </div>
+	   
+	  </div>
     
   </form>
-     <label for="inp-profile" class="col-sm-3 col-form-label">프로필</label>
 
 </div>
 
-<script src="${contextPath}/resources/js/signup.js?dt=${dt}"></script>
+<!--
+   alert 창으로 안내
+     <h3>환영합니다!</h3>
+     <span>OGQ 계정 가입이 완료되었습니다.<br>크리에이터 프로필을 설정하고<br>다양한 서비스를 편리하게 이용해 보세요!</span>
+     <span>프로필 수정을 통해 언제든지 변경할 수 있어요.</span>
+-->
+
+<script>
+  
+</script>
   
 <%@ include file="../layout/footer.jsp" %>

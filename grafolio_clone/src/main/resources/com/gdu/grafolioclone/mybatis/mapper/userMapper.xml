@@ -38,6 +38,20 @@
       , CURRENT_DATE
     )
   </insert>
+  
+  <!-- 기본 정보 수정 (장윤수) -->
+  <update id="updateUser"
+          parameterType="UserDto">
+    UPDATE USER_T
+       SET NAME = #{name}
+         , MOBILE = #{mobile}
+         , PW = #{pw}
+         , MINI_PROFILE_PICTURE_PATH = #{miniProfilePicturePath}
+         , MAIN_PROFILE_PICTURE_PATH = #{mainProfilePicturePath}
+         , DESCRIPT = #{descript}
+         , PROFILE_CATEGORY = #{profileCategory}
+     WHERE USER_NO = #{userNo}
+  </update>
 
   <select id="getLeaveUserBymap"
           parameterType="Map"
@@ -50,9 +64,9 @@
   </select>
 
   <delete id="deleteUser">
-  DELETE 
-    FROM USER_T
-   WHERE USER_NO = ${userNo}        
+	  DELETE 
+	    FROM USER_T
+	   WHERE USER_NO = ${userNo}        
   </delete>
 
   <insert id="insertAccessHistory"
