@@ -18,11 +18,17 @@ public interface UserMapper {
   int insertAccessHistory(Map<String, Object> map);
   int updateAccessHistory(String sessionId);
   
+  // 전체 유저 수 - 최연승
+  int getUserCount();
+  
   // 기본 정보 수정 - 장윤수
   int updateUser(UserDto user);
   
   // 프로필 정보 가져오기 - 오채원
   UserDto getProfileByUserNo(int userNo);
+  
+  // 프로필 목록 가져오기 - 최연승
+  List<UserDto> getProfileList(Map<String, Object> map);
   
   // 팔로우 - 오채원
   int follow(Map<String, Object> map);

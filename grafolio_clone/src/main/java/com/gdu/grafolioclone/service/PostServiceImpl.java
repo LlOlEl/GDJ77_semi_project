@@ -275,6 +275,16 @@ public class PostServiceImpl implements PostService {
   }
   
   @Override
+  public int getLikeCountByUserNo(int userNo) {
+  	return postMapper.getLikeCountByUserNo(userNo);
+  }
+  
+@Override
+  public int getHitCountByUserNo(int userNo) {
+  	return postMapper.getHitCountByUserNo(userNo);
+  }
+  
+  @Override
   public int checkLikeStatus(int postNo, int userNo) {
   	
     LikeDto like = LikeDto.builder()

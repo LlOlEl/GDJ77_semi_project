@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.gdu.grafolioclone.dto.PostDto;
 import com.gdu.grafolioclone.dto.UserDto;
 import com.gdu.grafolioclone.mapper.UserMapper;
 import com.gdu.grafolioclone.utils.MyJavaMailUtils;
@@ -481,6 +482,39 @@ public class UserServiceImpl implements UserService {
     int userNo = Integer.parseInt(request.getParameter("userNo"));
     UserDto user = userMapper.getProfileByUserNo(userNo);
     return user;
+  }
+  
+  // 유저 프로필 목록 - 최연승
+  @Override
+  public ResponseEntity<Map<String, Object>> getProfileList(HttpServletRequest request) {
+  	
+		// 전체 Post 게시글 수
+		int total = userMapper.getUserCount();
+		
+		// 스크롤 이벤트마다 가져갈 목록 개수
+		int display = 10;
+		
+		// 현재 페이지 번호
+		int page = Integer.parseInt(request.getParameter("page"));
+		
+		// 정렬 기준
+//		int category = Integer.parseInt(request.getParameter("category") == null ? "0" : request.getParameter("category"));
+		
+		// 페이징 처리에 필요한 정보 처리
+		myPageUtils.setPaging(total, display, page);
+		
+		// DB 로 보낼 Map 생성
+		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+																	  ,"end", myPageUtils.getEnd());
+		List<UserDto> userList = null;
+		
+		// DB 에서 목록 가져오기
+		userList = userMapper.getProfileList(map);
+		
+		return new ResponseEntity<Map<String,Object>>(Map.of("userList", userList,
+																												 "totalPage", myPageUtils.getTotalPage())
+																						  	, HttpStatus.OK);
+		
   }
   
   // 팔로우 - 오채원

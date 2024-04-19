@@ -144,4 +144,17 @@ public class PostController {
 	public ResponseEntity<Map<String, Object>> getUserUploadList(HttpServletRequest request) {
 	  return postSerivce.getUserUploadList(request);
 	}
+	
+	@GetMapping(value="/get-like-count-by-userNo", produces="application/json")
+	public ResponseEntity<Map<String, Object>> getUserLikeCount(@RequestParam("userNo") int userNo) {
+		return new ResponseEntity<>(Map.of("likeCount", postSerivce.getLikeCountByUserNo(userNo))
+				, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/get-hit-count-by-userNo", produces="application/json")
+	public ResponseEntity<Map<String, Object>> getUserHitCount(@RequestParam("userNo") int userNo) {
+		return new ResponseEntity<>(Map.of("hitCount", postSerivce.getHitCountByUserNo(userNo))
+				, HttpStatus.OK);
+
+	}
 }

@@ -228,6 +228,26 @@
       WHERE POST_NO = #{postNo}
    </select>
    
+   <select id="getLikeCountByUserNo"
+           resultType="int">
+     SELECT COUNT(*)
+       FROM LIKE_T L INNER JOIN 
+            (SELECT P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+              FROM USER_T U INNER JOIN POST_T P
+                ON U.USER_NO = P.USER_NO
+             WHERE P.USER_NO = #{userNo}) SUB_P
+         ON L.POST_NO = SUB_P.POST_NO
+   </select>
+   
+   <select id="getHitCountByUserNo"
+           resultType="int">
+     SELECT SUM(HIT)
+       FROM (SELECT P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+              FROM USER_T U INNER JOIN POST_T P
+                ON U.USER_NO = P.USER_NO
+             WHERE P.USER_NO = #{userNo})
+   </select>
+   
    <select id="checkLikeStatus"
            parameterType="LikeDto"
            resultType="int">

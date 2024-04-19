@@ -112,6 +112,16 @@ public class UserController {
     return userService.fnGetFollowerList(params, session);
   }
   
+  @GetMapping("/creators.page")
+  public String creatorsPage() {
+  	return "user/creators";
+  }
+  
+  @GetMapping(value="/getProfileList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> getProfileList(HttpServletRequest request) {
+		return userService.getProfileList(request);
+	}
+  
   @PostMapping(value="/checkEmail.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> checkEmail(@RequestBody Map<String, Object> params){
   	return userService.checkEmail(params);

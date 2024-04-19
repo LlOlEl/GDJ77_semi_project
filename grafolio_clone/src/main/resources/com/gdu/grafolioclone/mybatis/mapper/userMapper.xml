@@ -39,6 +39,13 @@
     )
   </insert>
   
+  <!-- 전체 유저 수 (최연승) -->
+  <select id="getUserCount"
+          resultType="java.lang.Integer">
+    SELECT COUNT(*)
+      FROM USER_T
+  </select>
+  
   <!-- 기본 정보 수정 (장윤수) -->
   <update id="updateUser"
           parameterType="UserDto">
@@ -96,12 +103,22 @@
      WHERE SESSION_ID = #{sessionID}
   </update>
   
-  <!-- userNo로 프로필 값 받아오기 -->
+  <!-- 프로필 정보 가져오기 (오채원)  -->
   <select id="getProfileByUserNo"
           resultType="UserDto">
     SELECT USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
       FROM USER_T
      WHERE USER_NO = #{userNo}
+  </select>
+  
+  <!-- 프로필 목록 가져오기 (최연승) -->
+  <select id="getProfileList"
+          parameterType="Map"
+          resultType="UserDto">
+    SELECT USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO DESC) AS RN, USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+              FROM USER_T)
+     WHERE RN BETWEEN #{begin} AND #{end}
   </select>
   
   <!-- 팔로우 -->

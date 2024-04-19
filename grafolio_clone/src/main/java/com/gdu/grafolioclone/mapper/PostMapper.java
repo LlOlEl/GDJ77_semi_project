@@ -28,6 +28,8 @@ public interface PostMapper {
   int insertLike(LikeDto like);
   int removeLike(LikeDto like);
   int getLikeCountByPostNo(int postNo);
+  int getLikeCountByUserNo(int userNo);
+  int getHitCountByUserNo(int userNo);
   int checkLikeStatus(LikeDto like);
   
   // 유저프로필 - 업로드한 게시글 가져오기(오채원)
