@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gdu.grafolioclone.dto.PostDto;
 import com.gdu.grafolioclone.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -100,6 +101,19 @@ public class PostController {
     return "post/edit";
   }
   
+  @PostMapping("/modify.do")
+  public String modify(PostDto post, RedirectAttributes redirectAttributes) {
+  	redirectAttributes.addFlashAttribute("updateCount", postSerivce.modifyPost(post));
+  	//  	return "redirect:/upload/list.do";
+  	return "redirect:/post/detail.do?postNo=" + post.getPostNo();
+  }
+  
+  @PostMapping("/remove.do")
+  public String removePost(@RequestParam int postNo ) {
+    postSerivce.deletePost(postNo);
+    return "post/list";
+  }
+  
 	@PostMapping(value="/likepost.do", produces="application/json")
 	public ResponseEntity<Map<String, Object>> likePost(@RequestBody Map<String, Object> params) {
 		return new ResponseEntity<>(Map.of("insertCount", postSerivce.registerLike(params))
@@ -115,9 +129,13 @@ public class PostController {
 	@GetMapping(value="/check-like-status", produces="application/json")
 	public ResponseEntity<Map<String, Object>> checklLikeStatus(@RequestParam("postNo") int postNo,
 																															@RequestParam("userNo") int userNo) {
-		System.out.println(postNo);
-		System.out.println(userNo);
 		return new ResponseEntity<>(Map.of("likeCount", postSerivce.checkLikeStatus(postNo, userNo))
+														  , HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/get-like-count-by-postno", produces="application/json")
+	public ResponseEntity<Map<String, Object>> checklLikeStatus(@RequestParam("postNo") int postNo) {
+		return new ResponseEntity<>(Map.of("likeCount", postSerivce.getLikeCount(postNo))
 														  , HttpStatus.OK);
 	}
 }

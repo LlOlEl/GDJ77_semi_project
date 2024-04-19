@@ -16,6 +16,8 @@ public interface PostService {
 	ResponseEntity<Map<String, Object>> getPostList(HttpServletRequest request);
 	int updateHit(int postNo);
 	PostDto getPostByNo(int postNo);
+	int modifyPost(PostDto post);
+	int deletePost(int postNo);
 	int registerComment(HttpServletRequest request);
 	Map<String, Object> getCommentList(HttpServletRequest request);
 	int registerReply(HttpServletRequest request);

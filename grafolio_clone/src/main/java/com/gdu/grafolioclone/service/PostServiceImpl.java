@@ -148,6 +148,24 @@ public class PostServiceImpl implements PostService {
   }
   
   @Override
+  public int modifyPost(PostDto post) {
+  	return postMapper.updatePost(post);
+  }
+  
+  @Override
+  public int deletePost(int postNo) {
+  	
+  	// 포스트 번호로 코멘트 삭제
+  	postMapper.removeCommentByPostNo(postNo);
+  	
+  	// 포스트 삭제
+  	postMapper.removePost(postNo);
+
+  	// 추후 수정 필요
+  	return 0;
+  }
+  
+  @Override
   public int registerComment(HttpServletRequest request) {
     
     // 요청 파라미터

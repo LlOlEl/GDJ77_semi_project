@@ -100,6 +100,12 @@ public class UserController {
     return userService.getFollowCount(params);
   }
   
+  // 팔로잉 리스트 가져오기 - 오채원
+  @PostMapping("/getFollowingList.do")
+  public ResponseEntity<Map<String, Object>> getFollowingList(@RequestBody Map<String, Object> params) {
+    return userService.fnGetFollowingList(params);
+  }
+  
   @PostMapping(value="/checkEmail.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> checkEmail(@RequestBody Map<String, Object> params){
   	return userService.checkEmail(params);

@@ -39,28 +39,44 @@
 
   <div class="header-wrap">
   
-    <div class="logo"></div>
+    <div class="header-left" >
+      <div class="logo">
+          <div class="header-brand" >
+            <a href="${contextPath}" class="logo-wrapper" >
+              <img src="${contextPath}/resources/svg/header_logo.svg" alt="Logo">
+            </a>
+          </div>
+      </div>
+      <div class="header-menus">
+        <div class="header-menu">
+          <a href="${contextPath}/post/list.page">프로젝트</a>
+        </div>
+        <div class="hedaer-menu">
+          <div class="profile-test" data-user-no="${sessionScope.user.userNo}">마이페이지</div>
+        </div>
+        <div class="hedaer-menu">
+          <a href="${contextPath}/user/creators.page">크리에이터</a>
+        </div>
+      </div>
+    </div>
     
-    <div class="user-wrap">
-      <!-- Sign In 안 된 경우 -->
-      <c:if test="${sessionScope.user == null}">  
-        <a href="${contextPath}/user/signin.page"><i class="fa-solid fa-arrow-right-to-bracket"></i>Sign In</a>
-        <a href="${contextPath}/user/signup.page"><i class="fa-solid fa-user-plus"></i>Sign Up</a>
-      </c:if>
-      <!-- Sign In 된 경우 -->
-      <c:if test="${sessionScope.user != null}">
-        ${sessionScope.user.name}님 반갑습니다
-        <a href="${contextPath}/user/signout.do"><i class="fa-solid fa-arrow-right-from-bracket"></i>Sign Out</a>
-        <a href="${contextPath}/user/leave.do"><i class="fa-solid fa-user-minus"></i>회원탈퇴</a>
-      </c:if>
+    <div class="hedaer-right">
+      <div class="user-wrap">
+        <!-- Sign In 안 된 경우 -->
+        <c:if test="${sessionScope.user == null}">  
+          <a href="${contextPath}/user/signin.page"><i class="fa-solid fa-arrow-right-to-bracket"></i>Sign In</a>
+          <a href="${contextPath}/user/signup.page"><i class="fa-solid fa-user-plus"></i>Sign Up</a>
+        </c:if>
+        <!-- Sign In 된 경우 -->
+        <c:if test="${sessionScope.user != null}">
+          <a href="${contextPath}/post/write.page">프로젝트 올리기</a>
+          ${sessionScope.user.name}님 반갑습니다
+          <a href="${contextPath}/user/signout.do"><i class="fa-solid fa-arrow-right-from-bracket"></i>Sign Out</a>
+          <a href="${contextPath}/user/leave.do"><i class="fa-solid fa-user-minus"></i>회원탈퇴</a>
+        </c:if>
+      </div>
     </div>
-  
-    <div class="gnb-wrap">
-      <ul class="gnb">
-        <li><a href="${contextPath}/post/list.page">댓글형게시판</a></li>
-        <div class="profile-test" data-user-no="${sessionScope.user.userNo}">마이페이지</div>
-      </ul>
-    </div>
+
     
   </div>
 

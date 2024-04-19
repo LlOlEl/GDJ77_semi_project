@@ -150,6 +150,8 @@ INSERT INTO USER_T VALUES(
   , 0
   , CURRENT_DATE
   , CURRENT_DATE);
+  
+
 
 commit;
 

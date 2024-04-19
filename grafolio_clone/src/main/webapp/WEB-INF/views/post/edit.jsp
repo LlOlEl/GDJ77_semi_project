@@ -47,19 +47,19 @@
       <label class="col-sm-3 form-label">카테고리</label>
       <div class="col-sm-3">
         <input type="radio" name="category" value="1" id="rdo-illust" class="form-check-input" checked>
-        <label class="form-check-label" for="rdo-illust">선택안함</label>
+        <label class="form-check-label" for="rdo-illust">일러스트</label>
       </div>
       <div class="col-sm-3">
         <input type="radio" name="category" value="2" id="rdo-pic" class="form-check-input">
-        <label class="form-check-label" for="rdo-pic">일러스트</label>
+        <label class="form-check-label" for="rdo-pic">사진</label>
       </div>
       <div class="col-sm-3">
         <input type="radio" name="category" value="3" id="rdo-design" class="form-check-input">
-        <label class="form-check-label" for="rdo-design">사진</label>
+        <label class="form-check-label" for="rdo-design">디자인</label>
       </div>
       <div class="col-sm-3">
         <input type="radio" name="category" value="4" id="rdo-painting" class="form-check-input">
-        <label class="form-check-label" for="rdo-painting">디자인</label>
+        <label class="form-check-label" for="rdo-painting">회화</label>
       </div>
       <div class="col-sm-3">
         <input type="radio" name="category" value="5" id="rdo-sculpture-craft" class="form-check-input">
@@ -75,7 +75,7 @@
       </div>
       <div class="col-sm-3">
         <input type="radio" name="category" value="8" id="rdo-calligraphy" class="form-check-input">
-        <label class="form-check-label" for="rdo-calligraphy">조소/공예</label>
+        <label class="form-check-label" for="rdo-calligraphy">캘리그라피</label>
       </div>
       <div class="col-sm-3">
         <input type="radio" name="category" value="9" id="rdo-etc" class="form-check-input">
