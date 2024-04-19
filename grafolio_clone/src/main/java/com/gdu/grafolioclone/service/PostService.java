@@ -25,5 +25,7 @@ public interface PostService {
 	int registerLike(Map<String, Object> params);
 	int removeLike(Map<String, Object> params);
 	int getLikeCount(int postNo);
+	int getLikeCountByUserNo(int userNo);
+	int getHitCountByUserNo(int userNo);
 	int checkLikeStatus(int postNo, int userNo);
 }

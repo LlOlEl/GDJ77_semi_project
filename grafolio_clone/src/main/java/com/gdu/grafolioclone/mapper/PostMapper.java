@@ -28,5 +28,7 @@ public interface PostMapper {
   int insertLike(LikeDto like);
   int removeLike(LikeDto like);
   int getLikeCountByPostNo(int postNo);
+  int getLikeCountByUserNo(int userNo);
+  int getHitCountByUserNo(int userNo);
   int checkLikeStatus(LikeDto like);
 }
