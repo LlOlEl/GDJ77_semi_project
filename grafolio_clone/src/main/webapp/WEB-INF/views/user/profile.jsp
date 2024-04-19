@@ -117,6 +117,7 @@ var check = false;
 var hasLogin = true;
 
 var page = 1;
+var UploadListPage = 1;
 
 // 팔로잉 totalPage
 var totalPage = 0;
@@ -221,17 +222,34 @@ $(document).on('click', '.btn-modal-unfollow', function() {
 // 모달창 - 팔로잉 리스트 가져오기
 
 // 팔로잉 요소 가져옴
-var userStatic = $('.user-static').eq(1);
-
+var userStatic = $('.txt-card-count').eq(1);
+// 팔로워 요소 가져옴
+var userStatic2 = $('.txt-card-count').eq(2);
+ 
 // 팔로잉 클릭시 서버에서 해당 유저의 팔로잉 리스트 받아오기
 userStatic.on('click', () => {
-  
+	
+  console.log('팔로잉 리스트 가져와주세요.');
+	
   // 모달창 띄우기
   $('.modal-outer').css('display', 'flex');
   fngetFollowingList();
-  fnScrollHandler();
-  
-   // 로그인된 유저(session)와 팔로잉 유저 데이터의 userNo값 비교해서 팔로잉 
+  fnFollwingScrollHandler();
+  // 로그인된 유저(session)와 팔로잉 유저 데이터의 userNo값 비교해서 팔로잉 
+   
+})
+
+// 팔로워 클릭시 서버에서 해당 유저의 팔로워 리스트 받아오기
+userStatic2.on('click', () => {
+
+  console.log('팔로워 리스트 가져와주세요.');	
+	
+  // 모달창 띄우기
+  $('.modal-outer').css('display', 'flex');
+  fngetFollowerList();
+  fnFollwerScrollHandler();
+  // 로그인된 유저(session)와 팔로잉 유저 데이터의 userNo값 비교해서 팔로잉 
+	
 })
 
 // 2. 모달창 나가기
@@ -244,21 +262,20 @@ $('.modal-overlay').on('click', () => {
 
 // 모달창 - 팔로잉 리스트 가져오기
 const fngetFollowingList = () => {
-
-  // 팔로잉 유저 데이터 가져오기
+	
+  // 팔로잉 & 팔로워 유저 데이터 가져오기
   fetch(fnGetContextPath() + '/user/getFollowingList.do', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      'fromUser': $('.user-body').data('userNo'),
+      'profileUserNo': $('.user-body').data('userNo'),
       'page': page
     })
    })
    .then(response=> response.json())
-   .then(resData=> {
-    console.log(resData);
+   .then(resData=> { // resData - {"followingList": [...], "totalPage":3}
      
     // totalPage 갱신
     totalPage = resData.totalPage;
@@ -279,8 +296,8 @@ const fngetFollowingList = () => {
   		  })
   		  .then(response=> response.json())
   		  .then(resData=> {
-  			  // 요소를 만든다.
-		      let str = '<div class="user-item">';
+  			// 요소를 만든다.
+		    let str = '<div class="user-item">';
 	        str += '  <div class="profile-wrapper">';
 	        str += '    <div class="profile-image-wrap">';
 	        str += '      <div class="profile-image-wrapper profile-image-medium">';
@@ -315,24 +332,102 @@ const fngetFollowingList = () => {
   		      buttonElement.attr('class', 'btn-modal-unfollow');
   		    
   		    } else {
-  		    	// 팔로우로 변경..(팔로잉)
-            var buttonId = 'following_' + following.userNo
-            var buttonElement = $('#' + buttonId);
-            buttonElement.text('팔로잉');
-            buttonElement.css('background-color', '');
-            buttonElement.attr('class', 'btn-modal-follow');
+  		      // 팔로우로 변경..(팔로잉)
+              var buttonId = 'following_' + following.userNo
+              var buttonElement = $('#' + buttonId);
+              buttonElement.text('팔로잉');
+              buttonElement.css('background-color', '');
+              buttonElement.attr('class', 'btn-modal-follow');
   		    }
   		  })
      })
  }) 
-
-
- 
- // 팔로잉 버튼 
- 
- // 리스트에서 로그인한 유저와 팔로잉 관계인지 확인 후...
  
 }
+
+// 팔로워 리스트 가져오기
+const fngetFollowerList = () => {
+	  $(".list.chow-scrollbar").empty();
+	  // 팔로잉 & 팔로워 유저 데이터 가져오기
+	  fetch(fnGetContextPath() + '/user/getFollowerList.do', {
+	    method: 'POST',
+	    headers: {
+	      'Content-Type': 'application/json'
+	    },
+	    body: JSON.stringify({
+	      'profileUserNo': $('.user-body').data('userNo'),
+	      'page': page
+	    })
+	   })
+	   .then(response=> response.json())
+	   .then(resData=> { // resData - {"followerList": [...], "totalPage":3}
+	      // totalPage 갱신
+	      totalPage = resData.totalPage;
+	      // 팔로잉 수
+	      $('.count-detail').text(resData.followerCount);
+	    
+	      // 리스트 띄우기      
+	      $.each(resData.followerList, (i, follower) => {
+		  	  fetch(fnGetContextPath() + '/user/checkFollow.do', {
+		  	    method: 'POST',
+		  		  headers: {
+		  		    'Content-Type': 'application/json'
+		  		  },
+		  		  body: JSON.stringify({
+		  		    'toUser': follower.userNo
+		  		  })
+		  		})
+		  		.then(response=> response.json())
+		  		.then(resData=> {
+		  	      // 요소를 만든다.
+				  let str = '<div class="user-item">';
+			      str += '  <div class="profile-wrapper">';
+			      str += '    <div class="profile-image-wrap">';
+			      str += '      <div class="profile-image-wrapper profile-image-medium">';
+			      str += '        <img alt="avatar-image" src="../resources/img/default_profile_image.png" draggable="false" width=40px>';
+			      str += '      </div>';
+			      str += '    </div>';
+			      str += '    <span class="nickname" data-user-no="' + follower.userNo + '">' + follower.name + '</span>';
+			      str += '  </div>';
+			      str += '  <div class="button-wrapper list">';
+			    
+			      if(follower.isFollow === 1) {
+			        str += '    <button class="btn-modal-unfollow" id="following_' + follower.userNo + '" data-user-no="' + follower.userNo + '">';
+			        str += '      <div class="btn-text">팔로우</div>';
+			        str += '    </button>';
+			      } else {
+			        str += '    <button class="btn-modal-follow" id="following_' + follower.userNo + '" data-user-no="' + follower.userNo + '">';
+			        str += '      <div class="btn-text">팔로잉</div>';
+			        str += '    </button>';
+			      }
+			        str += '  </div>'
+			        str += '</div>';
+			        $(".list.chow-scrollbar").append(str);
+		  			  
+		  		  // 그 다음 버튼 디자인을 변경해준다.
+		  		  if(resData.hasFollow != 0) {
+		  		    // 언팔로우로 변경..(팔로우)
+		  		    var buttonId = 'following_' + follower.userNo
+		  		    var buttonElement = $('#' + buttonId);
+		  		    buttonElement.text('팔로우');
+		  		    buttonElement.css('background-color', 'black');
+		  		    buttonElement.css('color', 'white');
+		  		    buttonElement.attr('class', 'btn-modal-unfollow');
+		  		    
+		  		  } else {
+		  		    // 팔로우로 변경..(팔로잉)
+		            var buttonId = 'following_' + follower.userNo
+		            var buttonElement = $('#' + buttonId);
+		            buttonElement.text('팔로잉');
+		            buttonElement.css('background-color', '');
+		            buttonElement.attr('class', 'btn-modal-follow');
+		  		}
+		    })
+	     })
+	 }) 
+	 
+}
+
 
 // 팔로우 - 프로필
 const fnFollow = () => {
@@ -473,25 +568,17 @@ const fnGetHitCount = () => {
   })
 }
 
-// 무한 스크롤
-const fnScrollHandler = () => {
-  
-  console.log('무한 스크롤 실행됨');
-
+// 무한 스크롤 - 팔로잉
+const fnFollwingScrollHandler = () => {
   var timerId;
-  
   $('.modal').on('scroll', (evt) => {
-    
     if(timerId) {  
       clearTimeout(timerId);
     }
-    
     timerId = setTimeout(() => {
-      
     let scrollTop = window.scrollY;  // $(window).scrollTop();
     let windowHeight = window.innerHeight;  // $(window).height();
     let modalHeight = 290;
-    
       if((modalHeight - scrollTop - windowHeight) < 50) {  
         if(page > totalPage) {
           return;
@@ -503,12 +590,51 @@ const fnScrollHandler = () => {
   })
 }
 
+// 무한 스크롤 - 팔로워
+const fnFollwerScrollHandler = () => {
+  var timerId;
+  $('.modal').on('scroll', (evt) => {
+    if(timerId) {  
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => {
+    let scrollTop = window.scrollY;  // $(window).scrollTop();
+    let windowHeight = window.innerHeight;  // $(window).height();
+    let modalHeight = 290;
+      if((modalHeight - scrollTop - windowHeight) < 50) {  
+        if(page > totalPage) {
+          return;
+        }
+        page++;
+        fngetFollowerList();
+      }
+    }, 500);
+  })
+}
+
+// 프로필 유저가 업로드한 게시물 가져오기
+const fnGetUserUploadList = () => {
+  console.log('fnGetUserUploadList 실행');
+	
+  fetch(fnGetContextPath() + '/post/getUserUploadList.do?userNo=' + $('.user-body').data('userNo') + '&page=' + UploadListPage)
+  .then(response=>response.json())
+  .then(resData=> {
+	
+  
+  
+  })
+  
+	
+	
+}
+
 
 
 // 함수 호출
 fnCheckFollow();
 fnChangeBtn();
 fnGetFollowCount();
+fnGetUserUploadList();
 
  
 </script>

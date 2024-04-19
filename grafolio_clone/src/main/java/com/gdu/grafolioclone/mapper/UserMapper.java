@@ -37,5 +37,10 @@ public interface UserMapper {
   List<UserDto> fnGetFollowingList(Map<String, Object> map);
   // 팔로잉 개수 조회
   int fnGetFollowingCount(Map<String, Object> map);
+  
+  // 팔로잉 리스트 조회 - 오채원
+  List<UserDto> fnGetFollowerList(Map<String, Object> map);
+  // 팔로잉 개수 조회
+  int fnGetFollowerCount(Map<String, Object> map);
 
 }

@@ -26,4 +26,7 @@ public interface PostService {
 	int removeLike(Map<String, Object> params);
 	int getLikeCount(int postNo);
 	int checkLikeStatus(int postNo, int userNo);
+	
+  // 유저프로필 - 업로드한 게시글 가져오기(오채원)
+	ResponseEntity<Map<String, Object>> getUserUploadList(HttpServletRequest request);
 }

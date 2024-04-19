@@ -29,4 +29,9 @@ public interface PostMapper {
   int removeLike(LikeDto like);
   int getLikeCountByPostNo(int postNo);
   int checkLikeStatus(LikeDto like);
+  
+  // 유저프로필 - 업로드한 게시글 가져오기(오채원)
+  List<PostDto> getUserUploadList(Map<String, Object> map);
+  // 유저 프로필 - 업로드한 게시글 개수
+  int getUserUploadCount(int userNo);
 }

@@ -50,9 +50,12 @@
 }
 
 .user-static {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  text-align: center;
+  gap: 5px;
+  width: 100%;
+}
 }
 
 .txt-card-count {
@@ -151,6 +154,25 @@ ul.list {
   display: flex;
   gap: inherit;
 }
+
+ul.tab-list {
+  align-items: center;
+  display: flex;
+  gap: 25px;
+  margin: 0 9.5% 54px;
+  overflow-x: auto;
+  padding: 0;
+}
+
+.user-statistics-wrap {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 0;
+  width: 100%;
+}
+
+
 
 
 

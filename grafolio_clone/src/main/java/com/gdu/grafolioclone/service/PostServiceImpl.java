@@ -285,4 +285,31 @@ public class PostServiceImpl implements PostService {
   	return postMapper.checkLikeStatus(like);
   }
   
+  // 유저프로필 - 업로드한 게시글 가져오기(오채원)
+  @Override
+  public ResponseEntity<Map<String, Object>> getUserUploadList(HttpServletRequest request) {
+    
+    int total = postMapper.getUserUploadCount(Integer.parseInt(request.getParameter("userNo")));
+    
+    int display = 30;
+    
+    int page = Integer.parseInt(request.getParameter("page"));
+    
+    myPageUtils.setPaging(total, display, page);
+    
+    int totalPage = myPageUtils.getTotalPage();
+    
+    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+                                   , "end", myPageUtils.getEnd()
+                                   , "userNo", Integer.parseInt(request.getParameter("userNo")));
+    
+    List<PostDto> userUploadList = postMapper.getUserUploadList(map);
+    System.out.println(userUploadList);
+    
+    return ResponseEntity.ok(Map.of("userUploadList", userUploadList
+                                  , "totalPage", totalPage));
+  }
+  
+
+  
 }

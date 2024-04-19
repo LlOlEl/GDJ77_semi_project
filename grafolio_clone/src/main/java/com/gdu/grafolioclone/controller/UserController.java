@@ -106,6 +106,12 @@ public class UserController {
     return userService.fnGetFollowingList(params, session);
   }
   
+  // 팔로워 리스트 가져오기 - 오채원
+  @PostMapping("/getFollowerList.do")
+  public ResponseEntity<Map<String, Object>> getFollowerList(@RequestBody Map<String, Object> params, HttpSession session) {
+    return userService.fnGetFollowerList(params, session);
+  }
+  
   @PostMapping(value="/checkEmail.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> checkEmail(@RequestBody Map<String, Object> params){
   	return userService.checkEmail(params);

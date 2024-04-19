@@ -138,4 +138,10 @@ public class PostController {
 		return new ResponseEntity<>(Map.of("likeCount", postSerivce.getLikeCount(postNo))
 														  , HttpStatus.OK);
 	}
+	
+	// 유저 프로필 - 업로드한 게시물 가져오기(오채원)
+	@GetMapping(value="/getUserUploadList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> getUserUploadList(HttpServletRequest request) {
+	  return postSerivce.getUserUploadList(request);
+	}
 }
