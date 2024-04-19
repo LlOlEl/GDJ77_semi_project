@@ -73,6 +73,14 @@
    <li class="list-item"><a>좋아요</a></li>
  </ul>
  
+ <div class="profile-bottom">
+   <div class="list no-head">
+     <div class="list-head"></div>
+     <ul class="list-body">
+     </ul>
+   </div>
+ </div>
+ 
  <!-- 업로드한 프로젝트 및 좋아요 -->
    <div id="post-list"></div>
    
@@ -619,13 +627,69 @@ const fnGetUserUploadList = () => {
   fetch(fnGetContextPath() + '/post/getUserUploadList.do?userNo=' + $('.user-body').data('userNo') + '&page=' + UploadListPage)
   .then(response=>response.json())
   .then(resData=> {
-	
-  
-  
+	  UploadListPage = resData.totalPage;
+	  $.each(resData.userUploadList, (i, upload) => {
+	    var thumbnailUrl = extractFirstImage(upload.contents);
+	    let str = '<div class="card-wrap card">';
+	    str += '  <div class="card-image">';
+	    str += '    <div class="card-item-wrap">';
+	    str += '      <div class="card-options has-inner-option">';
+	    str += '    <div class="card-options-header">';
+	    str += '      <div><i class="fa-regular fa-heart"></i></div>';
+	    str += '    <div class="card-options-body">';
+	    str += '      <div class="options-title-wrap">';
+	    str += '        <span class="option-title">' + upload.title + '</span>';
+	    str += '        <span class="option-title">' + upload.createDt + '</span>';
+	    str += '      </div>';
+	    str += '    </div>';
+	    str += '    <div class="options-bottom-wrap">';
+	    str += '      <div class="card-bottom wrap">';
+	    str += '        <div class="card-bottom-profile">';
+	    str += '		  <div clas="profile-image-wrap">';
+	    str += '            <div class="profile-image-wrapper">';
+	    str += '			  ' + thumbnailUrl + '';
+	    str += '		    </div>';
+	    str += '			<span class="profile-image-wrapper">' + upload.user.name + '</span>';
+	    str += '  		  </div>';
+	    str += '		  <div class="card-bottom-options"></div>';
+	    str += '		</div>';
+	    str += '        <div class="card-bottom-option">';
+	    str += '		  <i class="fa-regular fa-heart"></i>';
+	    str += '		  <span id="like-count-' + upload.postNo + '" class="bottom-option-name">3</span>';
+	    str += '		</div>';
+	    str += '        <div class="card-bottom-option">';
+	    str += '          <i class="fa-regular fa-eye"></i>';
+	    str += '        </div>';
+	    str += '      </div>';
+	    str += '    </div>';
+	    str += '  </div>';
+	    str += '</div>';
+	    str += '</div>';
+	    str += '</div>';
+	    $('.list-body').append(str);
+	    
+        // 서버에서 likecount 를 받아와서 업데이트
+        fnGetLikeCountByPostNo(upload.postNo)
+          .then(result => {
+            // id="like-count-' + post.postNo 내용을 바꿔줌
+            $('#like-count-' + upload.postNo).html(result); 
+          })
+          .catch(error => {
+            console.error(error);
+            $('#like-count-' + upload.postNo).html('Error');
+          });	    
+	  })
+	  if('${sessionScope.user}' !== '') {
+	    fnLikeCheck();
+	  }
   })
-  
-	
-	
+}
+
+function extractFirstImage(htmlContent) {
+    var div = document.createElement('div');
+    div.innerHTML = htmlContent; // HTML 문자열을 DOM으로 변환
+    var image = div.querySelector('img'); // 첫 번째 이미지 태그 선택
+    return image ? image.src : null; // 이미지의 src 속성 반환
 }
 
 
