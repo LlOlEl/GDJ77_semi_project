@@ -10,7 +10,7 @@ DROP SEQUENCE FOLLOW_SEQ;
 CREATE SEQUENCE USER_SEQ NOCACHE;
 CREATE SEQUENCE ACCESS_HISTORY_SEQ NOCACHE;
 CREATE SEQUENCE LEAVE_USER_SEQ NOCACHE;
-CREATE SEQUENCE POST_SEQ START WITH 1001 NOCACHE;
+CREATE SEQUENCE POST_SEQ NOCACHE;
 CREATE SEQUENCE COMMENT_SEQ NOCACHE;
 CREATE SEQUENCE LIKE_SEQ NOCACHE;
 CREATE SEQUENCE FOLLOW_SEQ NOCACHE;
@@ -30,10 +30,13 @@ CREATE TABLE USER_T (
   /* 암호화(SHA-256) */            PW          VARCHAR2(64 BYTE),
   /* 이름 */                       NAME        VARCHAR2(100 BYTE),
   /* 휴대전화 */                   MOBILE      VARCHAR2(20 BYTE),
+<<<<<<< HEAD:grafolio_clone/src/main/webapp/resources/sql/myapp.sql
+=======
   /* 미니 프로필 사진 정보 */      MINI_PROFILE_PICTURE_PATH VARCHAR2(400 BYTE),
   /* 메인 프로필 사진 정보 */      MAIN_PROFILE_PICTURE_PATH VARCHAR2(400 BYTE),
   /* 프로필 설명 */                DESCRIPT VARCHAR2(200 BYTE),
   /* 프로필 태그 */                PROFILE_CATEGORY VARCHAR2(200 BYTE),
+>>>>>>> ef7d3a3a69cc6648803d3b3a6bfafaeb30cc3bf3:grafolio_clone/src/main/webapp/resources/sql/grapolioclone.sql
   /* 가입형태(0:직접,1:네이버) */  SIGNUP_KIND NUMBER,
   /* 비밀번호수정일 */             PW_MODIFY_DT DATE,
   /* 가입일 */                     SIGNUP_DT DATE,
@@ -71,9 +74,8 @@ CREATE TABLE POST_T (
   USER_NO   NUMBER,
   CREATE_DT DATE,
   MODIFY_DT DATE,
-  CATEGORY  NUMBER, -- 1 일러스트 2 사진 3 디자인 4 회화 5 조소/공예 6 사운드 7 애니메이션 8 캘리그라피 9 기타
+  TAG       VARCHAR2(1000 BYTE),
   CONSTRAINT PK_POST PRIMARY KEY(POST_NO),
-  CONSTRAINT CATE_CK CHECK (CATEGORY BETWEEN 1 AND 9),
   CONSTRAINT FK_POST_USER FOREIGN KEY(USER_NO)
     REFERENCES USER_T(USER_NO) ON DELETE CASCADE
 );
@@ -124,8 +126,12 @@ INSERT INTO USER_T VALUES(
     USER_SEQ.NEXTVAL
   , 'a'
   , STANDARD_HASH('1', 'SHA256')
-  , 'admin'
+  , 'man'
   , '010-1111-1111'
+<<<<<<< HEAD:grafolio_clone/src/main/webapp/resources/sql/myapp.sql
+  ,null
+  ,null
+=======
   , null
   , null
   , null
@@ -147,6 +153,7 @@ INSERT INTO USER_T VALUES(
   , null
   , '내가 찍은 사진들로 나의 시선 기록하기 (2차 가공X)'
   , '디자인, 사진'
+>>>>>>> ef7d3a3a69cc6648803d3b3a6bfafaeb30cc3bf3:grafolio_clone/src/main/webapp/resources/sql/grapolioclone.sql
   , 0
   , CURRENT_DATE
   , CURRENT_DATE);
