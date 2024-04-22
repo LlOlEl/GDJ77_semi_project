@@ -12,12 +12,12 @@
  <link rel="stylesheet" href="${contextPath}/resources/css/profile.css?dt=${dt}">
  
  <!-- 유저 프로필 및 배경사진 -->
-<div class="content profile">
+<div class="content profile" data-user-no="${sessionScope.user.userNo}">
   <div class="page">
     <div class="page-content">
        <div class="profile-page">
          <div class="profil-wrap">
-           <div class="profile-top" id="profile-top">
+           <div class="profile-top" id="profile-top" >
            
              <div class="profile-cover-wrap">
                <div class="profile-cover-image">
@@ -218,6 +218,11 @@ $(document).on('click', '.btn-modal-follow', function() {
   
   var buttonId = $(this).attr('id');
   
+  // 자기 자신 검사
+  if($('.content').data('userNo') === $(this).data('userNo')) {
+	  return;
+  }
+  
   // 로그인 여부 검사
   fnCheckSignin();
   if(!hasLogin) {
@@ -253,6 +258,11 @@ $(document).on('click', '.btn-modal-follow', function() {
 // 모달창의 언팔로우 버튼
 $(document).on('click', '.btn-modal-unfollow', function() {
   
+  // 자기 자신 검사
+  if($('.content').data('userNo') === $(this).data('userNo')) {
+	  return;
+  }
+	
   // 로그인 여부 통과되었으므로 fetch 진행
   fetch(fnGetContextPath() + '/user/unfollow.do', {
     method: 'POST',
@@ -722,14 +732,15 @@ const fnGetUserUploadList = () => {
   .then(resData=> {
     UploadListTotalPage = resData.totalPage;
     $.each(resData.userUploadList, (i, upload) => {
+    	console.log('프로필 유저가 업로드한 게시물 가져옴.');
       var thumbnailUrl = extractFirstImage(upload.contents);
       let str = '<div class="card-wrap card">';
       // str += displayThumbnail(thumbnailUrl);
       str += '  <div class="card-image" style="background-image: url(' + thumbnailUrl + ');">';
       str += '    <div class="card-item-wrap">';
       str += '      <div class="card-options has-inner-option">';
-      str += '    <div class="card-options-header">';
-      str += '      <div><i class="fa-regular fa-heart" style="color: #ffffff;"></i></div>';
+      str += '    <div class="card-options-header" data-post-no="' + upload.postNo+ '">';
+      str += '      <div class="like-button"><i class="fa-regular fa-heart" style="color: #ffffff;"></i></div>';
       str += '    </div>';
       str += '    <div class="card-options-body">';
       str += '      <div class="options-title-wrap">';
@@ -751,7 +762,7 @@ const fnGetUserUploadList = () => {
       str += '          </div>';
       str += '        </div>';
       str += '        <div class="card-bottom-options">';
-      str += '          <div class="card-bottom-option">';
+      str += '          <div class="card-bottom-option like-button">';
       str += '            <i class="fa-regular fa-heart" style="color: #ffffff;"></i>';
       str += '            <span id="like-count-' + upload.postNo + '" class="bottom-option-name">3</span>';
       str += '          </div>';
@@ -818,14 +829,15 @@ const fnGetUserLikeList = () => {
   .then(resData=> {
     LikeListTotalPage = resData.totalPage;
     $.each(resData.userLikeList, (i, like) => {
+    	console.log('프로필 유저가 좋아요한 게시물 가져옴.');
       var thumbnailUrl = extractFirstImage(like.contents);
       let str = '<div class="card-wrap card">';
       // str += displayThumbnail(thumbnailUrl);
       str += '  <div class="card-image" style="background-image: url(' + thumbnailUrl + ');">';
       str += '    <div class="card-item-wrap">';
       str += '      <div class="card-options has-inner-option">';
-      str += '    <div class="card-options-header">';
-      str += '      <div><i class="fa-regular fa-heart" style="color: #ffffff;"></i></div>';
+      str += '    <div class="card-options-header" data-post-no="' +like.postNo+ '">';
+      str += '      <div class="like-button"><i class="fa-regular fa-heart" style="color: #ffffff;"></i></div>';
       str += '    </div>';
       str += '    <div class="card-options-body">';
       str += '      <div class="options-title-wrap">';
@@ -1007,6 +1019,66 @@ const fnGetHitCountByUserNo = () => {
 }
 
 
+// 업로드, 좋아요 게시글 좋아요 기능
+const fnPostLike = () => {
+  // 좋아요 버튼에 클릭 이벤트 리스너 추가
+  $(document).on('click', '.like-button', (evt) => {
+      evt.stopPropagation(); // 이벤트 버블링을 중단
+      var postNo = evt.target.closest('.card-options-header').dataset.postNo; // 게시물 번호 추출
+      var userNo = '${sessionScope.user.userNo}';
+      var likeButton = evt.target.closest('.like-button'); // 좋아요 버튼 참조
+      if('${sessionScope.user}' === ''){
+        fnCheckSignin();
+        return;
+      }
+      // 좋아요 버튼에 'liked' 클래스가 있는지 확인
+      if (likeButton.classList.contains('liked')) {
+          // 좋아요 취소 요청
+          fetch('${contextPath}/post/deletelikepost.do', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ 
+                  'postNo': parseInt(postNo, 10),
+                  'userNo': parseInt(userNo, 10)
+              })
+          })
+          .then(response => response.json())
+          .then(resData => {
+              alert('Like removed!'); // 성공 처리
+              likeButton.classList.remove('liked');
+              likeButton.innerHTML = '<i class="fa-regular fa-heart" style="color: #ffffff;"></i>'; // 빈 하트 아이콘으로 변경
+          })
+          .catch(error => {
+              alert('Error removing like.'); // 에러 처리
+          });
+      } else {
+          // 좋아요 설정 요청
+          fetch('${contextPath}/post/likepost.do', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ 
+                  'postNo': parseInt(postNo, 10),
+                  'userNo': parseInt(userNo, 10)
+              })
+          })
+          .then(response => response.json())
+          .then(resData => {
+              alert('Liked!'); // 성공 처리
+              likeButton.classList.add('liked');
+              likeButton.innerHTML = '<i class="fa-solid fa-heart" style="color: #e33861;"></i>';
+          })
+          .catch(error => {
+              alert('Error liking the post.'); // 에러 처리
+          });
+      }
+      return false; // 페이지 리로드 방지
+  });
+};
+
 
 
   
@@ -1021,7 +1093,7 @@ fnGetLikeCountByUserNo();
 fnGetHitCountByUserNo();
 fnUploadListScrollHandler();
 fnGetUserUploadList();
-
+fnPostLike();
 
  
 </script>
