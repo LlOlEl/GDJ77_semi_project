@@ -4,34 +4,98 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
- <jsp:include page="../layout/header.jsp">
-   <jsp:param value="Sign In" name="title"/>
- </jsp:include>
- 
-   <h1 class="title">Sign In</h1>
-  
-<div>
-  <form method="POST"
-        action="${contextPath}/user/signin.do">
-    <div>
-      <label for="email">아이디</label>
-      <input type="text" id="email" name="email" placeholder="example@naver.com">
-    </div>
-    <div>
-      <label for="pw">비밀번호</label>
-      <input type="password" id="pw" name="pw" placeholder="●●●●">
-    </div>
-    <div>
-      <input type="hidden" name="url" value="${url}">
-      <button type="submit">Sign In</button>
-    </div>
-    <div>
-      <a href="${naverLoginURL}">
-        <img src="${contextPath}/resources/img/btnG_아이콘원형.png">
-      </a>
-    </div>
-  </form>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- include moment js -->
+<script src="${contextPath}/resources/moment/moment-with-locales.min.js"></script>
+
+<!-- include libraries(jquery, bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- include summernote css/js -->
+<link rel="stylesheet" href="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.css">
+<script src="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.js"></script>
+<script src="${contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
+
+<!-- include custom css/js -->
+<link rel="stylesheet" href="${contextPath}/resources/css/init.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/signin.css?dt=${dt}">
+
+</head>
+<body>
+
+
+<div id="app">
+  <div class="frame">
+	<div class="layout">
+	  <div class="layout-contents">
+	    <div class="layout-logo">
+	      <img alt="signup-logo" src="../resources/svg/logo-grapolio.svg">
+	    </div>
+	    <div class="layout-page">
+		  <form method="POST"
+		        action="${contextPath}/user/signin.do"
+		        class="login-frm">
+		    <div class="login-frm-email">
+		      <label for="email" class="login-label">이메일</label>
+		      <div class="login-input">
+		        <input type="text" class="text-input" id="email" name="email" placeholder="이메일을 입력해주세요.">
+		      </div>
+		    </div>
+		    <div class="login-frm-pw">
+		      <label for="pw" class="login-label">비밀번호</label>
+		      <div class="login-input">
+		        <input type="password" class="text-input" id="pw" name="pw" placeholder="비밀번호를 입력해주세요.">
+		        <div class="eye-pw"><i class="fa-regular fa-eye-slash" style="color: #d8dfdf;" width="26px" height="16px"></i></div>
+		      </div>
+		    </div>
+		    <div class="login-frm-btn">
+		      <input type="hidden" name="url" value="${url}">
+		      <div class="login-btn-wrap">
+		        <button type="submit" class="login-btn">로그인</button>
+		      </div>
+		    </div>
+		  </form>
+		  <div class="signup-nav">
+		  	<a href="${contextPath}/user/signup.page">회원가입</a>
+		  </div>
+	    </div>
+	  </div>
+	</div>
+  </div>
 </div>
+
+<script>
+
+  $(document).on('click', '.eye-pw', function() {
+	  $(this).empty();
+	  $(this).append('<i class="fa-regular fa-eye" style="color: #d8dfdf;" width="26px" height="16px"></i>');
+	  $(this).removeClass('eye-pw').addClass('eye-pw-open');
+	  $('.login-frm-pw').find('input').attr('type', 'text');
+  })
   
-<%@ include file="../layout/footer.jsp" %>
+  $(document).on('click', '.eye-pw-open', function() {
+	  $(this).empty();
+	  $(this).append('<i class="fa-regular fa-eye-slash" style="color: #d8dfdf;" width="26px" height="16px"></i>');
+	  $(this).removeClass('eye-pw-open').addClass('eye-pw');
+	  $('.login-frm-pw').find('input').attr('type', 'password');
+  })
+  
+  $('.layout-logo').find('img').on('click', () => {
+	  location.href = "${contextPath}/main.page";
+  })
+
+
+</script>
+
+	
+	
+	
+</body>
+</html>
 

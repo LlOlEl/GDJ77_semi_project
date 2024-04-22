@@ -322,6 +322,7 @@ userStatic.on('click', () => {
 // 팔로워 클릭시 서버에서 해당 유저의 팔로워 리스트 받아오기
 userStatic2.on('click', () => {
   
+  console.log('팔로워 클릭');
   // 모달창 띄우기
   $('.modal-outer').css('display', 'flex');
   
@@ -478,6 +479,9 @@ const fngetFollowingList = () => {
 
 // 팔로워 리스트 가져오기
 const fngetFollowerList = () => {
+	
+	console.log('팔로워 리스트 가져옴');
+	
     // 팔로잉 & 팔로워 유저 데이터 가져오기
     fetch(fnGetContextPath() + '/user/getFollowerList.do', {
       method: 'POST',
@@ -718,6 +722,8 @@ const fnFollwingScrollHandler = () => {
 
 // 무한 스크롤 - 팔로워
 const fnFollwerScrollHandler = () => {
+  console.log('무한스크롤 - 팔로워 리스트');
+	
   var timerId;
   $('.chow-scrollbar').on('scroll', (evt) => {
     if(timerId) {  
@@ -734,6 +740,8 @@ const fnFollwerScrollHandler = () => {
           return;
         }
         FollowerPage++;
+        console.log('FollowerPage', FollowerPage);
+        console.log('FollowerTotalPage', FollowerTotalPage);
         fngetFollowerList();
       }
     }, 500);
@@ -906,7 +914,7 @@ const fnGetUserLikeList = () => {
   })
 }
 	
-//업로드 게시글 페이지 용 무한 스크롤
+//좋아요 게시글 페이지 용 무한 스크롤
 const fnLikeListScrollHandler = () => {
 
     var timerId; 
