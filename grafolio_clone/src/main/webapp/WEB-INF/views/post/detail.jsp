@@ -14,38 +14,7 @@
  
  <style>
  
-  .title-wraper{
-  position: fixed;
-    top:0;
-    align-items: center; 
-    background-color: var(--mono-000);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    justify-content: center;
-    left: 0;
-    margin: 40px 0;
-    padding: 40px 0;
-   
-    width: 100%
-  }
-  
-  .tag-wrapper{
-    align-items: center;
-    background-color: var(--mono-000);
-    display: flex;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-    z-index: 99;
-    
-  }
-  
- 
- 
-  #detail-page {
+ .detail-page {
      align-items: center;
     background-color: var(--mono-000);
     display: flex;
@@ -55,15 +24,25 @@
     margin: 150px auto 0;
     overflow-y: scroll;
     padding: 0 0 127px;
-    position: absolute;
     scrollbar-width: none;
     top: 40px;
     width: 100%;
+    
     }
-
-  #title-wraper {
+ 
+  .project-detail-header{
+    background-color: rgb(255,255,255);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    
+    top: 40px;
+    width: 100%;
+    z-index: 99;
+  }
+ 
+ .title-wraper{
     align-items: center;
-    background-color: var(--mono-000);
+    background-color: rgb(255,255,255);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     display: flex;
@@ -71,16 +50,59 @@
     gap: 10px;
     justify-content: center;
     left: 0;
-    margin: 40px 0;
+    margin: 50px 0;
     padding: 40px 0;
     position: fixed;
     top: 0;
     width: 100%;
+ }
+  .tag-wrapper{
+    align-items: center;
+    background-color: var(--mono-000);
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    z-index: 99;
   }
-
-  .blind {
-    display: none;
-  }
+  
+  .tag-round-degree-large {
+    --tag-round-border-radius: 100px;
+ }
+  .tag-round-color-gray {
+    --tag-round-border-color: var(--mono-080);
+    --tag-round-bg-color: var(--mono-050);
+    color: var(--mono-400);
+ }
+  .tag-round-size-small {
+    --tag-round-height: 28px;
+    --tag-round-font-size: 12px;
+    --tag-round-gutter: 12px;
+ }
+  .tag-round {
+    --tag-round-height: 28px;
+    --tag-round-font-size: 12px;
+    --tag-round-gutter: 12px;
+    --tag-round-color: var(--mono-900);
+    --tag-round-border-width: 1px;
+    --tag-round-border-style: solid;
+    --tag-round-border-color: var(--mono-900);
+    --tag-round-border-radius: 100px;
+    --tag-round-bg-color: var(--mono-000);
+    align-items: center;
+    background-color: var(--tag-round-bg-color);
+    border-radius: var(--tag-round-border-radius);
+    color: var(--tag-round-color);
+    display: inline-flex;
+    font-size: var(--tag-round-font-size);
+    font-weight: 400;
+    gap: 10px;
+    height: var(--tag-round-height);
+    justify-content: center;
+    padding: 0 var(--tag-round-gutter);
+    position: relative;
+    white-space: nowrap;
+}
   
   .title-inner-wrapper{
     align-items: center;
@@ -88,221 +110,19 @@
     justify-content: center;
   }
   
-  .title-txt {
+  span.title-txt {
     display: block;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
-    height: 32px;
+    height: 36px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: -moz-fit-content;
-    width: fit-content
-  }
- 
- 
-  .comment-top {
-    color: gray;
-    font-size: 14px;
-    height: 100%;
-  }
-  
-  
-  
-  #btn-comment-register{
-    height: 100%;
-    weigth: 100%;
-    padding: var(--input-gutter);
-    rgba:(210,210,210,0.5);
-  }
-  
-  .con {
-  display: flex;
-  justify-content: center; /* 수평 가운데 정렬 */
-  align-items: center; /* 수직 가운데 정렬 */
-  width: 90%; /* 브라우저 너비의 90%로 설정 */
-  padding-bottom: 30px; /* 하단 여백 */
-  margin: 0 auto; /* 가운데 정렬을 위해 좌우 마진 자동 설정 */
-  margin-right: 20px;
-  padding-top: 40px;
-}
-
-.con span:nth-of-type(1) {
-  width: 20%; /* 내용의 너비를 브라우저 너비의 20%로 설정 */
-   
-}
-
-#contents {
-  
-}
-
-.con img {
-  max-width: 600px; /* 이미지의 최대 너비를 부모 요소인 .con의 너비에 맞게 설정 */
-  max-height: 600px; /* 이미지의 최대 높이를 부모 요소인 .con의 높이에 맞게 설정 */
-  
-}
-  
-  .content-bottom-wrapper {
-    cursor: pointer;
-    align-items: center;
-    display: flex;
-    gap: 30px;
-    justify-content: space-between;
-    margin: 50px 0 0;
-    width: 100%;
-  }
- 
- .tab-wrapper {
-    align-items: center;
-    display: flex;
-    flex-wrap:wrap;
-    gap: 20px;
-    width: 100%;
-    column-gap: 20px;
-    
-}
- .hashtag {
- background-color: rgb(200, 200, 200);
- display: inline-block;
- border-radius: 100px;
- padding: 20px;
- font-size:12px;
+    width: fit-content;
  }
- 
- .like{
-  font-size:12px;
-  cursor: auto;
- }
- 
-  #btn-comment-register {
-  background-color: gray;
   
-  }
-  
-  .comments-all{
-    display: none;
-  }
-  
-  #modalOpenButton, #modalCloseButton {
-  cursor: pointer;
-}
-
-#modalContainer {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-#modalContent {
-  position: absolute;
-  background-color: #ffffff;
-  width: 300px;
-  height: 150px;
-  padding: 15px;
-}
-
-#modalContainer.hidden {
-  display: none;
-}
-
-
- .navigation {
-   position: fixed;
-    top: 195px;
-    right: 0;
-    padding: 10px 20px;
-    z-index:10px
- }
- 
-
- 
- .menu-wrapper {
-  align-items: center;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-    margin: 0;
-    padding: 10px;
- }
- 
- .profile-wrapper {
-   align-items: center;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px 20px 40px;
-}
- 
- 
- .icon-wrapper {
-    
-    border: 1px solid var(--mono-050);
-    border-radius: 100%;
-    box-shadow: 0 4px 15px #dedede4d;
-    height: 50px;
-    position: relative;
-    width: 50px;
-    
-    
- }
- 
- .fa-icon {
- cursor: pointer;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
- }
- #share-icon {
- cursor: pointer;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
- }
- #icon-third {
- cursor: pointer;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
- }
- 
- 
- #comment-bottom{
-  display: flex;
-  left: 1300px;
-  font-size:12px;
-  cursor:pointer;
- }
- 
- .inputwrapper {
-  display: flex;
-  align-items: center; /* 수직 가운데 정렬 */
-  gap: 10px; /* 이미지와 입력 창 사이의 간격 조절 */
- }
- .img-ogq {
-  
-  border-radius: 50%;
-  
- }
- 
- .comment-selection {
- display: flex;
-    flex-direction: column;
-    gap: 40px;
-    position: relative;
-    width: 60%;
-    margin: auto;
- }
- 
- .content-wrapper {
+  .content-wrapper {
     border-bottom: 1px solid rgb(255,255,255);
     display: flex;
     flex-direction: column;
@@ -310,57 +130,614 @@
     padding-bottom: 80px;
     position: relative;
     width: 60%;
+ }
+
+  .content-block-wrap, .content-wrapper-upper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+ }
+ 
+   article.content-article {
+    flex: none;
+    width: 100%;
+ }
+  
+   .block {
+    --block-gap: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1000px;
+ }
+ 
+  .content-figure  {
+    margin: 0;
+    position: relative;
+ }
+ 
+  .content-image-wrap {
+    border-radius: 10px;
+    
+    position: relative;
+ }
+ 
+  .content-image-wrap img{
+    display: block;
+    height: auto;
+    margin: 0 auto;
+    max-width: 100%;
+    pointer-events: none;
+  }
+  .content-image-wrap p{
+    height: auto;
+    width: auto;
+  }
+  
+  .content-bottom-wrapper {
+    align-items: center;
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    margin: 50px 0 0;
+    width: 100%;
+ }
+  
+  .tab-wrapper {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+ }
+ 
+  .hashtag-btn {
+    cursor: pointer;
+ }
+ 
+  .hashtag-color-default {
+    --hashtag-bg-color: rgb(240,240,240);
+    --hashtag-color: rgb(0,0,0);
+ }
+ 
+  .hashtag-size-medium {
+    --hashtag-height: 39px;
+    --hashtag-font-size: 14px;
+    --hashtag-gutter: 20px;
+ }
+  
+  .hashtag {
+    --hashtag-height: 32px;
+    --hashtag-font-size: 12px;
+    --hashtag-gutter: 16px;
+    --hashtag-bg-color: rgb(240,240,240);
+    --hashtag-color: rgb(0,0,0);
+    background-color: var(--hashtag-bg-color);
+    border-radius: 100px;
+    color: var(--hashtag-color);
+    display: inline-block;
+    font-size: var(--hashtag-font-size);
+    font-weight: 400;
+    height: var(--hashtag-height);
+    line-height: var(--hashtag-height);
+    overflow: hidden;
+    padding: 0 var(--hashtag-gutter);
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+ }
+  
+  .figure-data-wrapper {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    margin: 10px 0 auto;
+ }
+  
+  .figure-data {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+ }
+ 
+  .navigation {
+    position: fixed;
+    top: 195px;
+    left: 1800px;
+    z-index: 10;
+ }
+  
+  .profile-wrapper {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px 20px;
+ }
+  
+  .profile-avatar-wrapper {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+ 
+  .dropdown-outer {
+    display: inline-flex;
+    height: auto;
+    position: relative;
+    width: auto;
+ }
+  
+  .dropdown-custom-trigger-block, .dropdown-trigger-block, .dropdown-trigger-wrapper {
+    display: flex;
+    height: auto;
+    width: 100%;
+ }
+  
+  .dropdown-trigger-block {
+    cursor: pointer;
+ }
+  
+  .avatar.owner {
+    border: 1px solid rgb(0,255,0);
+    border-radius: 100%;
+    cursor: pointer;
+ }
+ 
+  .profile-image-wrap {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+ }
+ 
+  .avatar.owner .profile-image-wrapper {
+    height: 48px;
+    width: 48px;
+ }
+ 
+  .profile-image-medium {
+    --profile-image-size: 40px;
+ }
+  
+  .profile-image-wrapper {
+    --profile-image-size: 30px;
+    background-color: var(--mono-080);
+    border-radius: 50%;
+    display: inline-block;
+    height: var(--profile-image-size);
+    overflow: hidden;
+    width: var(--profile-image-size);
+ }
+  
+  .profile-image-wrapper img {
+    border-radius: 50%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    pointer-events: none;
+    transition: transform 125ms;
+    width: 100%;
+ }
+  
+  ul.menu-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+ }
+  
+  .avatar-wrapper.hidden {
+    display: none;
+ }
+  
+  .avatar-wrapper {
+    height: 50px;
+    position: relative;
+    width: 50px;
+ }
+  
+  .avatar-wrapper .avatar.participant:first-child {
+    border-radius: 100%;
+    opacity: 1;
+    z-index: 4;
+ }
+.avatar-wrapper .avatar.participant {
+    cursor: pointer;
+    position: absolute;
+ }
+.profile-image-wrap {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+ }
+  
+  .profile-image-medium {
+    --profile-image-size: 40px;
+ }
+.profile-image-wrapper {
+    --profile-image-size: 30px;
+    background-color: var(--mono-080);
+    border-radius: 50%;
+    display: inline-block;
+    height: var(--profile-image-size);
+    overflow: hidden;
+    width: var(--profile-image-size);
+ }
+  
+  .icon-wrapper {
+    background-color: rgb(255,255,255);
+    border: 1px solid rgb(255,255,255);
+    border-radius: 100%;
+    box-shadow: 0 4px 15px #dedede4d;
+    height: 50px;
+    position: relative;
+    width: 50px;
+ }
+  
+  .icon-wrapper i {
+    cursor: pointer;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+ }
+  
+  .comment-section {
+    gap: 44px;
+    width: 70%;
 }
   
+  #comment-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 40px 0 0;
+}
+  
+  .comment-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 40px 0 0;
+ }
+
+ 
+  .comment-item {
+    align-items: flex-start;
+    display: flex;
+    flex-direction:column;
+    gap: 10px;
+    grid-template-columns: 40px 1fr;
+    padding: 20px;
+    position: relative;
+ }
+  
+  .profile-image-wrap {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+ } 
+ 
+  .comment-data-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+ }
+ 
+  .profile-image-wrap-avatar{
+    display:flex;
+    flex-direction: column;
+  }
+  
+  .profile-image-medium {
+    --profile-image-size: 40px;
+ }
+ 
+ 
+ 
+ .comments-all{
+   display:flex;
+   flex-direction: column;
+   
+ }
+ 
+ 
+ .btn-bottom-reply{
+  display:flex;
+  flex-direction: column;
+ }
+ 
+   form.form {
+    align-items: center;
+    border-top: 1px solid rgb(255,255,255);
+    display: grid;
+    gap: 5px;
+    padding: 40px 20px 20px;
+    margin-left: -850px;
+    margin-top: 50px;
+ }
+ 
+  .input-wrapper {
+    grid-gap: 10px;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    justify-content: space-between;
+    width: 100%;
+ }
+ 
+  .profile-image-wrap[data-v-d7f7ea8d] {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+ }
+  
+  
+  .input-outer.input-stretch {
+    --input-width: 100%;
+ }
+ 
+  .input-wrapper[data-v-ec5e8f9c] {
+    align-items: center;
+    background-color: var(--input-bg-color);
+    border-color: var(--input-border-color);
+    border-radius: 4px;
+    
+    border-width: var(--input-border-width);
+    display: flex;
+    height: var(--input-height);
+    position: relative;
+ }
+ 
+  .input-inner-wrap {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    gap: 20px;
+ }
+ 
+  input.input {
+    --input-color: rgb(0,0,0);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: rgb(255,255,255);
+    border-radius: 4px;
+    border-width: 0;
+    color: rgb(0,0,0);
+    font-size: var(--input-font-size);
+    font-weight: 400;
+    height: 100%;
+    line-height: normal;
+    min-width: 0;
+    outline: none;
+    padding: var(--input-gutter);
+      
+    border-style: solid;
+ }
+ 
+ .button.write-button {
+    height: 40px;
+    width: 90px;
+    
+ }
+ 
+   
+ 
+  .btn-text {
+    display: block;
+    position: relative;
+    transition: transform .3s;
+    white-space: nowrap;
+ }
+ 
+  .info-wrapper {
+    display: flex;
+    gap: 15px;
+    margin: 0px 0 120px auto;
+ }
+ 
+  .tooltip-title {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+ }
+ 
+  .title-wrapper {
+    align-items: center;
+    display: flex;
+    gap: 5px;
+ }
+ 
+  .project-section {
+    background-color: var(--mono-900);
+    border-radius: 10px;
+    padding: 50px;
+    width: 60%;
+ }
+ 
+  .head {
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    width: 100%;
+ }
+ 
+  .head-left {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+ }
+ 
+  .avatar[data-v-e3383a90] {
+    border: 1px solid rgb(0,245,0);
+    border-radius: 100%;
+    cursor: pointer;
+ }
+ 
+  .profile-image-wrap[data-v-d7f7ea8d] {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+ }
+ 
+  .profile-image-medium[data-v-d7f7ea8d] {
+    --profile-image-size: 40px;
+ }
+ 
+ .profile-image-wrapper[data-v-d7f7ea8d] {
+    --profile-image-size: 30px;
+    background-color: var(--mono-080);
+    border-radius: 50%;
+    display: inline-block;
+    height: var(--profile-image-size);
+    overflow: hidden;
+    width: var(--profile-image-size);
+}
+ 
+  .figure-wrapper, .head-right {
+    align-items: center;
+    display: flex;
+ }
+ 
+ span.nickname {
+    color: var(--mono-000);
+    cursor: pointer;
+    font-size: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 150px;
+ }
+ 
+  .head-right {
+    gap: 30px;
+    justify-content: flex-end;
+    width: 100%;
+ }
+ 
+  
+ 
+  
  </style>
+ 
+ <div class=""></div>
+ 
  <div class="detail-page">
  
- <div>
+ <div class="project-detail-header">
+    <div class="title-wraper">
+     <div class="tag-wrapper">
+       <div class="tag-round tag-round-size-small tag-round-color-gray tag-round-degree-large" id="ca-div">
+          <span>${post.category}</span>
+          </div>
+        </div>
+       <div class="title-inner-wrapper">
+        <span class="title-txt">${post.title}</span>
+       </div>
+         
+    </div>
  
  </div>
   
   
   
   
-  <div class="post-detail">
-    <div class="title-wraper">
-     <div class="tag-wrapper">
-       <div class="category-round category-round-size-medium category-round-color-gray category-round-degree-large category-round-pointed category"
-            data-category=1><!--[-->일러스트<!--]--><!----></div>
-     </div>
-      <div class="title-inner-wrapper">
-      <span class="title-txt">${post.title}</span>
-      </div>
-    </div>
+  
     <div>
       
     </div>
     
     
     
-    <div class="content-wrapper">
-      <div class="con">
+    <div class="content-wrapper" style="backround-color:rgb(255,255,255)">
+      <div class="content-wrapper-upper">
+        <article class="content-article">
+          <div class="block">
+            <div class="content">
+              <div class="content-figure">
+                <div class="content-image-wrap">
+                  ${post.contents}
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
         
-        <span>${post.contents}</span>
+        <div class="content-bottom-wrapper">
+          <div class="tab-wrapper">
+            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#사진</div>
+            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#인사동</div>
+            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#골목</div>
+            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#서울</div>
+            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#거리</div>
+          </div>
+          <div class="figure-data-wrapper">
+            <div class="figure-data">
+              <i class="fa-regular fa-heart" width="10px;"></i>
+              
+            </div>
+            <div class="figure-data">
+              <i class="fa-regular fa-eye" width="10px"></i>${post.hit}
+            </div>
+            <div class="figure-data">
+              <i class="fa-regular fa-comment" width="10px"></i>            
+            </div>
+          </div>
+        </div>
       </div>
     
-    <div class="content-bottom-wrapper">
-    <div class="tab-wrapper">   
-        <div class="hashtag">사진</div>
-        <div class="hashtag">인사동</div>
-        <div class="hashtag">골목</div>
-        <div class="hashtag">서울</div>
-        <div class="hashtag">거리</div>
-    </div>
-    <div class="like">
-      <div><i class="fa-regular fa-heart" width="10px;"></i>${like.likeNo}</div>
-    </div>
-    <div><i class="fa-regular fa-eye" width="10px"></i>${post.hit}</div>
-    <div><i class="fa-regular fa-comment" width="10px"></i></div>
+    
+     <div class="navigation">
+    <div class="profile-wrapper" width="24" height="24"> 
+      <div class="profile-avatar-wrapper">
+        <div class="dropdwon-outer">
+          <div class="dropdwon-trigger-block">
+            <div class="dropdwon-trigger-wrapper">
+              <div class="profile-image-wrap avatar owner">
+                <div class="profile-image-wrapper profile-image-medium">
+                  <img src="  https://preview.files.api.ogq.me/v1/profile/LARGE/PROFILE/7d7503a5/5f2ed5a3057d7/5f2ed5a3057d7.jpg
+                  " alt="avatar">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+      <ul class="menu-wrapper">
+        <!-- <div class="avatar-wrapper-hidden">
+          <div class="profile-image-wrap avatar participant">
+            <div class="profile-image-wrapper profile-image-medium">
+              
+            </div>
+          </div>
+        </div> -->
+        <div class="icon-wrapper">          
+           <button type="button" class="like-button" id="post"  data-post-no="${post.postNo}">
+           <i class="fa-regular fa-heart" id="icon-heart"  width="24" height="24"></i></button>                  
+      </div>
+      <div class="icon-wrapper">
+        
+          <button id="modalOpenButton"><i class="fas fa-thin fa-share-nodes" id="share-icon"></i></button> 
+        
+      </div>  
+      
+      </ul>  
+    <!-- class="navigation" -->
   </div>
+        
     
     
     </div>
+    
+  
     
     <c:if test="${sessionScope.user.userNo == post.user.userNo}">
       <form id="frm-btn" method="POST">  
@@ -369,7 +746,7 @@
         <button type="button" id="btn-remove" class="btn btn-danger btn-sm">삭제</button>
       </form>
     </c:if>
-  </div>
+ 
   
  
   
@@ -379,52 +756,63 @@
   
   
   
-  <div class="comment-selection">
-  <div class="inputwrapper">
-   <img class="img-ogq" src="https://preview.files.api.ogq.me/v1/profile/LARGE/NEW-PROFILE/default_profile.png" width="20px" height="20px">
-  <form id="frm-comment">
-    <input type="text" id="contents" name="contents" placeholder="댓글을 입력해주세요"></input>
-    <input type="hidden" name="postNo" value="${post.postNo}">
-    <c:if test="${not empty sessionScope.user}">
-      <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
-    </c:if>
-    <button id="btn-comment-register" type="button" disabled>등록하기</button>
-  </form>
+  <div class="comment-section">
+ 
   
+   <div id="comment-list">
+     <div class="comment-item">
+     </div>   
    </div>
-  <div>
-    <button id="comment-bottom">© All Rights Reserved</button>
-  </div>
-  </div>
- 
-  
-  <div id="comment-list"></div>
   <div id="paging"></div>
   
+  </div>
   
-  
-  <div class="navigation"  >
-    <div class="profile-wrapper" width="24" height="24"> 
-      <i class="fa-regular fa-user"></i>
+  <form id="frm-comment" class="form">
+  <div class="input-wrapper">
+   <div data-v-d7f7ea8d class="profile-image-wrap">
+    <img class="img-ogq" src="https://preview.files.api.ogq.me/v1/profile/LARGE/NEW-PROFILE/default_profile.png" width="40px" height="40px">
+   </div>
+   <div class="input-outer input-stretch">
+    <div data-v-ec5e8f9c class="input-wrapper">
+      <div class="input-inner-wrap">
+        <input type="text" id="contents" name="contents" placeholder="댓글을 입력해주세요"></input>
+        <button id="btn-comment-register" type="button" disabled class="btn btn-size-small btn-color-black button write-button">
+        <div class="btn-text">
+          등록하기
+        </div>
+      </button> 
+      </div>
+   </div>
     </div>
-    
-    <div class="menu-wrapper">
-      <div class="icon-wrapper">
-       <div class="fa-icon">
-         <c:if test="${sessionScope.user.userNo == post.user.userNo}">
-         <i class="fa-regular fa-heart" id="icon-heart" ></i>
-         </c:if>       
-       </div>
-      </div>
-      <div class="icon-wrapper" >
-        <c:if test="${sessionScope.user.userNo == post.user.userNo}">
-          <button id="modalOpenButton"><i class="fas fa-thin fa-share-nodes" id="share-icon"></i></button> 
-        </c:if> 
-      </div>
-      <div class="icon-wrapper">
-        <i class="fa-regular fa-bookmark" id="icon-third"></i>
-      </div>
+   </div>
       
+      <input type="hidden" name="postNo" value="${post.postNo}">
+      <c:if test="${not empty sessionScope.user}">
+        <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
+      </c:if>
+  </form>
+  
+  <div class="info-wrapper">
+    <div>
+      <div class="tooltip-title">
+       <div class="title-wrapper">
+        <span id="comment-bottom" class="tooltip-wrapper">© All Rights Reserved</span>
+       </div> 
+      </div>    
+     </div>   
+  </div>
+ 
+  
+  <div class="project-section">
+    <div class="head">
+      <div class="head-left">
+        <div data-v-d7f7ea8d data-v-e3383a90 class="profile-image-wrap avatar">
+          <div data-v-d7f7ea8d class="profile-image-wrapper profile-image-medium">
+            <i class="fa-regular fa-user"></i>
+          </div>
+        </div>
+        <span class="nickname">${user.name}</span>
+      </div>
     </div>
   </div>
   
@@ -438,27 +826,150 @@
   </div>
  
   
+  
 </div>  
 
 
   <script>
   
- 
+  
+  
+  
+  
+  const fnCheckSignin = () => {
+      if('${sessionScope.user}' === '') {
+        if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')) {
+          location.href = '${contextPath}/user/signin.page';
+        }
+      }
+    }
+  
+  const fnPostLike = () => {
+      // 좋아요 버튼에 클릭 이벤트 리스너 추가
+      $(document).on('click', '.like-button', (evt) => {
+          evt.stopPropagation(); // 이벤트 버블링을 중단
+          var postNo = evt.target.closest('.like-button').dataset.postNo; // 게시물 번호 추출
+          var userNo = '${sessionScope.user.userNo}';
+          var likeButton = evt.target.closest('.like-button'); // 좋아요 버튼 참조
+          if('${sessionScope.user}' === ''){
+            fnCheckSignin();
+            return;
+          }
+          // 좋아요 버튼에 'liked' 클래스가 있는지 확인
+          if (likeButton.classList.contains('liked')) {
+              // 좋아요 취소 요청
+              fetch('${contextPath}/post/deletelikepost.do', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ 
+                      'postNo': parseInt(postNo, 10),
+                      'userNo': parseInt(userNo, 10)
+                  })
+              })
+              .then(response => response.json())
+              .then(resData => {
+                  alert('Like removed!'); // 성공 처리
+                  likeButton.classList.remove('liked');
+                  likeButton.innerHTML = '<i class="fa-regular fa-heart" style="color: #000000;"></i>'; // 빈 하트 아이콘으로 변경
+              })
+              .catch(error => {
+                  alert('Error removing like.'); // 에러 처리
+              });
+          } else {
+              // 좋아요 설정 요청
+              fetch('${contextPath}/post/likepost.do', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ 
+                      'postNo': parseInt(postNo, 10),
+                      'userNo': parseInt(userNo, 10)
+                  })
+              })
+              .then(response => response.json())
+              .then(resData => {
+                  alert('Liked!'); // 성공 처리
+                  likeButton.classList.add('liked');
+                  likeButton.innerHTML = '<i class="fa-solid fa-heart" style="color: #e33861;"></i>';
+              })
+              .catch(error => {
+                  alert('Error liking the post.'); // 에러 처리
+              });
+          }
+          return false; // 페이지 리로드 방지
+      });
+    };
+  
+  
+    const fnGetLikeCountByPostNo = () => {
+    	   let btnLike = document.getElementById('post');
+    	   let postNo = btnLike.dataset.postNo;
+         fetch('${contextPath}/post/get-like-count-by-postno?postNo=' + postNo, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            
+          }
+        })
+        .then(response => response.json())
+        .then(resData => {
+          
+          let str ='<div>'
+          str += '<span>' + resData.likeCount+ '</span>';
+          str += '</div>';
+          console.log(str);
+          $('.figure-data').append(str);   
+          
+          
+        })
+        .catch(error => {
+            console.log('Error likecount the post.'); // 에러 처리
+        });
+      }
+
+  
+   
+  
+  //navigation
+  window.addEventListener('resize', function() {
+      var navigation = document.querySelector('.navigation');
+      var windowWidth = window.innerWidth;
+      var leftPosition = windowWidth - 100;
+      
+      navigation.style.left = leftPosition + 'px';
+      
+  });
+  
+  
+  // header 상단고정 후 움직임
+  window.addEventListener('scroll', function() {
+      var header = document.querySelector('.project-detail-header');
+      var headerJsp = document.querySelector('.header-wrap');
+
+      if (header && headerJsp) {
+          var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          var headerHeight = header.offsetHeight;
+
+          if (scrollTop > headerHeight) {
+              header.style.position = 'fixed';
+              header.style.top = '0';
+              headerJsp.style.position = 'fixed';
+              headerJsp.style.top = '0';
+              headerJsp.style.backgroundColor = 'rgb(255,255,255)';
+              headerJsp.style.zIndex = '1000';
+          } else {
+              header.style.position = 'static';
+              headerJsp.style.position = 'static';
+          }
+      }
+  });
  
  
   
-//아이콘의 초기 색상을 추적합니다.
-  document.getElementById('icon-heart').addEventListener('click', (evt) => {
-    let iconColor = 'rgb(0, 0, 0)'; // 초기 색상 설정
-    // 현재 색상이 초기 색상과 같은지 확인하여 토글합니다.
-    if (evt.target.style.color === iconColor) {
-      // 초기 색상과 같으면 다른 색상으로 변경합니다.
-      evt.target.style.color = '#e33861'; // 새로운 색상
-    } else {
-      // 초기 색상과 다르면 초기 색상으로 변경합니다.
-      evt.target.style.color = 'rgb(0, 0, 0)'; // 초기 색상
-    }
-  });
+
   
   
  
@@ -482,7 +993,7 @@
     // 복사 완료 메시지 표시
     alert("주소가 복사되었습니다: " + textToCopy);
   });
-	  
+    
    
 
   
@@ -493,10 +1004,10 @@
   
   // commentBottom
   document.getElementById('comment-bottom').onclick = (evt)=>{
-	  alert('저작권자의 허가 없이 무단복제 및 도용, 2차 가공 및 공유 금지');
-	  //modal.classList.remove('hidden');
-	    
-	  }
+    alert('저작권자의 허가 없이 무단복제 및 도용, 2차 가공 및 공유 금지');
+    modal.classList.remove('hidden');
+      
+    }
   
   
   let nowUrl = window.location.href;
@@ -510,25 +1021,19 @@
    
   
   const fnKeyup = ()=> {
-	  let btnChange = document.getElementById('btn-comment-register');
-	  document.getElementById('contents').addEventListener('input', (evt)=>{
-		  if( evt.target.value !== ''){
-			  btnChange.style.backgroundColor = 'rbg(130,130,130)';
-			  btnChange.disabled = false;
-		  } else {
-			  btnChange.disabled = true;
-			  btnChange.style.backgroundColor = 'rgba(210,210,210,0.5)';
-		  }
-	  })
+    let btnChange = document.getElementById('btn-comment-register');
+    document.getElementById('contents').addEventListener('input', (evt)=>{
+      if( evt.target.value !== ''){
+        btnChange.style.backgroundColor = 'rgb(130,130,130)';
+        btnChange.disabled = false;
+      } else {
+        btnChange.disabled = true;
+        btnChange.style.backgroundColor = 'rgba(0,240,0,0.5)';
+      }
+    })
   }
   
-    const fnCheckSignin = () => {
-      if('${sessionScope.user}' === '') {
-        if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')) {
-          location.href = '${contextPath}/user/signin.page';
-        }
-      }
-    }
+    
     
     const fnRegisterComment = () => {
       $('#btn-comment-register').on('click', (evt) => {
@@ -577,8 +1082,9 @@
         data: 'postNo=${post.postNo}&page=' + page,
         dataType: 'json',
         success: (resData) => { // resData = {"commentList": [], "paging": "< 1 2 3 4 5 >"}
-          let commentList = $('#comment-list');
+          let commentList = $('.comment-item');
           let paging = $('#paging');
+          let profileWrap = $('.profile-image-wrap-avatar')
           commentList.empty();
           paging.empty();
           if(resData.commentList.length === 0){
@@ -590,29 +1096,35 @@
             let str = '';
             // 댓글 들여쓰기 (댓글 여는 <div>)
             if(comment.depth === 0) {
-              str += '<div>';
-
+              
+              
+              
+              
+              str += '<div class="comment-start" style="">';
+              str += '<i class="fa-regular fa-user"></i>'
             } else {
-              str += '<div class="comments-all" style="padding-left: 32px;">';
+              str += '<div class="comments-all" style="padding-left: 32px; display:none">';
             }
             // 댓글 내용 표시
             console.log(comment.state);
             if(comment.state === 1){
-              str += '<span class="comment-top">';
+              str += '<div class="comment-top">';
               str += comment.user.email;
               str += '<br>'
               str += '(' + moment(comment.createDt).format('YYYY.MM.DD.') + ')';
-              str += '</span>';
+              str += '</div>';
               str += '<div>' + comment.contents + '</div>';
               
-              str += '<button type="button" class="btn btn-success btn-reply">답글</button>';
               // 답글 버튼
-                
+              str += '<div clas="btn-bottom-reply">'
+              str += '<button type="button" class="btn-reply" >답글</button>';
+              str += '<button type="button" id="btn-comment-show" >답글보기</button>';
+              str += '</div>'
               if(comment.depth === 0) {
-                	
+                  
               }
               /* 답글 입력 화면 */
-              str += '<div class="blind">';
+              str += '<div class="blind" style="display:none;">';
               str += '  <form class="frm-reply">';
               str += '    <input type="hidden" name="groupNo" value="' + comment.groupNo + '">';
               str += '    <input type="hidden" name="postNo" value="${post.postNo}">';
@@ -625,13 +1137,14 @@
               // 삭제 버튼 (내가 작성한 댓글에만 삭제 버튼이 생성됨)
               if(Number('${sessionScope.user.userNo}') === comment.user.userNo) {
                 str += '<button type="button" class="btn btn-danger btn-remove" data-comment-no="' + comment.commentNo + '">삭제</button>'
-                str += '<button type="button" id="btn-comment-show">답글보기</button>';
+                
               }
             } else {
               str += '<span>삭제된 댓글입니다.</span>'
             }
             // 댓글 닫는 <div>
             str += '</div>';
+            
             // 목록에 댓글 추가
             commentList.append(str);
           })
@@ -641,8 +1154,9 @@
           
             $('#btn-comment-show').on('click', ()=> {
               // 현재 클릭한 답글 보기 버튼에 해당하는 댓글의 답글 목록을 토글
-        	   $('.comments-all').toggle();
+             $('.comments-all').toggle();
             });  
+            
           
         },
         error: (jqXHR) => {
@@ -656,13 +1170,10 @@
         // Sign In 체크
         fnCheckSignin();
         // 답글 작성 화면 조작하기
-        let write = $(evt.target).next();
-        if(write.hasClass('blind')) {
-          $('.write').addClass('blind'); // 모든 답글 작성 화면 닫은 뒤
-          write.removeClass('blind');    // 답글 작성 화면 열기
-        } else {
-          write.addClass('blind');
-        }
+
+        $('.blind').toggle();
+         
+        
       })
     }
     
@@ -739,6 +1250,8 @@
     fnRegisterReply();
     fnEditPost();
     fnRemovePost();
+    fnPostLike();
+    fnGetLikeCountByPostNo();
   </script>
   
 <%@ include file="../layout/footer.jsp" %>
