@@ -243,7 +243,7 @@
    
    <select id="getHitCountByUserNo"
            resultType="int">
-     SELECT SUM(HIT)
+     SELECT COALESCE(SUM(HIT), 0)
        FROM (SELECT P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
               FROM USER_T U INNER JOIN POST_T P
                 ON U.USER_NO = P.USER_NO
