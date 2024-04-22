@@ -511,6 +511,22 @@ public class UserServiceImpl implements UserService {
 		// DB 에서 목록 가져오기
 		userList = userMapper.getProfileList(map);
 		
+		
+		// 팔로잉 여부 확인하기 위해 코드 추가. - 오채원
+		
+		// 현재 로그인한 유저의 userNo
+		UserDto user = (UserDto)request.getSession().getAttribute("user");
+		
+	  Optional<UserDto> opt = Optional.ofNullable(user);
+	  int loginNo = opt.map(UserDto::getUserNo).orElse(0);
+		
+		for(int i = 0; i < userList.size(); i++) {
+		  Map<String, Object> map2 = Map.of("fromUser", loginNo
+		                                  , "toUser", userList.get(i).getUserNo());
+		  userList.get(i).setIsFollow(userMapper.checkFollow(map2));
+		}
+		
+		
 		return new ResponseEntity<Map<String,Object>>(Map.of("userList", userList,
 																												 "totalPage", myPageUtils.getTotalPage())
 																						  	, HttpStatus.OK);

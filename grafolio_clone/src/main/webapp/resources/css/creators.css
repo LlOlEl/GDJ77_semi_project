@@ -223,13 +223,23 @@ span.txt-card-type {
     display: flex;
     flex-direction: column-reverse;
     height: 61px;
+    cursor: pointer;
 }
 
+/* 오채원 */
+.creator-bottom:hover .creator-bottom-info {
+    display: none;
+}
+/* 오채원 */
+.creator-bottom:hover .button-wrapper {
+	display: flex;
+}
+/* 오채원 */
 .creator-bottom-info {
     display: flex;
     margin: 0 0 25px;
 }
-
+/* 오채원 */
 .creator-bottom-info-inner {
     align-items: center;
     border-right: 1px solid var(--mono-080);
@@ -248,3 +258,81 @@ span.txt-card-type {
     font-size: 11px;
     font-weight: 500;
 }
+
+/*오채원*/
+.button-wrapper.list {
+    display: none;
+    gap: 10px;
+    width: auto;
+    height: 85%;	
+}
+
+/*오채원*/
+.btn-follow {
+  border-radius: 32px;
+  width: 92%;
+  height: 34px;
+  margin: 0 auto;
+  font-size: 12px;
+  align-items: center;
+  background-color: #00b57f;
+  border-color: #00b57f;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 500;
+  height: 35px;
+  justify-content: center;
+  outline: 0;
+  padding: 0 30px;
+  position: relative;
+  text-decoration: none;
+  word-break: keep-all;
+}
+
+.btn-follow:hover {
+  background-color: #00825B;
+  border-color: #00825B;
+}
+  
+
+/*오채원*/
+.btn-unfollow {
+  border-radius: 32px;
+  width: 92%;
+  height: 34px;
+  margin: 0 auto;
+  font-size: 12px;
+  align-items: center;
+  background-color: #425052;
+  border-color: #425052;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: none;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 500;
+  height: 35px;
+  justify-content: center;
+  outline: 0;
+  padding: 0 30px;
+  position: relative;
+  text-decoration: none;
+  word-break: keep-all;
+}
+
+/* 오채원 */
+.btn-follow > .btn-text {
+  color: white;
+}
+
+/* 오채원 */
+.btn-unfollow > .btn-text {
+  color: white;
+}
+
