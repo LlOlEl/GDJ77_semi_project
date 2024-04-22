@@ -479,6 +479,7 @@ public class UserServiceImpl implements UserService {
   // 유저 프로필 조회 - 오채원
   @Override
   public UserDto getProfileByUserNo(HttpServletRequest request) {
+    
     int userNo = Integer.parseInt(request.getParameter("userNo"));
     UserDto user = userMapper.getProfileByUserNo(userNo);
     return user;
