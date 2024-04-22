@@ -52,7 +52,7 @@
           <a href="${contextPath}/post/list.page">프로젝트</a>
         </div>
         <div class="hedaer-menu">
-          <div class="profile-test" data-user-no="${sessionScope.user.userNo}">마이페이지</div>
+          <div class="profile" data-user-no="${sessionScope.user.userNo}">마이페이지</div>
         </div>
         <div class="hedaer-menu">
           <a href="${contextPath}/user/creators.page">크리에이터</a>
@@ -81,4 +81,29 @@
   </div>
 
   <div class="main-wrap">
+  
+  
+  <script>
+  
+  const fnGetProfile = () => {
+  	$('.profile').on('click', (evt) => {
+  		if(evt.target.dataset.userNo === '') {
+	  		console.log(evt.target.dataset.userNo);
+	  		location.href="${contextPath}/user/profile.do?userNo=" + 1;
+  		} else {
+  	  		console.log(evt.target.dataset.userNo);
+  	  		location.href="${contextPath}/user/profile.do?userNo=" + evt.target.dataset.userNo;
+  		}
+
+  	})
+  }
+  
+  
+  fnGetProfile();
+  
+  
+  </script>
+  
+  
+  
   

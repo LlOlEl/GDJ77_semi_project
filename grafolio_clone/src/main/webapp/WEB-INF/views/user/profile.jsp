@@ -198,7 +198,8 @@ const fnGetContextPath = ()=>{
 
 
 // 프로필의 팔로우 버튼
-$('#btn-follow').on('click', (evt) => {
+
+$(document).on('click', '#btn-follow', function() {
   // 로그인 여부 체크
   fnCheckSignin();
   if(!hasLogin) {
@@ -206,7 +207,7 @@ $('#btn-follow').on('click', (evt) => {
   } else {
   // check값에 true 주기 - follow
     check = false;
-    fnFollow();
+    fnFollow(check);
   }
 })
 
@@ -214,7 +215,7 @@ $('#btn-follow').on('click', (evt) => {
 $(document).on('click', '#btn-unfollow', function() {
   // check값에 true 주기 - follow
   check = true;
-  fnFollow();
+  fnFollow(check);
 });
 
 // 모달창의 팔로우 버튼
@@ -366,6 +367,12 @@ $('.list-item').eq(1).on('click', () => {
 	$('.list-body').empty();
 	fnGetUserLikeList();
 })
+
+// 6. 업로드 및 좋아요한 프로젝트 - 상세보기
+$(document).on('click', '.card', function(event) {
+	location.href = fnGetContextPath() + '/post/detail.do?postNo=' + $(this).data('postNo');
+});
+
 
 
 
@@ -562,8 +569,8 @@ const fngetFollowerList = () => {
 
 
 // 팔로우 - 프로필
-const fnFollow = () => {
-  
+const fnFollow = (check) => {
+	
   if(!check) {
     // check값 true이므로 follow
     // 팔로우를 신청받은 user의 userNo 전송
@@ -580,6 +587,8 @@ const fnFollow = () => {
       .then(resData=> {
         if(resData.insertFollowCount === 1) {
           checkFollow = true;
+          check = true;
+          // 테스트
           fnChangeBtn();
         }
       })
@@ -600,6 +609,8 @@ const fnFollow = () => {
     .then(resData=>{
       if(resData.deleteFollowCount === 1) {
         checkFollow = false;
+        check = false;
+        // 테스트
         fnChangeBtn();
       }
     })
