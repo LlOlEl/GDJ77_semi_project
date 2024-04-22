@@ -124,15 +124,16 @@ public class UserServiceImpl implements UserService {
         // 접속 기록 ACCESS_HISTORY_T 에 남기기
         userMapper.insertAccessHistory(params);
 
-        // 회원 정보를 세션에 보관하기
-        request.getSession().setAttribute("user", userMapper.getUserByMap(params));
-        
-        // modify.do 에서 profile 사용을 위해 세션에서 user 정보 꺼내기
-        HttpSession session = request.getSession();
-        UserDto user1 = (UserDto) session.getAttribute("user");
+//        // 회원 정보를 세션에 보관하기
+//        request.getSession().setAttribute("user", userMapper.getUserByMap(params));
+//        
+//        // modify.do 에서 profile 사용을 위해 세션에서 user 정보 꺼내기
+//        HttpSession session = request.getSession();
+//        UserDto user1 = (UserDto) session.getAttribute("user");
         
         // Sign In 후 페이지 이동
-        out.println("location.href='" + request.getContextPath() + "/user/modifyPage.do?userNo=" + user1.getUserNo() + "';");
+        out.println("location.href='" + request.getContextPath() + "/user/main.do';");
+//        out.println("location.href='" + request.getContextPath() + "/user/modifyPage.do?userNo=" + user1.getUserNo() + "';");
         
         // 일치하는 회원이 없음 (Sign In 실패)
       } else {
@@ -605,12 +606,5 @@ public class UserServiceImpl implements UserService {
                                   , "followingCount", followingCount
                                   , "totalPage", myPageUtils.getTotalPage()));
   }
-  
-  
-  
-  
-  
-  
-  
   
 }

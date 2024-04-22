@@ -11,10 +11,12 @@ var secEmail = document.getElementById('section-email');
 var secPw = document.getElementById('section-pw');
 var secName = document.getElementById('section-name');
 var secMobile = document.getElementById('section-mobile');
+var secOptions = document.getElementById('section-options');
 var btnConfirmCode = document.getElementById('btn-confirmCode');
 var btnVerifyCode = document.getElementById('btn-verify-code');
 var btnConfirmPw = document.getElementById('btn-confirmPw');
 var btnConfirmName = document.getElementById('btn-confirmName');
+var btnConfirmMobile = document.getElementById('btn-confirmMobile');
 var msg = document.querySelector('span');
 
 
@@ -192,6 +194,7 @@ const fnCheckMobile = () => {
   if(!mobileCheck){
     msgMobile.innerHTML = '휴대전화를 확인하세요.'
   } else {
+    btnConfirmMobile.removeAttribute('disabled');
     msgMobile.innerHTML = ''
   }
 }
@@ -244,8 +247,10 @@ btnConfirmName.addEventListener('click', () => {
     secName.style.display = 'none';
     secMobile.style.display = '';
     msg.textContent = '회원정보 확인 및 계정찾기를 위해 휴대폰 본인인증을 해주세요.';
-    
-    
+})
+btnConfirmMobile.addEventListener('click', () => {
+    secMobile.style.display = 'none';
+    secOptions.style.display = '';
 })
 
 

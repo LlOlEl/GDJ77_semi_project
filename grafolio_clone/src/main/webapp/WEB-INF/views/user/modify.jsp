@@ -16,7 +16,12 @@
         
 	  <div class="profile_picture">
 	   <div class="main">
-	     <img src="${contextPath}/resources/img/default_cover.png">
+	     <c:if test="${profile.descript == ''}">
+	       <img src="${contextPath}/resources/img/default_cover.png">
+	     </c:if>
+	     <c:if test="${profile.descript != ''}">
+	       
+	     </c:if>
 	     <img class="main-edit-btn" src="${contextPath}/resources/img/btn-edit.png">
 	   </div>
      <div class="mini">
@@ -48,9 +53,18 @@
 		  <div class="row">
 		    <span>비밀번호</span>
 		    <div>
-		      <input type="password" name="" placeholder="현재 비밀번호를 입력해 주세요.">
-		      <input type="password" id="" name="" placeholder="새 비밀번호를 입력해 주세요.(8~20자리)">
-		      <input type="password" id="" placeholder="확인을 위해 새 비밀번호를 재입력해 주세요.">
+		      <div>
+		        <input type="password" name="currPw" placeholder="현재 비밀번호를 입력해 주세요.">
+		        <div id="msg-pw"></div>
+		      </div>
+		      <div>
+		        <input type="password" id="inp-pw1" name="pw" placeholder="새 비밀번호를 입력해 주세요.(8~20자리)">
+		        <div id="msg-pw1"></div>
+		      </div>
+		      <div>
+		        <input type="password" id="inp-pw2" placeholder="확인을 위해 새 비밀번호를 재입력해 주세요.">
+		        <div id="msg-pw2"></div>
+		      </div>
 		    </div>
 		  </div>
 		  <div class="row">
