@@ -31,4 +31,6 @@ public interface PostService {
 	
   // 유저프로필 - 업로드한 게시글 가져오기(오채원)
 	ResponseEntity<Map<String, Object>> getUserUploadList(HttpServletRequest request);
+  // 유저프로필 - 좋아요한 게시글 가져오기(오채원)
+  ResponseEntity<Map<String, Object>> getUserLikeList(HttpServletRequest request);
 }

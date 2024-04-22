@@ -607,7 +607,7 @@ public class UserServiceImpl implements UserService {
     int followingTotal = userMapper.fnGetFollowingCount(followingMap);
     
     // 스크롤 1 -> 유저 6
-    int display = 6;
+    int display = 10;
     
     // 현재 페이지 번호
     int page = (Integer)params.get("page");
@@ -656,7 +656,7 @@ public class UserServiceImpl implements UserService {
     int followerTotal = userMapper.fnGetFollowerCount(followerMap);
     
     // 스크롤 1 -> 유저 6
-    int display = 6;
+    int display = 10;
     
     // 현재 페이지 번호
     int page = (Integer)params.get("page");

@@ -139,6 +139,20 @@
               .catch(error => {
                 console.error('Error fetching hit count for user number ' + user.userNo + ': ', error);
               });
+              
+              // 팔로잉 & 팔로워 카운트 조회 - 오채원(24/04/21)
+              fnGetFollowCount(user.userNo)
+              .then(result => {
+            	  // `data-user-no` 속성을 사용하여 해당 사용자의 div를 찾고 그 하위에서 n번째 .txt-card-count를 업데이트
+            	  const n1 = 1;
+            	  const n2 = 2;
+            	  $('div[data-user-no="' + user.userNo + '"]').find('.txt-card-count').eq(n1).text(result.followingCount);
+            	  $('div[data-user-no="' + user.userNo + '"]').find('.txt-card-count').eq(n2).text(result.followerCount);
+              })
+              .catch(error => {
+                console.error('Error fetching following count for user number ' + user.userNo + ': ', error);
+              });   
+              
           })
           /*   if('${sessionScope.user}' !== ''){
              fnLikeCheck();
@@ -181,6 +195,28 @@
           console.log('Error likecount the post.'); // 에러 처리
       });
     }
+    
+    // 팔로잉, 팔로워 수 가져오기 - 오채원(24/04/21)
+    const fnGetFollowCount = (userNo) => {
+        return fetch('${contextPath}/user/getFollowCount.do', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'userNo': userNo
+            })
+        })
+        .then(response => response.json())
+        .then(resData => {
+            return resData;
+        })
+        .catch(error => {
+            console.log('Error getting the follow count:', error); // 에러 처리
+            throw error; // 에러를 다시 throw하여 상위로 전파
+        });
+    }
+    
     
     // HTML 문자열에서 첫 번째 <img> 태그의 src 속성을 추출
     function extractFirstImage(htmlContent) {
