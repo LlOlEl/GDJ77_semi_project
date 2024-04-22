@@ -492,7 +492,7 @@ public class UserServiceImpl implements UserService {
 		int total = userMapper.getUserCount();
 		
 		// 스크롤 이벤트마다 가져갈 목록 개수
-		int display = 10;
+		int display = Integer.parseInt(request.getParameter("display") == null ? "12" : request.getParameter("display"));
 		
 		// 현재 페이지 번호
 		int page = Integer.parseInt(request.getParameter("page"));
