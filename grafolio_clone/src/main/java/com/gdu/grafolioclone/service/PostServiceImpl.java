@@ -107,7 +107,7 @@ public class PostServiceImpl implements PostService {
 		int total = postMapper.getPostCount();
 		
 		// 스크롤 이벤트마다 가져갈 목록 개수
-		int display = 10;
+		int display = Integer.parseInt(request.getParameter("display") == null ? "12" : request.getParameter("display"));
 		
 		// 현재 페이지 번호
 		int page = Integer.parseInt(request.getParameter("page"));
@@ -198,7 +198,7 @@ public class PostServiceImpl implements PostService {
     int total = postMapper.getCommentCount(postNo);
     
     // 한 페이지에 표시할 댓글 개수
-    int display = 10;
+    int display = Integer.parseInt(request.getParameter("display") == null ? "10" : request.getParameter("display"));
     
     // 페이징 처리
     myPageUtils.setPaging(total, display, page);
@@ -301,7 +301,7 @@ public class PostServiceImpl implements PostService {
     
     int total = postMapper.getUserUploadCount(Integer.parseInt(request.getParameter("userNo")));
     
-    int display = 30;
+    int display = Integer.parseInt(request.getParameter("display") == null ? "30" : request.getParameter("display"));
     
     int page = Integer.parseInt(request.getParameter("page"));
     
@@ -327,7 +327,7 @@ public class PostServiceImpl implements PostService {
     
     int total = postMapper.getUserLikeCountByUserNo(Integer.parseInt(request.getParameter("userNo")));
     
-    int display = 30;
+    int display = Integer.parseInt(request.getParameter("display") == null ? "30" : request.getParameter("display"));
     
     int page = Integer.parseInt(request.getParameter("page"));
     

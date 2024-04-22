@@ -50,9 +50,11 @@
               str += '  </div>';
               str += '  <div class="creator-avatar-wrap">';
               str += '    <div class="profile-image-wrap card-avatar">';
-              str += '      <div class="profile-image-wrapper profile-image-large profile-bordered">';
-              str += '        <img src="${contextPath}/resources/img/default_profile_image.png" alt="avatar" draggable="false">';
-              str += '      </div>';
+              str += '      <a href="${contextPath}/user/profile.do?userNo=' + user.userNo + '"">'
+              str += '        <div class="profile-image-wrapper profile-image-large profile-bordered">';
+              str += '          <img src="${contextPath}/resources/img/default_profile_image.png" alt="avatar" draggable="false">';
+              str += '        </div>';
+              str += '      </a>'
               str += '    </div>'
               str += '  </div>'
               str += '</div>'
@@ -62,9 +64,11 @@
               str += '  <div class="creator-body-info">';
               str += '    <div class="creator-body-info-upper">';
               str += '      <div class="nickname-wrapper">';
-              str += '        <span class="txt-card-nickname">';
+              str += '        <a href="${contextPath}/user/profile.do?userNo=' + user.userNo + '"">'
+              str += '          <span class="txt-card-nickname">';
               str += user.name;
               str += '</span>'
+              str += '</a>'
               str += '      </div>';
               str += '      <span class="txt-card-type">';
               str += user.profileCategory;
@@ -132,8 +136,8 @@
               
               fnGetHitCountByUserNo(user.userNo)
               .then(result => {
-                // `data-user-no` 속성을 사용하여 해당 사용자의 div를 찾고 그 하위에서 n번째 .txt-card-count를 업데이트
-                const n = 3; // n은 0부터 시작하여 해당 위치를 지정 (예: 0은 첫 번째, 1은 두 번째)
+                // `data-user-no` 속성을 사용하여 해당 사용자의 div를 찾고 그 하위에서 n번째 creator-head-image를 업데이트
+                 const n = 3;
                 $('div[data-user-no="' + user.userNo + '"]').find('.txt-card-count').eq(n).text(result);
               })
               .catch(error => {
@@ -152,6 +156,21 @@
               .catch(error => {
                 console.error('Error fetching following count for user number ' + user.userNo + ': ', error);
               });   
+              
+              // 유저가 업로드한 최근 게시물 4개에서 썸네일을 받아와서 표시
+              fnGetUserUploadList(user.userNo)
+              .then(result => {
+          	    // 각 썸네일 URL을 div의 백그라운드 이미지로 설정
+          	    const $divs = $('div[data-user-no="' + user.userNo + '"]').find('.creator-head-image');
+          	    result.forEach((thumbnailUrl, index) => {
+          	      if (thumbnailUrl  && $divs.eq(index).length) {  // 해당 인덱스의 div가 존재하는 경우에만 처리
+          	        $divs.eq(index).css('background-image', 'url("' + thumbnailUrl + '")');
+        	        }
+          	    })
+              })
+              .catch(error => {
+                console.error('Error fetching UploadList for user number ' + user.userNo + ': ', error);
+              });
               
           })
           /*   if('${sessionScope.user}' !== ''){
@@ -217,6 +236,19 @@
         });
     }
     
+    // 프로필 유저가 업로드한 게시물 가져오기
+    const fnGetUserUploadList = (userNo) => {
+      return fetch('${contextPath}/post/getUserUploadList.do?userNo=' + userNo + '&page=1&display=4')
+      .then(response=>response.json())
+      .then(resData=> {
+    	  const thumbnailUrls = []; // thumbnailUrl 배열 생성
+        $.each(resData.userUploadList, (i, upload) => {
+          var thumbnailUrl = extractFirstImage(upload.contents);
+          thumbnailUrls.push(thumbnailUrl); // 배열에 thumbnailUrl 추가
+        })
+        return thumbnailUrls; // thumbnailUrl 배열 리턴
+      })
+    }
     
     // HTML 문자열에서 첫 번째 <img> 태그의 src 속성을 추출
     function extractFirstImage(htmlContent) {
