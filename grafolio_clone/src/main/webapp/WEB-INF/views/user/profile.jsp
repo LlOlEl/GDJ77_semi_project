@@ -145,6 +145,10 @@
      </div>
    </div>
  </div>
+ 
+ 
+ 
+
    
 
 <script>
@@ -732,9 +736,8 @@ const fnGetUserUploadList = () => {
   .then(resData=> {
     UploadListTotalPage = resData.totalPage;
     $.each(resData.userUploadList, (i, upload) => {
-    	console.log('프로필 유저가 업로드한 게시물 가져옴.');
       var thumbnailUrl = extractFirstImage(upload.contents);
-      let str = '<div class="card-wrap card">';
+      let str = '<div class="card-wrap card" data-post-no="' +upload.postNo+ '">';
       // str += displayThumbnail(thumbnailUrl);
       str += '  <div class="card-image" style="background-image: url(' + thumbnailUrl + ');">';
       str += '    <div class="card-item-wrap">';
@@ -829,9 +832,8 @@ const fnGetUserLikeList = () => {
   .then(resData=> {
     LikeListTotalPage = resData.totalPage;
     $.each(resData.userLikeList, (i, like) => {
-    	console.log('프로필 유저가 좋아요한 게시물 가져옴.');
       var thumbnailUrl = extractFirstImage(like.contents);
-      let str = '<div class="card-wrap card">';
+      let str = '<div class="card-wrap card" data-post-no="' +like.postNo+ '">';
       // str += displayThumbnail(thumbnailUrl);
       str += '  <div class="card-image" style="background-image: url(' + thumbnailUrl + ');">';
       str += '    <div class="card-item-wrap">';
@@ -957,8 +959,7 @@ const fnGetLikeCountByPostNo = (postNo) => {
 
 // 좋아요 수 확인
 const fnLikeCheck = () => {
-	console.log('좋아요 수 확인');
-    const posts = document.querySelectorAll('.post');
+    const posts = document.querySelectorAll('.card');
     // 모든 게시물에 대해 'Liked' 상태를 확인
     posts.forEach(post => {
       let postNo = post.dataset.postNo;
