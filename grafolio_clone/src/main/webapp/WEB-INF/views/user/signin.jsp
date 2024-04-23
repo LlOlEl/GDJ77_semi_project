@@ -57,7 +57,7 @@
 		    <div class="login-frm-btn">
 		      <input type="hidden" name="url" value="${url}">
 		      <div class="login-btn-wrap">
-		        <button type="submit" class="login-btn">로그인</button>
+		        <button type="submit" class="login-btn" disabled>로그인</button>
 		      </div>
 		    </div>
 		  </form>
@@ -72,24 +72,79 @@
 
 <script>
 
-  $(document).on('click', '.eye-pw', function() {
-	  $(this).empty();
-	  $(this).append('<i class="fa-regular fa-eye" style="color: #d8dfdf;" width="26px" height="16px"></i>');
-	  $(this).removeClass('eye-pw').addClass('eye-pw-open');
-	  $('.login-frm-pw').find('input').attr('type', 'text');
-  })
-  
-  $(document).on('click', '.eye-pw-open', function() {
-	  $(this).empty();
-	  $(this).append('<i class="fa-regular fa-eye-slash" style="color: #d8dfdf;" width="26px" height="16px"></i>');
-	  $(this).removeClass('eye-pw-open').addClass('eye-pw');
-	  $('.login-frm-pw').find('input').attr('type', 'password');
-  })
-  
+// 로고 클릭 시 메인으로
+const LogoMain = () => {
   $('.layout-logo').find('img').on('click', () => {
-	  location.href = "${contextPath}/main.page";
+    location.href = "${contextPath}/main.page";
+  })
+}
+
+// 패스워드 보기
+const hidePw = () =>{
+  $(document).on('click', '.eye-pw', function() {
+    $(this).empty();
+    $(this).append('<i class="fa-regular fa-eye" style="color: #000000;" width="26px" height="16px"></i>');
+    $(this).removeClass('eye-pw').addClass('eye-pw-open');
+    $('.login-frm-pw').find('input').attr('type', 'text');
   })
 
+  $(document).on('click', '.eye-pw-open', function() {
+    $(this).empty();
+    $(this).append('<i class="fa-regular fa-eye-slash" style="color: #d8dfdf;" width="26px" height="16px"></i>');
+    $(this).removeClass('eye-pw-open').addClass('eye-pw');
+    $('.login-frm-pw').find('input').attr('type', 'password');
+  })
+}
+
+// 이메일, 패스워드 입력란 밑줄 스타일 변경
+const changeBorder = () => {
+  var emailInput = $('.login-frm-email');  
+  var pwInput = $('.login-frm-pw');
+  
+  emailInput.on('input', function() {
+	  console.log('input 이벤트 - 이메일 실행');
+    if($('input[type="text"]').val() === '') {
+      $(this).css('border-bottom', '');
+   	  $(this).css('border-bottom', '1px solid #d8dfdf;');
+    } else {
+ 	  $(this).css('border-bottom', '1px solid black');
+    }
+  })
+  
+  pwInput.on('input', function() {
+	  console.log('input 이벤트 - PW 실행');
+	  if($('input[type="password"]').val() === '') {
+		  $(this).css('border-bottom', '');
+		  $(this).css('border-bottom', '1px solid #d8dfdf;');
+	  } else {
+	      $(this).css('border-bottom', '1px solid black');
+	  }
+  })
+}
+
+// 로그인 disabled 값 변경
+const changeBtn = () => {
+  
+  $('input').on('keyup', () => {
+    var email = $('.login-frm-email').find('input').val();
+    var pw = $('.login-frm-pw').find('input').val();
+    var btn = $('.login-btn');
+	
+    if(email !== '' && pw !== '') {
+      btn.prop('disabled', false);
+    } else {
+   	  btn.prop('disabled', true);
+    }
+  })
+
+
+}
+
+
+hidePw();
+LogoMain();
+changeBorder();
+changeBtn();
 
 </script>
 

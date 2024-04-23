@@ -109,6 +109,12 @@
     margin-top: 16px;
 }
 
+/*
+.login-input > input:focus {
+	border-bottom: 1px solid black;
+}
+*/
+
 .login-frm-pw {
     padding-top: 35px;
 }
@@ -153,6 +159,10 @@
     font-weight: 500;
 }
 
+.login-btn:disabled {
+	background-color: #d8dfdf;
+}
+
 .signup-nav {
     margin-top: 5px;
     font-size: 14px;
@@ -163,4 +173,6 @@
 input:focus {
 	outline: none;
 }
+
+
 
