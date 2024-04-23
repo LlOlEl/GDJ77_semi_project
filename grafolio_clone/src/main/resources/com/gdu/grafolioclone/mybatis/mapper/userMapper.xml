@@ -24,6 +24,10 @@
       , PW
       , NAME
       , MOBILE
+      , MINI_PROFILE_PICTURE_PATH
+      , MAIN_PROFILE_PICTURE_PATH
+      , DESCRIPT
+      , PROFILE_CATEGORY
       , SIGNUP_KIND
       , PW_MODIFY_DT
       , SIGNUP_DT
@@ -33,6 +37,10 @@
       , #{pw}
       , #{name}
       , #{mobile}
+      , #{miniProfilePicturePath}
+      , #{mainProfilePicturePath}
+      , #{descript}
+      , #{profileCategory}
       , 0
       , CURRENT_DATE
       , CURRENT_DATE

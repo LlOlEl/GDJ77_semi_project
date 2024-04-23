@@ -12,6 +12,7 @@
 
   <img alt="signup-logo" src="../resources/img/logo-grapolio.svg">
   <form method="POST"
+        enctype="multipart/form-data"
         action="${contextPath}/user/signup.do"
         id="frm-signup">
   
@@ -72,13 +73,13 @@
       <label for="inp-miniProfile" class="col-sm-3 col-form-label">프로필 이미지</label>
       <div class="col-sm-9"><input type="file" name="miniProFilePicutrePath" id="inp-miniProfile" class="form-control"></div>
       <div class="col-sm-3"></div>
-      <div class="col-sm-9" id="msg-"></div>
+      <div class="col-sm-9" id="attach-mini-list"></div>
     </div>
     <div class="row mb-3">
       <label for="inp-mainProfile" class="col-sm-3 col-form-label">프로필 배경 이미지</label>
       <div class="col-sm-9"><input type="file" name="mainProFilePicutrePath" id="inp-mainProfile" class="form-control"></div>
       <div class="col-sm-3"></div>
-      <div class="col-sm-9" id="msg-"></div>
+      <div class="col-sm-9" id="attach-main-list"></div>
     </div>
     <div class="row mb-3">
       <label for="inp-descript" class="col-sm-3 col-form-label">한 줄 소개</label>
@@ -87,7 +88,7 @@
       <div class="col-sm-9" id="msg-"></div>
     </div>
     <div class="row mb-3">
-      <label for="inp-" class="col-sm-3 col-form-label">관심 카테고리</label>
+      <label for="inp-category" class="col-sm-3 col-form-label">관심 카테고리</label>
       <div class="col-sm-9">
 	      <input type="checkbox" name="profileCategory" value="일러스트">일러스트
 	      <input type="checkbox" name="profileCategory" value="사진">사진

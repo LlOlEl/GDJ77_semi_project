@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.grafolioclone.dto.UserDto;
 
@@ -15,7 +16,7 @@ public interface UserService {
 	// 가입 및 탈퇴
 	ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params);
 	ResponseEntity<Map<String, Object>> sendCode(Map<String, Object> params);
-	void signup(HttpServletRequest request, HttpServletResponse response);
+	void signup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response);
 	void leave(HttpServletRequest request, HttpServletResponse response);
 	
 	// 로그인 및 로그아웃

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.grafolioclone.dto.UserDto;
@@ -117,9 +118,15 @@ public class UserController {
   }
   
   @PostMapping("/signup.do")
-  public void signup(HttpServletRequest request, HttpServletResponse response) {
-    userService.signup(request, response);
+  public void signup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+    userService.signup(multipartRequest, response);
   }
+  
+//  @PostMapping("/signup.do")
+//  public String signup(MultipartHttpServletRequest multipartRequest, RedirectAttributes redirectAttributes) {
+//    redirectAttributes.addFlashAttribute("inserted", userService.signup(multipartRequest));
+//    return "redirect:/main.page";
+//  }
   
   @GetMapping("/leave.do")
   public void leave(HttpServletRequest request, HttpServletResponse response) {

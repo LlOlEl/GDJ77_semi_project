@@ -16,11 +16,11 @@
         
 	  <div class="profile_picture">
 	   <div class="main">
-	     <c:if test="${profile.descript == ''}">
+	     <c:if test="${profile.mainProFilePicutrePath == ''}">
 	       <img src="${contextPath}/resources/img/default_cover.png">
 	     </c:if>
-	     <c:if test="${profile.descript != ''}">
-	       
+	     <c:if test="${profile.mainProFilePicutrePath != ''}">
+	       ${profile.mainProfilePicturePath}
 	     </c:if>
 	     <img class="main-edit-btn" src="${contextPath}/resources/img/btn-edit.png">
 	   </div>
@@ -96,7 +96,7 @@
 	    <div>
 	      <input type="hidden" name="userNo" value="${user.userNo}">
 		    <button type="submit" id="btn-modify" class="btn btn-primary">저장하기</button>
-		    <button type="button" id="btn-next" class="btn btn-secondary">나중에 추가하기</button>
+		    <button type="button" id="btn-next" class="btn btn-secondary">취소하기</button>
 	    </div>
 	   
 	  </div>

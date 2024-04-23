@@ -17,6 +17,16 @@ public class MyFileUtils {
     return "/upload" + DateTimeFormatter.ofPattern("/yyyy/MM/dd").format(TODAY);
   }
   
+  // 미니 프로필 경로 반환
+  public String getMiniProfilePath() {
+    return "/profile/mini" + DateTimeFormatter.ofPattern("/yyyy/MM/dd").format(TODAY);
+  }
+  
+  // 메인 프로필 경로 반환
+  public String getMainProfilePath() {
+    return "/profile/main" + DateTimeFormatter.ofPattern("/yyyy/MM/dd").format(TODAY);
+  }
+  
   // 저장될 파일명 반환
   public String getFilesystemName(String originalFilename) {
     String extName = null;
