@@ -692,7 +692,6 @@ public class UserServiceImpl implements UserService {
     
     List<UserDto> followerList = userMapper.fnGetFollowerList(followerListMap);
     
-    System.out.println("followerList: " + followerList);
     
     for(int i = 0; i < followerList.size(); i++) {
       Map<String, Object> map3 = Map.of("fromUser", LoginUserNo

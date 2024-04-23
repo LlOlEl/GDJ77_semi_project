@@ -189,14 +189,6 @@ const fnGetContextPath = ()=>{
 }
 
 
-
-
-
-
-
-
-
-
 // 프로필의 팔로우 버튼
 
 $(document).on('click', '#btn-follow', function() {
@@ -225,7 +217,7 @@ $(document).on('click', '.btn-modal-follow', function() {
   
   // 자기 자신 검사
   if($('.content').data('userNo') === $(this).data('userNo')) {
-	  return;
+    return;
   }
   
   // 로그인 여부 검사
@@ -265,9 +257,9 @@ $(document).on('click', '.btn-modal-unfollow', function() {
   
   // 자기 자신 검사
   if($('.content').data('userNo') === $(this).data('userNo')) {
-	  return;
+    return;
   }
-	
+  
   // 로그인 여부 통과되었으므로 fetch 진행
   fetch(fnGetContextPath() + '/user/unfollow.do', {
     method: 'POST',
@@ -303,7 +295,7 @@ var userStatic2 = $('.user-statistic').eq(2);
  
 // 팔로잉 클릭시 서버에서 해당 유저의 팔로잉 리스트 받아오기
 userStatic.on('click', () => {
-  
+	$('.chow-scrollbar').off('scroll');
   // 모달창 띄우기
   $('.modal-outer').css('display', 'flex');
   
@@ -312,16 +304,16 @@ userStatic.on('click', () => {
   FollowingPage = 1;
   FollowingTotalPage = 0;
   
-  
+  $('.chow-scrollbar').off('scroll');
   fngetFollowingList();
-  fnFollwingScrollHandler();
+  fnFollowingScrollHandler();
   // 로그인된 유저(session)와 팔로잉 유저 데이터의 userNo값 비교해서 팔로잉 
    
 })
 
 // 팔로워 클릭시 서버에서 해당 유저의 팔로워 리스트 받아오기
 userStatic2.on('click', () => {
-  
+  $('.chow-scrollbar').off('scroll');
   // 모달창 띄우기
   $('.modal-outer').css('display', 'flex');
   
@@ -330,21 +322,26 @@ userStatic2.on('click', () => {
   FollowerPage = 1;
   FollowerTotalPage = 0;
   
+
   fngetFollowerList();
-  fnFollwerScrollHandler();
+  fnFollowerScrollHandler();
   // 로그인된 유저(session)와 팔로잉 유저 데이터의 userNo값 비교해서 팔로잉 
   
 })
 
 // 2. 모달창 나가기
 $('.modal-overlay').on('click', () => {
-  $('.modal-outer').css('display', 'none');
   $(".list.chow-scrollbar").empty();
+  $('.chow-scrollbar').off('scroll');
+	$('.modal-outer').css('display', 'none');
+	$('.chow-scrollbar').scrollTop(0);
 })
 
 $('.btn-confirm').on('click', () => {
+  $(".list.chow-scrollbar").empty();
+	$('.chow-scrollbar').off('scroll');
 	$('.modal-outer').css('display', 'none');
-	$(".list.chow-scrollbar").empty();
+	$('.chow-scrollbar').scrollTop(0);
 })
 
 // 3. 모달창 - 닉네임 클릭 시 해당 유저 프로필 이동
@@ -356,21 +353,21 @@ $(document).on('click', '.nickname', function(event) {
 $('.list-item').eq(0).on('click', () => {
   $('.list-item').eq(0).css('color', '#00b57f');
   $('.list-item').eq(1).css('color', 'black');
-	$('.list-body').empty();
-	fnGetUserUploadList();
+  $('.list-body').empty();
+  fnGetUserUploadList();
 });
 
 // 5. 좋아요 프로젝트 버튼 클릭 시
 $('.list-item').eq(1).on('click', () => {
-	$('.list-item').eq(0).css('color', 'black');
-	$('.list-item').eq(1).css('color', '#00b57f');
-	$('.list-body').empty();
-	fnGetUserLikeList();
+  $('.list-item').eq(0).css('color', 'black');
+  $('.list-item').eq(1).css('color', '#00b57f');
+  $('.list-body').empty();
+  fnGetUserLikeList();
 })
 
 // 6. 업로드 및 좋아요한 프로젝트 - 상세보기
 $(document).on('click', '.card', function(event) {
-	location.href = fnGetContextPath() + '/post/detail.do?postNo=' + $(this).data('postNo');
+  location.href = fnGetContextPath() + '/post/detail.do?postNo=' + $(this).data('postNo');
 });
 
 
@@ -394,7 +391,6 @@ const fngetFollowingList = () => {
    })
    .then(response=> response.json())
    .then(resData=> { // resData - {"followingList": [...], "totalPage":3}
-   
     $('.modal-title').text('팔로잉');  
       
     // totalPage 갱신
@@ -423,7 +419,7 @@ const fngetFollowingList = () => {
           str += '    <div class="profile-image-wrap">';
           str += '      <div class="profile-modal-image-wrapper profile-modal-image-medium">';
         if(following.miniProfilePicturePath !== null) {
-        	str += following.miniProfilePicturePath;
+          str += following.miniProfilePicturePath;
         } else {
           str += '        <img alt="avatar-image" src="../resources/img/default_profile_image.png" draggable="false" width=40px>';
         } 
@@ -478,6 +474,7 @@ const fngetFollowingList = () => {
 
 // 팔로워 리스트 가져오기
 const fngetFollowerList = () => {
+  
     // 팔로잉 & 팔로워 유저 데이터 가져오기
     fetch(fnGetContextPath() + '/user/getFollowerList.do', {
       method: 'POST',
@@ -491,7 +488,6 @@ const fngetFollowerList = () => {
      })
      .then(response=> response.json())
      .then(resData=> { // resData - {"followerList": [...], "totalPage":3}
-     
         $('.modal-title').text('팔로워');  
         // totalPage 갱신
         FollowerTotalPage = resData.totalPage;
@@ -570,7 +566,7 @@ const fngetFollowerList = () => {
 
 // 팔로우 - 프로필
 const fnFollow = (check) => {
-	
+  
   if(!check) {
     // check값 true이므로 follow
     // 팔로우를 신청받은 user의 userNo 전송
@@ -694,51 +690,54 @@ const fnCheckSignin = () => {
   }
 }
 
-// 무한 스크롤 - 팔로잉
-const fnFollwingScrollHandler = () => {
+
+const fnFollowingScrollHandler = () => {
   var timerId;
   $('.chow-scrollbar').on('scroll', (evt) => {
-    if(timerId) {  
+	  
+    if (timerId) {  
       clearTimeout(timerId);
     }
     timerId = setTimeout(() => {
-    let scrollTop = window.scrollY;  // $(window).scrollTop();
-    let windowHeight = window.innerHeight;  // $(window).height();
-    let modalHeight = 290;
-      if((modalHeight - scrollTop - windowHeight) < 50) {  
-        if(FollowingPage > FollowingTotalPage) {
+      let scrollTop = $('.chow-scrollbar').scrollTop(); // 모달 내부의 스크롤 위치
+      let modalHeight = $('.modal').outerHeight(); // 모달의 전체 높이
+      let scrollHeight = $('.list.chow-scrollbar').prop('scrollHeight'); // 모달 내부의 스크롤 가능한 영역의 높이
+      
+      if (scrollHeight - scrollTop < modalHeight) {  
+        if (FollowingPage > FollowingTotalPage) {
           return;
         }
         FollowingPage++;
         fngetFollowingList();
       }
     }, 500);
-  })
-}
+  });
+};
 
-// 무한 스크롤 - 팔로워
-const fnFollwerScrollHandler = () => {
+const fnFollowerScrollHandler = () => {
   var timerId;
-  $('.chow-scrollbar').on('scroll', (evt) => {
-    if(timerId) {  
-      clearTimeout(timerId);
-    }
-    timerId = setTimeout(() => {
-    let scrollTop = window.scrollY;  // $(window).scrollTop();
-    let windowHeight = window.innerHeight;  // $(window).height();
-    let modalHeight = 290;
-    
-    
-      if((modalHeight - scrollTop - windowHeight) < 50) {  
-        if(FollowerPage > FollowerTotalPage) {
-          return;
-        }
-        FollowerPage++;
-        fngetFollowerList();
+    $('.chow-scrollbar').on('scroll', (evt) => {
+	  
+      if (timerId) {  
+        clearTimeout(timerId);
       }
-    }, 500);
-  })
-}
+      timerId = setTimeout(() => {
+        let scrollTop = $('.chow-scrollbar').scrollTop(); // 모달 내부의 스크롤 위치 - scrollTop
+        let modalHeight = $('.modal').outerHeight(); // 모달의 전체 높이 - view
+        let scrollHeight = $('.list.chow-scrollbar').prop('scrollHeight'); // 모달 내부의 스크롤 가능한 영역의 높이 - document
+      
+        if(scrollHeight - scrollTop < modalHeight) {  
+          if (FollowerPage > FollowerTotalPage) {
+            return;
+          }
+          FollowerPage++;
+          fngetFollowerList();
+        }
+      }, 500);
+    });
+};
+
+
 
 // 프로필 유저가 업로드한 게시물 가져오기
 const fnGetUserUploadList = () => {
@@ -905,8 +904,8 @@ const fnGetUserLikeList = () => {
     }
   })
 }
-	
-//업로드 게시글 페이지 용 무한 스크롤
+  
+//좋아요 게시글 페이지 용 무한 스크롤
 const fnLikeListScrollHandler = () => {
 
     var timerId; 
@@ -938,7 +937,7 @@ const extractFirstImage = (htmlContent) => {
   var div = document.createElement('div');
   div.innerHTML = htmlContent; // HTML 문자열을 DOM으로 변환
   var image = div.querySelector('img'); // 첫 번째 이미지 태그 선택
-  return image ? image.src : null; // 이미지의 src 속성 반환	
+  return image ? image.src : null; // 이미지의 src 속성 반환  
 }
 
 
@@ -1021,7 +1020,7 @@ const fnGetHitCountByUserNo = () => {
   })
   .then(response => response.json())
   .then(resData => {
-	  console.log(resData.hitCount);
+    console.log(resData.hitCount);
     var hitCount = $('.txt-card-count:eq(3)');
     hitCount.text(resData.hitCount);
   })
