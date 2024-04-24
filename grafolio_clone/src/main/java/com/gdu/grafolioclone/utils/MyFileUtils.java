@@ -71,8 +71,11 @@ public class MyFileUtils {
         dir.mkdirs();
       }
       String originalFilename = profile.getOriginalFilename();
+      
+      System.out.println(originalFilename);
+      
       String filesystemName = getFilesystemName(originalFilename);
-      profilePicturePath = builder.append("<img src=\"").append(multipartRequest.getContextPath()).append(uploadPath).append(filesystemName).append("\">").toString();
+      profilePicturePath = builder.append("<img src=\"").append(multipartRequest.getContextPath()).append(uploadPath).append("/") .append(filesystemName).append("\">").toString();
       builder.setLength(0);
       
       File file = new File(dir, filesystemName);
