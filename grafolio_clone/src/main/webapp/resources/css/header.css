@@ -67,6 +67,7 @@
   margin: 0 50px;
   justify-content: space-between;
   width: 95%;
+  font-size: 15px;
 }
 
 .header-left {
@@ -170,6 +171,10 @@ img.icon.icon-search {
   margin: 20px auto;
 }
 
+.user-wrap {
+  margin-left: 10px;
+}
+
 .btn-signin {
   align-items: center;
   width: 100px;
@@ -219,7 +224,7 @@ img.icon.icon-search {
 }
 
 .dropdown-outer {
-	margin-left: 10px;
+	margin-left: 15px;
 }
 
 .dropdown-menu-block {
