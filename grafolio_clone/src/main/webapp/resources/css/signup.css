@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+
+body {
+  width: 100%;
+  max-width: 68rem;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  color: #4d4d4d;
+}
+
+
+@media (min-width: 640px) {
+    .layout {
+        width: 588px;
+    }
+}
+
+/* 로그인 창 전체 화면 */
+@media (min-width: 640px) {
+    .layout-page{
+        width: 475px;
+    }
+}
+
+@media (min-width: 640px) {
+    .layout-logo {
+        margin-top: 112px;
+    }
+}
+
+#app {
+	background-color: #f5f5f5;
+}
+
+.layout {
+	width: 588px;
+    height: 100vh;
+	background-color: white;
+	margin: 0 auto;
+	overflow: auto;
+}
+
+/* 로고 */
+.layout-logo {
+	/*margin-top: 55px;*/
+	margin-top: 112px;
+	text-align: center;
+}
+
+.layout-logo > img {
+	cursor: pointer;
+}
+
+.layout-page {
+	/*width: 320px;*/
+	width: 475px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.input-text {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #d8dfdf;
+    margin-top: 16px;
+}
+
