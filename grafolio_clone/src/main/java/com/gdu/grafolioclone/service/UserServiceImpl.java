@@ -23,10 +23,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.grafolioclone.dto.PostDto;
 import com.gdu.grafolioclone.dto.UserDto;
 import com.gdu.grafolioclone.mapper.UserMapper;
+import com.gdu.grafolioclone.utils.MyFileUtils;
 import com.gdu.grafolioclone.utils.MyJavaMailUtils;
 import com.gdu.grafolioclone.utils.MyPageUtils;
 import com.gdu.grafolioclone.utils.MySecurityUtils;
@@ -40,14 +42,16 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
   private final MyJavaMailUtils myJavaMailUtils;
   private final MyPageUtils myPageUtils;
+  private final MyFileUtils myFileUtils;
   
   public UserServiceImpl(Environment env, UserMapper userMapper, MyJavaMailUtils myJavaMailUtils,
-      MyPageUtils myPageUtils) {
+      MyPageUtils myPageUtils, MyFileUtils myFileUtils) {
     super();
     this.env = env;
     this.userMapper = userMapper;
     this.myJavaMailUtils = myJavaMailUtils;
     this.myPageUtils = myPageUtils;
+    this.myFileUtils = myFileUtils;
   }
 
   public ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params) {
@@ -89,58 +93,62 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void signup(HttpServletRequest request, HttpServletResponse response) {
+  public void signup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
     
-    // 전달된 파라미터
-    String email = request.getParameter("email");
-    String pw = MySecurityUtils.getSha256(request.getParameter("pw"));
-    String name = MySecurityUtils.getPreventXss(request.getParameter("name")) ;
-    String mobile = request.getParameter("mobile");
+    String email = multipartRequest.getParameter("email");
+    String pw = MySecurityUtils.getSha256(multipartRequest.getParameter("pw"));
+    String name = MySecurityUtils.getPreventXss(multipartRequest.getParameter("name"));
+    String mobile = multipartRequest.getParameter("mobile");
+    String descript = MySecurityUtils.getPreventXss(multipartRequest.getParameter("descript"));
+    String[] profileCategoryValues = multipartRequest.getParameterValues("profileCategory");
+    
+    String miniProfilePicturePath = myFileUtils.updateProfilePicture(multipartRequest, "miniProfilePicturePath");
+    String mainProfilePicturePath = myFileUtils.updateProfilePicture(multipartRequest, "mainProfilePicturePath");
+    
+    // 관심 카테고리
+    String profileCategory = (profileCategoryValues != null) ? String.join(", ", profileCategoryValues) : "";
     
     UserDto user = UserDto.builder()
-                       .email(email)
-                       .pw(pw)
-                       .name(name)
-                       .mobile(mobile)
-                      .build();
+                      .email(email)
+                      .pw(pw)
+                      .name(name)
+                      .mobile(mobile)
+                      .miniProfilePicturePath(miniProfilePicturePath)
+                      .mainProfilePicturePath(mainProfilePicturePath)
+                      .profileCategory(profileCategory)
+                      .descript(descript)
+                    .build();
     
     // 회원 가입
     int insertCount = userMapper.insertUser(user);
     
-
-    // 응답 만들기 (성공하면 sign in 처리하고 /main.do 이동, 실패하면 뒤로 가기)
-    
     try {
-      response.setContentType("text/html; charset=UTF-8");
+      response.setContentType("text/html");
       PrintWriter out = response.getWriter();
       out.println("<script>");
       
-      // 일치하는 회원이 있음 (Sign In 성공)
+      // 가입 성공
       if(insertCount == 1) {
-        Map<String, Object> params = Map.of("email", email,"pw", pw 
-                                          , "ip", request.getRemoteAddr()
-                                          , "userAgent", request.getHeader("User-Agent")
-                                          , "sessionId", request.getSession().getId());
+        // Sign In 및 접속 기록을 위한 Map
+        Map<String, Object> params = Map.of("email", email
+                                          , "pw", pw
+                                          , "ip", multipartRequest.getRemoteAddr()
+                                          , "userAgent", multipartRequest.getHeader("User-Agent")
+                                          , "sessionId", multipartRequest.getSession().getId());
         
-        // 접속 기록 ACCESS_HISTORY_T 에 남기기
+        // Sign In (세션에 user 저장하기)
+        multipartRequest.getSession().setAttribute("user", userMapper.getUserByMap(params));
+        
+        // 접속 기록 남기기
         userMapper.insertAccessHistory(params);
-
-        // 회원 정보를 세션에 보관하기
-        request.getSession().setAttribute("user", userMapper.getUserByMap(params));
         
-        // modify.do 에서 profile 사용을 위해 세션에서 user 정보 꺼내기
-        HttpSession session = request.getSession();
-        UserDto user1 = (UserDto) session.getAttribute("user");
+        out.println("alert('회원 가입되었습니다.');");
+        out.println("location.href='" + multipartRequest.getContextPath() + "/main.page';");
         
-        // Sign In 후 페이지 이동
-        out.println("location.href='" + request.getContextPath() + "/user/modifyPage.do?userNo=" + user1.getUserNo() + "';");
-        
-        // 일치하는 회원이 없음 (Sign In 실패)
       } else {
-        out.println("alert('일치하는 회원 정보가 없습니다.')");
+        out.println("alert('회원 가입 실패했습니다.');");
         out.println("history.back();");
       }
-      
       out.println("</script>");
       out.flush();
       out.close();
@@ -450,27 +458,31 @@ public class UserServiceImpl implements UserService {
   }
   
   @Override
-  public int updateUser(HttpServletRequest request) {
+  public int modifyUser(MultipartHttpServletRequest multipartRequest) {
     
-    // 전달된 파라미터
-    int userNo = Integer.parseInt(request.getParameter("userNo"));
-    String name = MySecurityUtils.getPreventXss(request.getParameter("name")) ;
-    String mobile = request.getParameter("mobile");
-    String pw = MySecurityUtils.getSha256(request.getParameter("pw"));
-    String miniProfilePicturePath = request.getParameter("miniProFilePicutrePath");
-    String mainProfilePicturePath = request.getParameter("mainProFilePicutrePath");
-    String descript = request.getParameter("descript");
-    String profileCategory = request.getParameter("profileCategory");
+    String name = MySecurityUtils.getPreventXss(multipartRequest.getParameter("name"));
+    String mobile = multipartRequest.getParameter("mobile");
+    String pw = MySecurityUtils.getSha256(multipartRequest.getParameter("pw"));
+    String descript = MySecurityUtils.getPreventXss(multipartRequest.getParameter("descript"));
+    String[] profileCategoryValues = multipartRequest.getParameterValues("profileCategory");
     
+    String miniProfilePicturePath = myFileUtils.updateProfilePicture(multipartRequest, "miniProfilePicturePath");
+    String mainProfilePicturePath = myFileUtils.updateProfilePicture(multipartRequest, "mainProfilePicturePath");
+    
+    // 관심 카테고리 설정
+    String profileCategory = (profileCategoryValues != null) ? String.join(", ", profileCategoryValues) : "";
+
+    // 수정할 회원 정보 객체 생성
+    int userNo = Integer.parseInt(multipartRequest.getParameter("userNo"));
     UserDto user = UserDto.builder()
                       .userNo(userNo)
+                      .pw(pw)
                       .name(name)
                       .mobile(mobile)
-                      .pw(pw)
                       .miniProfilePicturePath(miniProfilePicturePath)
                       .mainProfilePicturePath(mainProfilePicturePath)
-                      .descript(descript)
                       .profileCategory(profileCategory)
+                      .descript(descript)
                     .build();
     
     return userMapper.updateUser(user);
@@ -740,6 +752,5 @@ public class UserServiceImpl implements UserService {
                                                 				 "totalPage", myPageUtils.getTotalPage())
                                             					 , HttpStatus.OK);
   }
-  
   
 }

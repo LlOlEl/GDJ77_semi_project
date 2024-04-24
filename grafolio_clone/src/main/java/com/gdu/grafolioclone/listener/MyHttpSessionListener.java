@@ -4,7 +4,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -12,16 +11,16 @@ import com.gdu.grafolioclone.mapper.UserMapper;
 
 public class MyHttpSessionListener implements HttpSessionListener {
 
-  @Override
-  public void sessionCreated(HttpSessionEvent se) {
-
-    // HttpSession
-    HttpSession session = se.getSession();
-    String sessionId = session.getId();
-    
-    System.out.println(sessionId + " 세션 정보가 생성되었습니다.");
-
-  }
+//  @Override
+//  public void sessionCreated(HttpSessionEvent se) {
+//
+//    // HttpSession
+//    HttpSession session = se.getSession();
+//    String sessionId = session.getId();
+//    
+//    System.out.println(sessionId + " 세션 정보가 생성되었습니다.");
+//
+//  }
   
   // 세션 만료 시 자동으로 동작
   @Override

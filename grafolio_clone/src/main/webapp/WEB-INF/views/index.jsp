@@ -11,8 +11,4 @@
  
   <h1 class="title">Welcome to grafolioclone</h1>
   
-  <!-- profile.jsp로 이동 -->
-  
-  
-  
 <%@ include file="./layout/footer.jsp" %>

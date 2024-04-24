@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.grafolioclone.dto.UserDto;
@@ -53,17 +54,17 @@ public class UserController {
   	return "user/signup";
   }
   
-  @GetMapping("/modifyPage.do")
-  public String modifyPage(HttpServletRequest request, Model model) {
+  @GetMapping("/edit.do")
+  public String edit(HttpServletRequest request, Model model) {
     UserDto profile = userService.getProfileByUserNo(request);
     model.addAttribute("profile", profile);
     return "user/modify";
   }
   
   @PostMapping("/modify.do")
-  public String modify(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-    int modifyCount = userService.updateUser(request);
-    redirectAttributes.addAttribute("userNo", request.getParameter("userNo"))
+  public String modify(MultipartHttpServletRequest multipartRequest, RedirectAttributes redirectAttributes) {
+    int modifyCount = userService.modifyUser(multipartRequest);
+    redirectAttributes.addAttribute("userNo", multipartRequest.getParameter("userNo"))
                       .addFlashAttribute("modifyResult", modifyCount == 1 ? "수정되었습니다." : "수정 실패했습니다.");
     return "redirect:/user/profile.do?userNo={userNo}";
   }
@@ -133,8 +134,8 @@ public class UserController {
   }
   
   @PostMapping("/signup.do")
-  public void signup(HttpServletRequest request, HttpServletResponse response) {
-    userService.signup(request, response);
+  public void signup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+    userService.signup(multipartRequest, response);
   }
   
   @GetMapping("/leave.do")
