@@ -31,7 +31,7 @@ public interface UserService {
   boolean hasUser(UserDto user);
   void naverSignin(HttpServletRequest request, UserDto naverUser);
   
-  int updateUser(HttpServletRequest request);
+  int modifyUser(MultipartHttpServletRequest multipartRequest);
   
   // 프로필 정보 가져오기 - 오채원
   UserDto getProfileByUserNo(HttpServletRequest request);

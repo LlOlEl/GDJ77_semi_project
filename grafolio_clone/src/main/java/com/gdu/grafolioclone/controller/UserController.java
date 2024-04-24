@@ -54,17 +54,17 @@ public class UserController {
   	return "user/signup";
   }
   
-  @GetMapping("/modifyPage.do")
-  public String modifyPage(HttpServletRequest request, Model model) {
+  @GetMapping("/edit.do")
+  public String edit(HttpServletRequest request, Model model) {
     UserDto profile = userService.getProfileByUserNo(request);
     model.addAttribute("profile", profile);
     return "user/modify";
   }
   
   @PostMapping("/modify.do")
-  public String modify(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-    int modifyCount = userService.updateUser(request);
-    redirectAttributes.addAttribute("userNo", request.getParameter("userNo"))
+  public String modify(MultipartHttpServletRequest multipartRequest, RedirectAttributes redirectAttributes) {
+    int modifyCount = userService.modifyUser(multipartRequest);
+    redirectAttributes.addAttribute("userNo", multipartRequest.getParameter("userNo"))
                       .addFlashAttribute("modifyResult", modifyCount == 1 ? "수정되었습니다." : "수정 실패했습니다.");
     return "redirect:/user/profile.do?userNo={userNo}";
   }
@@ -121,12 +121,6 @@ public class UserController {
   public void signup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
     userService.signup(multipartRequest, response);
   }
-  
-//  @PostMapping("/signup.do")
-//  public String signup(MultipartHttpServletRequest multipartRequest, RedirectAttributes redirectAttributes) {
-//    redirectAttributes.addFlashAttribute("inserted", userService.signup(multipartRequest));
-//    return "redirect:/main.page";
-//  }
   
   @GetMapping("/leave.do")
   public void leave(HttpServletRequest request, HttpServletResponse response) {

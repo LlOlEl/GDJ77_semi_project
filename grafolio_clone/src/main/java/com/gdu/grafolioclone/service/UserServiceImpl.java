@@ -8,13 +8,10 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -177,17 +174,7 @@ public class UserServiceImpl implements UserService {
     }
     
     // 관심 카테고리
-    List<String> profileCategoryList = new ArrayList<>();
-    String profileCategory = null;
-    
-    if(profileCategoryValues != null) {
-      profileCategoryList = Arrays.asList(profileCategoryValues);
-      profileCategory = profileCategoryList.stream().collect(Collectors.joining(", "));
-    }
-    
-    if(profileCategory == null) {
-      profileCategory = "";
-    }
+    String profileCategory = (profileCategoryValues != null) ? String.join(", ", profileCategoryValues) : "";
     
     UserDto user = UserDto.builder()
                       .email(email)
@@ -539,27 +526,29 @@ public class UserServiceImpl implements UserService {
   }
   
   @Override
-  public int updateUser(HttpServletRequest request) {
+  public int modifyUser(MultipartHttpServletRequest multipartRequest) {
     
-    // 전달된 파라미터
-    int userNo = Integer.parseInt(request.getParameter("userNo"));
-    String name = MySecurityUtils.getPreventXss(request.getParameter("name")) ;
-    String mobile = request.getParameter("mobile");
-    String pw = MySecurityUtils.getSha256(request.getParameter("pw"));
-    String miniProfilePicturePath = request.getParameter("miniProFilePicutrePath");
-    String mainProfilePicturePath = request.getParameter("mainProFilePicutrePath");
-    String descript = request.getParameter("descript");
-    String profileCategory = request.getParameter("profileCategory");
+    String name = MySecurityUtils.getPreventXss(multipartRequest.getParameter("name"));
+    String mobile = multipartRequest.getParameter("mobile");
+    String pw = MySecurityUtils.getSha256(multipartRequest.getParameter("pw"));
+    String descript = MySecurityUtils.getPreventXss(multipartRequest.getParameter("descript"));
+    String[] profileCategoryValues = multipartRequest.getParameterValues("profileCategory");
     
+    String miniProfilePicturePath = null;
+    String mainProfilePicturePath = null;
+    
+    // 관심 카테고리 설정
+    String profileCategory = (profileCategoryValues != null) ? String.join(", ", profileCategoryValues) : "";
+
+    // 회원 정보 객체 생성
     UserDto user = UserDto.builder()
-                      .userNo(userNo)
+                      .pw(pw)
                       .name(name)
                       .mobile(mobile)
-                      .pw(pw)
                       .miniProfilePicturePath(miniProfilePicturePath)
                       .mainProfilePicturePath(mainProfilePicturePath)
-                      .descript(descript)
                       .profileCategory(profileCategory)
+                      .descript(descript)
                     .build();
     
     return userMapper.updateUser(user);
