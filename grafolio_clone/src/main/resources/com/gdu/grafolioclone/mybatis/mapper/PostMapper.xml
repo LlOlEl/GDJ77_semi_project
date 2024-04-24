@@ -16,6 +16,8 @@
    <association property="user" javaType="UserDto">
      <id     property="userNo" column="USER_NO" />
      <result property="email"  column="EMAIL" />
+     <result property="name"   column="NAME" />
+     <result property="miniProfilePicturePath" column="MINI_PROFILE_PICTURE_PATH" />
    </association>
   </resultMap>
   
@@ -228,6 +230,26 @@
       WHERE POST_NO = #{postNo}
    </select>
    
+   <select id="getLikeCountByUserNo"
+           resultType="int">
+     SELECT COUNT(*)
+       FROM LIKE_T L INNER JOIN 
+            (SELECT P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+              FROM USER_T U INNER JOIN POST_T P
+                ON U.USER_NO = P.USER_NO
+             WHERE P.USER_NO = #{userNo}) SUB_P
+         ON L.POST_NO = SUB_P.POST_NO
+   </select>
+   
+   <select id="getHitCountByUserNo"
+           resultType="int">
+     SELECT COALESCE(SUM(HIT), 0)
+       FROM (SELECT P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+              FROM USER_T U INNER JOIN POST_T P
+                ON U.USER_NO = P.USER_NO
+             WHERE P.USER_NO = #{userNo})
+   </select>
+   
    <select id="checkLikeStatus"
            parameterType="LikeDto"
            resultType="int">
@@ -235,6 +257,71 @@
        FROM LIKE_T
       WHERE POST_NO = #{postNo}
         AND USER_NO = #{userNo}
+   </select>
+   
+   <!-- 포스트 검색 쿼리 -->
+  <select id="getSearchCount"
+          resultType="int">
+    SELECT COUNT(*)
+      FROM POST_T
+     WHERE CONTENTS LIKE '%' || #{q} || '%'
+  </select>
+  
+  <select id="getSearchList"
+          parameterType="Map"
+          resultMap="PostMap">
+    SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, CREATE_DT, MODIFY_DT, CATEGORY
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY P.POST_NO DESC) AS RN, P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+              FROM USER_T U INNER JOIN POST_T P
+                ON U.USER_NO = P.USER_NO
+             WHERE P.CONTENTS LIKE '%' || #{q} || '%')
+     WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
+   
+   <!-- 유저프로필 - 업로드한 게시물 가져오기(오채원) -->
+   <select id="getUserUploadList"
+           parameterType="Map"
+           resultMap="PostMap">
+   SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, NAME, MINI_PROFILE_PICTURE_PATH, CREATE_DT, MODIFY_DT, CATEGORY
+     FROM (SELECT ROW_NUMBER() OVER(ORDER BY P.POST_NO DESC) AS RN, P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, U.NAME, U.MINI_PROFILE_PICTURE_PATH, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+             FROM USER_T U INNER JOIN POST_T P
+               ON U.USER_NO = P.USER_NO
+            WHERE P.POST_NO IN (SELECT POST_NO
+                                  FROM POST_T
+                                 WHERE USER_NO = #{userNo}))
+    WHERE RN BETWEEN #{begin} AND #{end}
+   </select>
+   
+   <!-- 유저프로필 - 업로드한 게시물 가져오기(오채원) - 해당 유저가 올린 게시글 수 -->
+   <select id="getUserUploadCount"
+           resultType="int">
+      SELECT COUNT(*)
+        FROM POST_T
+       WHERE USER_NO = #{userNo}
+   </select>   
+   
+   
+   <!-- 유저 프로필 - 좋아요한 게시물 가져오기(오채원) -->
+   <select id="getUserLikeListByUserNo"
+           parameterType="Map"
+           resultMap="PostMap">
+      SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, NAME, MINI_PROFILE_PICTURE_PATH, CREATE_DT, MODIFY_DT, CATEGORY
+       FROM (SELECT ROW_NUMBER() OVER(ORDER BY P.POST_NO DESC) AS RN, P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, U.NAME, U.MINI_PROFILE_PICTURE_PATH, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+               FROM USER_T U INNER JOIN POST_T P
+                 ON U.USER_NO = P.USER_NO
+              WHERE P.POST_NO IN (SELECT POST_NO
+                                    FROM LIKE_T
+                                   WHERE USER_NO = #{userNo}))
+       WHERE RN BETWEEN #{begin} AND #{end}
+   
+   </select>
+   
+   <!-- 유저 프로필 - 좋아요한 게시물 개수 (오채원) -->
+   <select id="getUserLikeCountByUserNo"
+           resultType="int">
+     SELECT COUNT(*)
+       FROM LIKE_T
+      WHERE USER_NO = #{userNo}
    </select>
    
 </mapper>

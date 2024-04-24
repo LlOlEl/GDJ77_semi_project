@@ -52,7 +52,7 @@
           <a href="${contextPath}/post/list.page">프로젝트</a>
         </div>
         <div class="hedaer-menu">
-          <div class="profile-test" data-user-no="${sessionScope.user.userNo}">마이페이지</div>
+          <div class="profile" data-user-no="${sessionScope.user.userNo}">마이페이지</div>
         </div>
         <div class="hedaer-menu">
           <a href="${contextPath}/user/creators.page">크리에이터</a>
@@ -60,7 +60,21 @@
       </div>
     </div>
     
-    <div class="hedaer-right">
+    <div class="header-right">
+      <div class="header-search">
+        <form action="${contextPath}/search" method="GET">
+          <div class="input-outer input-bg-color-gray input-size-medium input-stretch input-rounded search">
+            <div class="input-wrapper">
+              <input class="input input-delete" name="q" type="text" placeholder="검색">
+              <div class="input-icon">
+                <img class="icon icon-search" src="${contextPath}/resources/svg/search_icon.svg">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    
+    
       <div class="user-wrap">
         <!-- Sign In 안 된 경우 -->
         <c:if test="${sessionScope.user == null}">  
@@ -81,4 +95,29 @@
   </div>
 
   <div class="main-wrap">
+  
+  
+  <script>
+  
+  const fnGetProfile = () => {
+  	$('.profile').on('click', (evt) => {
+  		if(evt.target.dataset.userNo === '') {
+	  		console.log(evt.target.dataset.userNo);
+	  		location.href="${contextPath}/user/profile.do?userNo=" + 1;
+  		} else {
+  	  		console.log(evt.target.dataset.userNo);
+  	  		location.href="${contextPath}/user/profile.do?userNo=" + evt.target.dataset.userNo;
+  		}
+
+  	})
+  }
+  
+  
+  fnGetProfile();
+  
+  
+  </script>
+  
+  
+  
   

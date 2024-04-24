@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.grafolioclone.dto.PostDto;
 import com.gdu.grafolioclone.dto.UserDto;
 import com.gdu.grafolioclone.mapper.UserMapper;
 import com.gdu.grafolioclone.utils.MyFileUtils;
@@ -490,9 +491,59 @@ public class UserServiceImpl implements UserService {
   // 유저 프로필 조회 - 오채원
   @Override
   public UserDto getProfileByUserNo(HttpServletRequest request) {
+    
     int userNo = Integer.parseInt(request.getParameter("userNo"));
     UserDto user = userMapper.getProfileByUserNo(userNo);
     return user;
+  }
+  
+  // 유저 프로필 목록 - 최연승
+  @Override
+  public ResponseEntity<Map<String, Object>> getProfileList(HttpServletRequest request) {
+  	
+		// 전체 Post 게시글 수
+		int total = userMapper.getUserCount();
+		
+		// 스크롤 이벤트마다 가져갈 목록 개수
+		int display = Integer.parseInt(request.getParameter("display") == null ? "12" : request.getParameter("display"));
+		
+		// 현재 페이지 번호
+		int page = Integer.parseInt(request.getParameter("page"));
+		
+		// 정렬 기준
+//		int category = Integer.parseInt(request.getParameter("category") == null ? "0" : request.getParameter("category"));
+		
+		// 페이징 처리에 필요한 정보 처리
+		myPageUtils.setPaging(total, display, page);
+		
+		// DB 로 보낼 Map 생성
+		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+																	  ,"end", myPageUtils.getEnd());
+		List<UserDto> userList = null;
+		
+		// DB 에서 목록 가져오기
+		userList = userMapper.getProfileList(map);
+		
+		
+		// 팔로잉 여부 확인하기 위해 코드 추가. - 오채원
+		
+		// 현재 로그인한 유저의 userNo
+		UserDto user = (UserDto)request.getSession().getAttribute("user");
+		
+	  Optional<UserDto> opt = Optional.ofNullable(user);
+	  int loginNo = opt.map(UserDto::getUserNo).orElse(0);
+		
+		for(int i = 0; i < userList.size(); i++) {
+		  Map<String, Object> map2 = Map.of("fromUser", loginNo
+		                                  , "toUser", userList.get(i).getUserNo());
+		  userList.get(i).setIsFollow(userMapper.checkFollow(map2));
+		}
+		
+		
+		return new ResponseEntity<Map<String,Object>>(Map.of("userList", userList,
+																												 "totalPage", myPageUtils.getTotalPage())
+																						  	, HttpStatus.OK);
+		
   }
   
   // 팔로우 - 오채원
@@ -574,48 +625,132 @@ public class UserServiceImpl implements UserService {
 
     // 로그인 userNo 값
     UserDto user = (UserDto)session.getAttribute("user");
-
+    // 로그인 userNo null 처리
     Optional<UserDto> opt = Optional.ofNullable(user);
-    int userNo = opt.map(UserDto::getUserNo).orElse(0);
-    
+    int LoginUserNo = opt.map(UserDto::getUserNo).orElse(0);
     
     // FollowingCount로 보낼 map
-    Map<String, Object> map = Map.of("fromUser", params.get("fromUser"));
+    Map<String, Object> followingMap = Map.of("fromUser", params.get("profileUserNo"));
     
-    // 팔로잉 리스트 게시글 수
-    int total = userMapper.fnGetFollowingCount(map);
+    // 팔로잉 리스트 유저 수
+    int followingTotal = userMapper.fnGetFollowingCount(followingMap);
     
     // 스크롤 1 -> 유저 6
-    int display = 6;
+    int display = 10;
     
     // 현재 페이지 번호
     int page = (Integer)params.get("page");
     
     // 팔로잉 수
-    int followingCount = userMapper.checkFollow(map);
+    int followingCount = userMapper.checkFollow(followingMap);
+
     
-    // 페이징 처리
-    myPageUtils.setPaging(total, display, page);
+    // 페이징 처리 - 팔로잉
+    myPageUtils.setPaging(followingTotal, display, page);
 
     // DB로 보낼 Map 생성 - 게시글 리스트 가져올때 사용
-    Map<String, Object> map2 = Map.of("begin", myPageUtils.getBegin()
+    Map<String, Object> followingListMap = Map.of("begin", myPageUtils.getBegin()
                                     , "end", myPageUtils.getEnd()
-                                    , "fromUser", params.get("fromUser"));
+                                    , "fromUser", params.get("profileUserNo"));
         
     // 팔로잉 리스트 게시글 리스트
-    List<UserDto> followingList = userMapper.fnGetFollowingList(map2);
+    List<UserDto> followingList = userMapper.fnGetFollowingList(followingListMap);
     
     // 팔로잉 여부 userDto에 추가해서 가져오기
     for(int i = 0; i < followingList.size(); i++) {
       
-      Map<String, Object> map3 = Map.of("fromUser", userNo
+      Map<String, Object> map3 = Map.of("fromUser", LoginUserNo
                                       , "toUser", followingList.get(i).getUserNo());
       followingList.get(i).setIsFollow(userMapper.checkFollow(map3));
     }
-
+    
     return ResponseEntity.ok(Map.of("followingList", followingList
                                   , "followingCount", followingCount
                                   , "totalPage", myPageUtils.getTotalPage()));
+  }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> fnGetFollowerList(Map<String, Object> params, HttpSession session) {
+
+    // 로그인 userNo 값
+    UserDto user = (UserDto)session.getAttribute("user");
+    // 로그인 userNo null 처리
+    Optional<UserDto> opt = Optional.ofNullable(user);
+    int LoginUserNo = opt.map(UserDto::getUserNo).orElse(0);
+
+    // FollowerCount로 보낼 map
+    Map<String, Object> followerMap = Map.of("toUser", params.get("profileUserNo"));
+
+    // 팔로워 리스트 게시글 수
+    int followerTotal = userMapper.fnGetFollowerCount(followerMap);
+    
+    // 스크롤 1 -> 유저 6
+    int display = 10;
+    
+    // 현재 페이지 번호
+    int page = (Integer)params.get("page");
+
+    // 팔로워 수
+    int followerCount = userMapper.checkFollow(followerMap);
+    
+    
+    // 페이징 처리
+    myPageUtils.setPaging(followerTotal, display, page);
+    
+    // DB로 보낼 Map 생성 - 게시글 리스트 가져올때 사용
+    Map<String, Object> followerListMap = Map.of("begin", myPageUtils.getBegin()
+                                               , "end", myPageUtils.getEnd()
+                                               , "toUser", params.get("profileUserNo"));
+    
+    List<UserDto> followerList = userMapper.fnGetFollowerList(followerListMap);
+    
+    
+    for(int i = 0; i < followerList.size(); i++) {
+      Map<String, Object> map3 = Map.of("fromUser", LoginUserNo
+                                      , "toUser", followerList.get(i).getUserNo());
+      followerList.get(i).setIsFollow(userMapper.checkFollow(map3));
+    }
+    
+    return ResponseEntity.ok(Map.of("followerList", followerList
+                                  , "followerCount", followerCount
+                                  , "totalPage", myPageUtils.getTotalPage()));
+    
+  }
+  
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> searchCreators(HttpServletRequest request) {
+    // 요청 파라미터
+    String query = request.getParameter("q");
+    
+    // 검색 데이터 개수를 구할 때 사용할 Map 생성
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("q", query);
+    
+    // 검색 데이터 개수 구하기
+    int total = userMapper.getSearchCount(map);
+    
+    // 한 페이지에 표시할 검색 데이터 개수
+    int display = Integer.parseInt(request.getParameter("display") == null ? "12" : request.getParameter("display"));
+    
+    // 현재 페이지 번호
+    Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(opt.orElse("1"));
+    
+    // 페이징 처리에 필요한 처리
+    myPageUtils.setPaging(total, display, page);
+    
+    // 검색 목록을 가져오기 위해서 기존 Map 에 begin 과 end 를 추가
+    map.put("begin", myPageUtils.getBegin());
+    map.put("end", myPageUtils.getEnd());
+    
+    // 검색 목록 가져오기
+    List<UserDto> userList = userMapper.getSearchList(map);
+    
+    // 뷰로 전달할 데이터
+		return new ResponseEntity<Map<String,Object>>(Map.of("userList", userList,
+                                                				 "totalPage", myPageUtils.getTotalPage())
+                                            					 , HttpStatus.OK);
   }
   
 }

@@ -47,6 +47,13 @@
     )
   </insert>
   
+  <!-- 전체 유저 수 (최연승) -->
+  <select id="getUserCount"
+          resultType="java.lang.Integer">
+    SELECT COUNT(*)
+      FROM USER_T
+  </select>
+  
   <!-- 기본 정보 수정 (장윤수) -->
   <update id="updateUser"
           parameterType="UserDto">
@@ -104,6 +111,7 @@
      WHERE SESSION_ID = #{sessionID}
   </update>
   
+  <!-- 프로필 정보 가져오기 (오채원)  -->
   <select id="getProfileByUserNo"
           resultType="UserDto">
     SELECT USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
@@ -111,6 +119,17 @@
      WHERE USER_NO = #{userNo}
   </select>
   
+  <!-- 프로필 목록 가져오기 (최연승) -->
+  <select id="getProfileList"
+          parameterType="Map"
+          resultType="UserDto">
+    SELECT USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO DESC) AS RN, USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+              FROM USER_T)
+     WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
+  
+  <!-- 팔로우 -->
   <insert id="follow"
           parameterType="Map">
     INSERT INTO FOLLOW_T (
@@ -126,6 +145,7 @@
     )
   </insert>
   
+  <!-- 언팔로우 -->
   <delete id="unfollow"
           parameterType="Map">
     DELETE
@@ -137,6 +157,7 @@
   
   </delete>    
   
+  <!-- 팔로잉 여부 -->
   <select id="checkFollow"
           parameterType="Map"
           resultType="int">
@@ -148,6 +169,7 @@
     </where>
   </select>
   
+  <!-- 팔로잉 리스트 조회 -->
   <select id="fnGetFollowingList"
   		  parameterType="Map"
   		  resultType="UserDto">
@@ -160,6 +182,7 @@
 	 WHERE RN BETWEEN #{begin} AND #{end}
   </select>
   
+  <!-- 팔로잉 유저 수 조회 -->
   <select id="fnGetFollowingCount"
   		  parameterType="Map"
   		  resultType="int">
@@ -169,8 +192,47 @@
 				         FROM FOLLOW_T
 				        WHERE FROM_USER = #{fromUser})
   </select>
-
   
+  <!-- 팔로워 리스트 조회 -->
+  <select id="fnGetFollowerList"
+  		  parameterType="Map"
+  		  resultType="UserDto">
+	SELECT USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+	  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO) AS RN, USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+	          FROM USER_T
+	         WHERE USER_NO IN (SELECT FROM_USER
+	                             FROM FOLLOW_T
+	                            WHERE TO_USER = #{toUser}))
+	 WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
   
+  <!-- 팔로워 유저 수 조회 -->
+  <select id="fnGetFollowerCount"
+  		  parameterType="Map"
+  		  resultType="int">
+  	SELECT COUNT(*) 
+      FROM USER_T
+     WHERE USER_NO IN (SELECT FROM_USER
+				         FROM FOLLOW_T
+				        WHERE TO_USER = #{toUser})
+  </select>
   
+    <!-- 포스트 검색 쿼리 -->
+ <select id="getSearchCount"
+         resultType="int">
+   SELECT COUNT(*)
+     FROM USER_T
+    WHERE NAME LIKE '%' || #{q} || '%'
+ </select>
+ 
+ <select id="getSearchList"
+         parameterType="Map"
+         resultType="UserDto">
+    SELECT USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO DESC) AS RN, USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+              FROM USER_T
+             WHERE NAME LIKE '%' || #{q} || '%')
+    WHERE RN BETWEEN #{begin} AND #{end}
+ </select>
+ 
 </mapper>

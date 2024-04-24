@@ -1,8 +1,112 @@
 @charset "UTF-8";
 
+@media screen and (max-width: 2560px)
+  ul.list-body {
+      grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 1680px)
+  ul.list-body {
+      grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 1200px){
+
+.content {
+    height: auto;
+    width: 100%;
+ }
+}
+
+@media screen and (max-width: 768px){
+
+  
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 340px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0 50px;
+    width: 100%;
+}
+
+.page-content {
+    flex: 1;
+}
+
+.profile-page {
+    height: 100%;
+    padding: 0 0 224px;
+    width: 100%;
+}
+
+.profile-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 프로필 */
 .profile-top {
-  display: flex;
-  flex-direction: row-reverse;
+    align-items: center;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 100px;
+    height: 360px;
+    justify-content: center;
+    margin: 50px 6.5% 80px;
+}
+
+/* 프로필 커버 이미지 */
+.profile-cover-wrap {
+    height: 100%;
+    user-select: none;
+    width: 1000px;
+}
+
+.profile-cover-image > img {
+    max-width: 1000px;
+    height: 360px;
+}
+
+.profile-cover {
+    background: linear-gradient(180deg, hsla(0, 0%, 100%, 0) 58%, rgba(0, 0, 0, .4));
+    background-blend-mode: multiply, normal;
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.profile-cover img {
+    -o-object-fit: cover;
+    object-fit: cover;
+    width: 100%;
+    z-index: -1;
+}
+
+/* 유저 프로필 */
+.user-wrap {
+  max-width: 450px;
+  width: 100%;
+}
+
+.user-head {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-avatar{
+    display: flex;
+    justify-content: left;
+    margin: 0;
 }
 
 .default-profile-image {
@@ -10,55 +114,360 @@
 }
 
 .default-cover-image {
-  width: 910px;
-  height: 360px;
+  width: 100%;
   object-fit: cover;
 }
-
-.profile-top {
-  align-items: center;
-  justify-content: space-between;
-  margin: 50px 9.5% 80px;
+  
+.profile-image-wrap {
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
-.user-nickname {
-  font-size: 28px;
-  font-weight: 700;
+.profile-bordered {
+    border: 3px solid var(--mono-000);
 }
 
-.user-category {
-  color: gray;
-  font-size: 14px;
-  margin: 6px 0 10px;
+.profile-image-wrapper {
+    background-color: #eef1f1;
+    border-radius: 50%;
+    display: inline-block;
+    height: 75px;
+    overflow: hidden;
+    width: 75px;
+}
+
+.profile-image-wrapper img {
+    border-radius: 50%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    pointer-events: none;
+    transition: transform 125ms;
+    width: 100%;
 }
 
 .user-body {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  margin: 30px 0 0;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 30px 0 0;
+    width: 450px;
+}
+
+.user-nickname{
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.user-category {
+    color: gray;
+    font-size: 14px;
+    margin: 6px 0 10px;
+}
+
+.user-description {
+    font-size: 14px;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    margin: 20px 0 0;
+    position: relative;
+    width: 100%;
+}
+
+/* 프로필 버튼 */
+.user-buttons {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-self: flex-start;
+    margin: 20px 0;
+    width : 100%;
+}
+
+.change-btn {
   width: 450px;
 }
 
-.user-statistic-wrap {
+.profile-btn {
   align-items: center;
-  display: flex;
+  border: none;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: none;
+  cursor: pointer;
+  display: inline-flex;
+  height: 51px;
   justify-content: center;
-  margin: 10px 0 0;
-  width: 100%;
+  outline: 0;
+  padding: 0 32px;
+  position: relative;
+  text-decoration: none;
+  word-break: keep-all;
 }
 
-.user-static {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
+#btn-modify {
+    width: 100%;
+    color: black;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;  
+}
+
+#btn-follow {
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;    
+    background-color: #00b57f;
+}
+
+#btn-follow:hover {
+    background-color: #008059;
+}
+
+
+#btn-unfollow {
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+    background-color: #425052;
+}
+
+#btn-unfollow:hover {
+    background-color: #000000 !important;
+}
+
+/* 팔로우, 좋아요 등등 */
+.user-statistic-wrap {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0;
+    width: 100%;
+}
+
+.user-statistic:not(:last-of-type) {
+    border-right: 1px solid #d8dfdf;
+}
+
+.user-statistic {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.txt-card-name {
+    color: #89989c;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .txt-card-count {
-  font-size: 20px;
-  font-weight: 700;
+    font-size: 20px;
+    font-weight: 700;
 }
+
+/* 업로드 및 좋아요 한 게시글 */
+
+ul.tab-list {
+    align-items: center;
+    display: flex;
+    gap: 25px;
+    margin: 0 6.5% 54px;
+    overflow-x: auto;
+    padding: 0;
+}
+
+ul.list-body {
+  -moz-column-gap: 30px;
+  column-gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(300px, 1fr));
+  margin: 0;
+  padding: 0;
+  row-gap: 40px;
+  width: 100%;
+}
+
+li.list-item {
+    cursor: pointer;
+    list-style: none;
+    white-space: nowrap;
+}
+
+
+.profile-bottom {
+    margin: 0 6.5%;
+}
+
+.list.no-head {
+    gap: 0;
+}
+
+.list-head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;    /* 휠때문에 조정 */
+    height: 100%;
+    position: relative;
+    width: 100%;
+}
+
+
+.card-wrap {
+    height: -moz-fit-content;
+    height: fit-content;
+    min-width: 0;
+    position: relative;
+    width: 100%;
+}
+
+
+.card-image:before {
+    content: "";
+    display: block;
+    padding-top: 78%;
+}
+
+.card-image {
+    background-color: #eef1f1;
+    background-position: 50%;
+    background-size: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.card-item-wrap {
+    background: linear-gradient(180deg, rgba(15, 15, 16, .08), hsla(0, 0%, 100%, 0) 50%), linear-gradient(180deg, hsla(0, 0%, 100%, 0) 54.64%, hsla(0, 0%, 100%, 0) 0, rgba(15, 15, 16, .32));
+    background-blend-mode: multiply;
+    border-radius: 10px;
+    display: none; /* 조회수, 좋아요 등을 숨김. */
+    flex-direction: column;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.card-options.has-inner-option {
+    color: #fff;
+}
+
+.card-options {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* 마우스 올리면 보여야함. */
+.card-options-header {
+    display: none; 
+    margin: 20px 20px 0 auto;
+}
+
+.card-options-body {
+    display: none;
+    flex-direction: column;
+    margin: auto 20px 20px; /* 프사, 이름같은거 하단 */
+}
+
+.card .options-title-wrap {
+    flex-direction: row;
+}
+
+.options-title-wrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+span.option-title:first-of-type {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 제목 + 날짜 - 글자 스타일 지정 */
+span.option-title {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.options-bottom-wrap {
+    display: flex;
+}
+
+.card-bottom-wrap {
+    display: flex;
+    margin: 10px 0 0;
+    width: 100%;
+}
+
+.card-bottom-profile {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    width: calc(100% - 80px);
+}
+
+.card-bottom-options {
+    display: flex;
+    gap: 11px;
+    margin: 0 0 0 auto;
+}
+
+.card-bottom-option {
+    align-items: end;
+    display: flex;
+    gap: 2px;
+}
+
+.bottom-option-name {
+    font-size: 12px;
+    font-weight: 400;
+    color: white;
+}
+
+
+
+.card-image:hover::before {
+  background-color: rgba(128, 128, 128, 0.5);
+}
+
+
+/* item-wrap의 속성 바꿔주기 */
+.card-image:hover .card-item-wrap,
+.card-image:hover .card-options-header,
+.card-image:hover .card-options-body {
+    display: flex;
+}
+
+
+
 
 /* 모달창 */
 .modal-outer {
@@ -82,7 +491,7 @@
   width: 100%;
 }
 
-.modal .medium {
+.modal.medium {
   max-width: 500px;
   width: 100%;
 }
@@ -90,7 +499,7 @@
 .modal {
   background: white;
   width: 400px;
-  max-height: calc(65% - 40px);
+  max-height: 600px;
   border-radius: 5px;
   box-shadow: 0 15px 40px #1b223f14;
   display: flex;
@@ -123,13 +532,19 @@
 
 .profile-image-medium {
   width: 40px;
+  height: 40px;
 }
 
 ul.list {
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  /*gap: 10px;*/   /* 휠 안보임 */
   height: 410px;
   margin: 30px 0 20px;
+  -webkit-mask: linear-gradient(180deg, transparent, #000 0 70%, transparent);
+  overflow-y: auto;
   padding: 0;
+  width: 100%;
 }
 
 .user-item {
@@ -142,16 +557,172 @@ ul.list {
 }
 
 .user-list-modal-head {
+  display: flex;
+  justify-content: space-between;
+  padding-right;
+}
+
+.user-list-modal-head span.count {
   font-size: 12px;
   font-weight: 400;
 }
 
 .profile-wrapper {
   align-items: center;
-  display: flex;
-  gap: inherit;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 40px 1fr;
 }
 
+.modal-body {
+    flex: 1;
+    height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* padding: 10px 30px 30px; */
+}
+
+/* 이거땜에 데이터 다 안온 것처럼 보일 수도 있다. */
+.user-list-modal {
+    height: 100%;
+    overflow: hidden;
+}
+
+span.nickname {
+  cursor: pointer;
+  display: block;
+  overflow: hidden;  /* 이거때문에 안보일 수 있다. */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.button-wrapper.list {
+    display: flex;
+    gap: 10px;
+    width: auto;
+}
+
+
+.btn-modal-follow {
+  border-radius: 32px;
+  height: 32px;
+  font-size: 12px;
+  align-items: center;
+  background-color: #00b57f;
+  border-color: #00b57f;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 500;
+  height: 32px;
+  justify-content: center;
+  outline: 0;
+  padding: 0 30px;
+  position: relative;
+  text-decoration: none;
+  word-break: keep-all;
+}
+
+
+
+.btn-modal-unfollow {
+  border-radius: 32px;
+  height: 32px;
+  font-size: 12px;
+  align-items: center;
+  background-color: white;
+  border-color: #00b57f;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: none;
+  color: #00b57f;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 500;
+  height: 32px;
+  justify-content: center;
+  outline: 0;
+  padding: 0 30px;
+  position: relative;
+  text-decoration: none;
+  word-break: keep-all;
+}
+
+
+.btn-confirm {
+  align-items: center;
+  width: 112px;
+  border-radius: 4px;
+  border: 1px solid black;
+  border-style: solid;
+  box-shadow: none;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  justify-content: center;
+  outline: 0;
+  padding: 0 var(--btn-gutter);
+  position: relative;
+  text-decoration: none;
+  word-break: keep-all;
+  
+}
+
+.btn-confirm:hover {
+  background-color: #F2F2F2;
+}
+
+.btn-modal-follow > .btn-text {
+  color: white;
+}
+
+.btn-modal-unfollow:hover {
+  background-color: #00b57f !important;
+  color: white !important;
+}
+
+.btn-modal-follow:hover {
+  background-color: #006B4B !important;
+  border-color: #006B4B !important;
+}
+
+/* 모달창 - 팔로잉, 팔로워 리스트 프로필 이미지 크기 지정 */
+.profile-modal-image-wrapper.profile-modal-image-medium > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 업로드 및 좋아요 게시글 프로필 이미지 크기 지정 */
+.card-bottom-profile .profile-image-wrapper {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  overflow: unset;
+  background-color: transparent;
+}
+
+/* 업로그한 게시글 제목 색깔 초록색으로 */
+.list-item:first-of-type {
+  color: #00b57f;
+}
+
+.profile-cover-image > img {
+  width: 100%;
+  object-fit: cover;
+}
 
 
 

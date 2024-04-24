@@ -82,14 +82,15 @@
               str += '</div>';
               $('#post-list').append(str);
               
-              // Fetch and update like count asynchronously
+              // 서버에서 likecount 를 받아와서 업데이트
               fnGetLikeCountByPostNo(post.postNo)
                 .then(result => {
-                  $('#like-count-' + post.postNo).html(result); // Update the like count placeholder with actual data
+                  // id="like-count-' + post.postNo 내용을 바꿔줌
+                  $('#like-count-' + post.postNo).html(result); 
                 })
                 .catch(error => {
                   console.error(error);
-                  $('#like-count-' + post.postNo).html('Error'); // Display error in the like count placeholder
+                  $('#like-count-' + post.postNo).html('Error');
                 });
             })
             if('${sessionScope.user}' !== ''){

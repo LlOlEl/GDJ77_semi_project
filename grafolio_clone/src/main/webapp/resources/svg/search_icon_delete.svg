@@ -1,0 +1,7 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+    xmlns="http://www.w3.org/2000/svg" class="icon icon-delete default">
+    <circle cx="8" cy="8" r="7" fill="#76888F"></circle>
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M5.33333 4.62622L7.99999 7.29289L10.6667 4.62622L11.3738 5.33333L8.7071 7.99999L11.3738 10.6667L10.6667 11.3738L7.99999 8.7071L5.33333 11.3738L4.62622 10.6667L7.29289 7.99999L4.62622 5.33333L5.33333 4.62622Z"
+        fill="white"></path>
+</svg>

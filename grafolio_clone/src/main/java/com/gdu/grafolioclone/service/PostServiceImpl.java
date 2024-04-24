@@ -1,8 +1,10 @@
 package com.gdu.grafolioclone.service;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -107,7 +109,7 @@ public class PostServiceImpl implements PostService {
 		int total = postMapper.getPostCount();
 		
 		// 스크롤 이벤트마다 가져갈 목록 개수
-		int display = 10;
+		int display = Integer.parseInt(request.getParameter("display") == null ? "12" : request.getParameter("display"));
 		
 		// 현재 페이지 번호
 		int page = Integer.parseInt(request.getParameter("page"));
@@ -135,6 +137,42 @@ public class PostServiceImpl implements PostService {
 		return new ResponseEntity<Map<String,Object>>(Map.of("postList", postList,
 																												 "totalPage", myPageUtils.getTotalPage())
 																						  	, HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<Map<String, Object>> searchPosts(HttpServletRequest request) {
+		
+    // 요청 파라미터
+    String query = request.getParameter("q");
+    
+    // 검색 데이터 개수를 구할 때 사용할 Map 생성
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("q", query);
+    
+    // 검색 데이터 개수 구하기
+    int total = postMapper.getSearchCount(map);
+    
+    // 한 페이지에 표시할 검색 데이터 개수
+    int display = Integer.parseInt(request.getParameter("display") == null ? "12" : request.getParameter("display"));
+    
+    // 현재 페이지 번호
+    Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(opt.orElse("1"));
+    
+    // 페이징 처리에 필요한 처리
+    myPageUtils.setPaging(total, display, page);
+    
+    // 검색 목록을 가져오기 위해서 기존 Map 에 begin 과 end 를 추가
+    map.put("begin", myPageUtils.getBegin());
+    map.put("end", myPageUtils.getEnd());
+    
+    // 검색 목록 가져오기
+    List<PostDto> postList = postMapper.getSearchList(map);
+    
+    // 뷰로 전달할 데이터
+		return new ResponseEntity<Map<String,Object>>(Map.of("postList", postList,
+                                                				 "totalPage", myPageUtils.getTotalPage())
+                                            					 , HttpStatus.OK);
 	}
 	
   @Override
@@ -198,7 +236,7 @@ public class PostServiceImpl implements PostService {
     int total = postMapper.getCommentCount(postNo);
     
     // 한 페이지에 표시할 댓글 개수
-    int display = 10;
+    int display = Integer.parseInt(request.getParameter("display") == null ? "10" : request.getParameter("display"));
     
     // 페이징 처리
     myPageUtils.setPaging(total, display, page);
@@ -275,6 +313,16 @@ public class PostServiceImpl implements PostService {
   }
   
   @Override
+  public int getLikeCountByUserNo(int userNo) {
+  	return postMapper.getLikeCountByUserNo(userNo);
+  }
+  
+@Override
+  public int getHitCountByUserNo(int userNo) {
+  	return postMapper.getHitCountByUserNo(userNo);
+  }
+  
+  @Override
   public int checkLikeStatus(int postNo, int userNo) {
   	
     LikeDto like = LikeDto.builder()
@@ -284,5 +332,57 @@ public class PostServiceImpl implements PostService {
     									
   	return postMapper.checkLikeStatus(like);
   }
+  
+  // 유저프로필 - 업로드한 게시글 가져오기(오채원)
+  @Override
+  public ResponseEntity<Map<String, Object>> getUserUploadList(HttpServletRequest request) {
+    
+    int total = postMapper.getUserUploadCount(Integer.parseInt(request.getParameter("userNo")));
+    
+    int display = Integer.parseInt(request.getParameter("display") == null ? "30" : request.getParameter("display"));
+    
+    int page = Integer.parseInt(request.getParameter("page"));
+    
+    myPageUtils.setPaging(total, display, page);
+    
+    int totalPage = myPageUtils.getTotalPage();
+    
+    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+                                   , "end", myPageUtils.getEnd()
+                                   , "userNo", Integer.parseInt(request.getParameter("userNo")));
+    
+    List<PostDto> userUploadList = postMapper.getUserUploadList(map);
+    System.out.println(userUploadList);
+    
+    return ResponseEntity.ok(Map.of("userUploadList", userUploadList
+                                  , "totalPage", totalPage));
+  }
+  
+  
+  // 유저프로필 - 좋아요한 게시글 가져오기(오채원)
+  @Override
+  public ResponseEntity<Map<String, Object>> getUserLikeList(HttpServletRequest request) {
+    
+    int total = postMapper.getUserLikeCountByUserNo(Integer.parseInt(request.getParameter("userNo")));
+    
+    int display = Integer.parseInt(request.getParameter("display") == null ? "30" : request.getParameter("display"));
+    
+    int page = Integer.parseInt(request.getParameter("page"));
+    
+    myPageUtils.setPaging(total, display, page);
+    
+    int totalPage = myPageUtils.getTotalPage();
+    
+    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+                                   , "end", myPageUtils.getEnd()
+                                   , "userNo", Integer.parseInt(request.getParameter("userNo")));
+    List<PostDto> userLikeList = postMapper.getUserLikeListByUserNo(map);
+    System.out.println(userLikeList);
+    
+    return ResponseEntity.ok(Map.of("userLikeList", userLikeList
+                                  , "totalPage", totalPage));
+  }
+  
+
   
 }
