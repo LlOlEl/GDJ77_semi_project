@@ -11,4 +11,19 @@
  
   <h1 class="title">Welcome to grafolioclone</h1>
   
+  <!-- profile.jsp로 이동 -->
+  
+  <script>
+
+  // 헤더 프로필 이미지 경로 변경
+  const profileImage = () => {
+    $('.default-profile-image').attr('src', './resources/img/default_profile_image.png');
+  }  
+  
+  profileImage();
+  
+  </script>
+  
+  
+ 
 <%@ include file="./layout/footer.jsp" %>

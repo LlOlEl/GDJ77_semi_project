@@ -72,6 +72,11 @@
 .profile-cover-image > img {
     max-width: 1000px;
     height: 360px;
+    transition: all 0.1s linear;
+}
+
+.profile-image-wrap > img:hover {
+  transform: scale(1.2);
 }
 
 .profile-cover {
