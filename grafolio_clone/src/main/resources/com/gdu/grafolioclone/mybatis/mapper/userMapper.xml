@@ -209,5 +209,22 @@
 				        WHERE TO_USER = #{toUser})
   </select>
   
-  
+    <!-- 포스트 검색 쿼리 -->
+ <select id="getSearchCount"
+         resultType="int">
+   SELECT COUNT(*)
+     FROM USER_T
+    WHERE NAME LIKE '%' || #{q} || '%'
+ </select>
+ 
+ <select id="getSearchList"
+         parameterType="Map"
+         resultType="UserDto">
+    SELECT USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO DESC) AS RN, USER_NO, EMAIL, PW, NAME, MOBILE, MINI_PROFILE_PICTURE_PATH, MAIN_PROFILE_PICTURE_PATH, DESCRIPT, PROFILE_CATEGORY, PW_MODIFY_DT, SIGNUP_DT
+              FROM USER_T
+             WHERE NAME LIKE '%' || #{q} || '%')
+    WHERE RN BETWEEN #{begin} AND #{end}
+ </select>
+ 
 </mapper>

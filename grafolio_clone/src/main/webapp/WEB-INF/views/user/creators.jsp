@@ -77,7 +77,9 @@
               str += '</a>'
               str += '      </div>';
               str += '      <span class="txt-card-type">';
-              str += user.profileCategory;
+              if(user.profileCategory){
+            	  str += user.profileCategory;
+              }
               str += '</span>'
               str += '    </div>';
               str += '  </div>';

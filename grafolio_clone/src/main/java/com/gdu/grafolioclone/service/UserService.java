@@ -36,7 +36,7 @@ public interface UserService {
   // 프로필 정보 가져오기 - 오채원
   UserDto getProfileByUserNo(HttpServletRequest request);
   // 프로필 목록 가져오기 - 최연승
-  ResponseEntity<Map<String, Object>> getProfileList(HttpServletRequest request);;
+  ResponseEntity<Map<String, Object>> getProfileList(HttpServletRequest request);
   // 팔로우 - 오채원
   ResponseEntity<Map<String, Object>> follow(Map<String, Object> params, HttpSession session);
   // 언팔로우 - 오채원
@@ -50,6 +50,7 @@ public interface UserService {
   // 팔로우 리스트 조회 - 오채원
   ResponseEntity<Map<String, Object>> fnGetFollowerList(Map<String, Object> params, HttpSession session);
   
-  
+  // 프로필 검색
+  ResponseEntity<Map<String, Object>> searchCreators(HttpServletRequest request);
   
 }
