@@ -119,42 +119,6 @@ CREATE TABLE FOLLOW_T(
     REFERENCES USER_T(USER_NO) ON DELETE CASCADE
 );
 
--- 기초 데이터 (사용자)
-INSERT INTO USER_T VALUES(
-    USER_SEQ.NEXTVAL
-  , 'a'
-  , STANDARD_HASH('1', 'SHA256')
-  , 'admin'
-  , '010-1111-1111'
-  , null
-  , null
-  , null
-  , null
-  , 0
-  , CURRENT_DATE
-  , CURRENT_DATE);
-
-commit;
-
--- 유저 프로필 테스트용
-INSERT INTO USER_T VALUES(
-    USER_SEQ.NEXTVAL
-  , 'subin'
-  , STANDARD_HASH('1', 'SHA256')
-  , 'subin'
-  , '010-1111-1111'
-  , null
-  , null
-  , '내가 찍은 사진들로 나의 시선 기록하기 (2차 가공X)'
-  , '디자인, 사진'
-  , 0
-  , CURRENT_DATE
-  , CURRENT_DATE);
-  
-
-
-commit;
-
 /************************* 트리거 *************************/
 /*
   1. DML (INSERT, UPDATE, DELETE) 작업 이후 자동으로 실행되는 데이터베이스 객체이다.
