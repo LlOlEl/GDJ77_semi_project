@@ -106,8 +106,8 @@ public class UserServiceImpl implements UserService {
     String descript = MySecurityUtils.getPreventXss(multipartRequest.getParameter("descript"));
     String[] profileCategoryValues = multipartRequest.getParameterValues("profileCategory");
     
-    String mini = null;
-    String main = null;
+    String miniProfilePicturePath = null;
+    String mainProfilePicturePath = null;
     StringBuilder builder = new StringBuilder();
 
     // 미니 프로필 사진 정보
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
           }
           String originalFilename = multipartFile.getOriginalFilename();
           String filesystemName = myFileUtils.getFilesystemName(originalFilename);
-          mini = builder.append("<img src=\"").append(multipartRequest.getContextPath()).append(uploadPath).append(filesystemName).append("\">").toString();
+          miniProfilePicturePath = builder.append("<img src=\"").append(multipartRequest.getContextPath()).append(uploadPath).append(filesystemName).append("\">").toString();
           builder.setLength(0);
           
           File miniProfileFile = new File(dir, filesystemName);
@@ -139,6 +139,10 @@ public class UserServiceImpl implements UserService {
       }
     }
     
+    if(miniProfilePicturePath == null) {
+      miniProfilePicturePath = "";
+    }
+    
     // 메인 프로필 사진 정보
     List<MultipartFile> mainProfile = multipartRequest.getFiles("mainProfilePicutrePath");
     
@@ -152,7 +156,7 @@ public class UserServiceImpl implements UserService {
           }
           String originalFilename = multipartFile.getOriginalFilename();
           String filesystemName = myFileUtils.getFilesystemName(originalFilename);
-          main = builder.append("<img src=\"").append(multipartRequest.getContextPath()).append(uploadPath).append(filesystemName).append("\">").toString();
+          mainProfilePicturePath = builder.append("<img src=\"").append(multipartRequest.getContextPath()).append(uploadPath).append(filesystemName).append("\">").toString();
           builder.setLength(0);
           
           File mainProfileFile = new File(dir, filesystemName);
@@ -168,6 +172,10 @@ public class UserServiceImpl implements UserService {
       }
     }
     
+    if(mainProfilePicturePath == null) {
+      mainProfilePicturePath = "";
+    }
+    
     // 관심 카테고리
     List<String> profileCategoryList = new ArrayList<>();
     String profileCategory = null;
@@ -177,13 +185,17 @@ public class UserServiceImpl implements UserService {
       profileCategory = profileCategoryList.stream().collect(Collectors.joining(", "));
     }
     
+    if(profileCategory == null) {
+      profileCategory = "";
+    }
+    
     UserDto user = UserDto.builder()
                       .email(email)
                       .pw(pw)
                       .name(name)
                       .mobile(mobile)
-                      .miniProfilePicturePath(mini)
-                      .mainProfilePicturePath(main)
+                      .miniProfilePicturePath(miniProfilePicturePath)
+                      .mainProfilePicturePath(mainProfilePicturePath)
                       .profileCategory(profileCategory)
                       .descript(descript)
                     .build();
@@ -200,10 +212,10 @@ public class UserServiceImpl implements UserService {
       if(insertCount == 1) {
         // Sign In 및 접속 기록을 위한 Map
         Map<String, Object> params = Map.of("email", email
-            , "pw", pw
-            , "ip", multipartRequest.getRemoteAddr()
-            , "userAgent", multipartRequest.getHeader("User-Agent")
-            , "sessionId", multipartRequest.getSession().getId());
+                                          , "pw", pw
+                                          , "ip", multipartRequest.getRemoteAddr()
+                                          , "userAgent", multipartRequest.getHeader("User-Agent")
+                                          , "sessionId", multipartRequest.getSession().getId());
         
         // Sign In (세션에 user 저장하기)
         multipartRequest.getSession().setAttribute("user", userMapper.getUserByMap(params));
@@ -211,7 +223,7 @@ public class UserServiceImpl implements UserService {
         // 접속 기록 남기기
         userMapper.insertAccessHistory(params);
         
-        out.println("alert('회원 가입되었습니다.);");
+        out.println("alert('회원 가입되었습니다.');");
         out.println("location.href='" + multipartRequest.getContextPath() + "/main.page';");
         
       } else {
