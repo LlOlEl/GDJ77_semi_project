@@ -1,7 +1,6 @@
 package com.gdu.grafolioclone.service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigInteger;
@@ -24,7 +23,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.grafolioclone.dto.UserDto;
@@ -103,75 +101,8 @@ public class UserServiceImpl implements UserService {
     String descript = MySecurityUtils.getPreventXss(multipartRequest.getParameter("descript"));
     String[] profileCategoryValues = multipartRequest.getParameterValues("profileCategory");
     
-    String miniProfilePicturePath = null;
-    String mainProfilePicturePath = null;
-    StringBuilder builder = new StringBuilder();
-
-    // 미니 프로필 사진 정보
-    List<MultipartFile> miniProfile = multipartRequest.getFiles("miniProfilePicutrePath");
-    
-    if(miniProfile != null && !miniProfile.isEmpty() && miniProfile.get(0).getSize() > 0) {
-      for(MultipartFile multipartFile : miniProfile) {
-        if(multipartFile != null && !multipartFile.isEmpty()) {
-          String uploadPath = myFileUtils.getMiniProfilePath();
-          File dir = new File(uploadPath);
-          if(!dir.exists()) {
-            dir.mkdirs();
-          }
-          String originalFilename = multipartFile.getOriginalFilename();
-          String filesystemName = myFileUtils.getFilesystemName(originalFilename);
-          miniProfilePicturePath = builder.append("<img src=\"").append(multipartRequest.getContextPath()).append(uploadPath).append(filesystemName).append("\">").toString();
-          builder.setLength(0);
-          
-          File miniProfileFile = new File(dir, filesystemName);
-          
-          try {
-            multipartFile.transferTo(miniProfileFile);
-            
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-          
-        }
-      }
-    }
-    
-    if(miniProfilePicturePath == null) {
-      miniProfilePicturePath = "";
-    }
-    
-    // 메인 프로필 사진 정보
-    List<MultipartFile> mainProfile = multipartRequest.getFiles("mainProfilePicutrePath");
-    
-    if(mainProfile != null && !mainProfile.isEmpty() && mainProfile.get(0).getSize() > 0) {
-      for(MultipartFile multipartFile : mainProfile) {
-        if(multipartFile != null && !multipartFile.isEmpty()) {
-          String uploadPath = myFileUtils.getMainProfilePath();
-          File dir = new File(uploadPath);
-          if(!dir.exists()) {
-            dir.mkdirs();
-          }
-          String originalFilename = multipartFile.getOriginalFilename();
-          String filesystemName = myFileUtils.getFilesystemName(originalFilename);
-          mainProfilePicturePath = builder.append("<img src=\"").append(multipartRequest.getContextPath()).append(uploadPath).append(filesystemName).append("\">").toString();
-          builder.setLength(0);
-          
-          File mainProfileFile = new File(dir, filesystemName);
-          
-          try {
-            multipartFile.transferTo(mainProfileFile);
-            
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-          
-        }
-      }
-    }
-    
-    if(mainProfilePicturePath == null) {
-      mainProfilePicturePath = "";
-    }
+    String miniProfilePicturePath = myFileUtils.updateProfilePicture(multipartRequest, "miniProfilePicturePath");
+    String mainProfilePicturePath = myFileUtils.updateProfilePicture(multipartRequest, "mainProfilePicturePath");
     
     // 관심 카테고리
     String profileCategory = (profileCategoryValues != null) ? String.join(", ", profileCategoryValues) : "";
@@ -534,14 +465,16 @@ public class UserServiceImpl implements UserService {
     String descript = MySecurityUtils.getPreventXss(multipartRequest.getParameter("descript"));
     String[] profileCategoryValues = multipartRequest.getParameterValues("profileCategory");
     
-    String miniProfilePicturePath = null;
-    String mainProfilePicturePath = null;
+    String miniProfilePicturePath = myFileUtils.updateProfilePicture(multipartRequest, "miniProfilePicturePath");
+    String mainProfilePicturePath = myFileUtils.updateProfilePicture(multipartRequest, "mainProfilePicturePath");
     
     // 관심 카테고리 설정
     String profileCategory = (profileCategoryValues != null) ? String.join(", ", profileCategoryValues) : "";
 
-    // 회원 정보 객체 생성
+    // 수정할 회원 정보 객체 생성
+    int userNo = Integer.parseInt(multipartRequest.getParameter("userNo"));
     UserDto user = UserDto.builder()
+                      .userNo(userNo)
                       .pw(pw)
                       .name(name)
                       .mobile(mobile)

@@ -71,13 +71,13 @@
      <span>프로필 수정을 통해 언제든지 변경할 수 있어요.</span>  
     <div class="row mb-3">
       <label for="inp-miniProfile" class="col-sm-3 col-form-label">프로필 이미지</label>
-      <div class="col-sm-9"><input type="file" name="miniProfilePicutrePath" id="inp-miniProfile" class="form-control"></div>
+      <div class="col-sm-9"><input type="file" name="miniProfilePicturePath" id="inp-miniProfile" class="form-control"></div>
       <div class="col-sm-3"></div>
       <div class="col-sm-9" id="attach-mini-list"></div>
     </div>
     <div class="row mb-3">
       <label for="inp-mainProfile" class="col-sm-3 col-form-label">프로필 배경 이미지</label>
-      <div class="col-sm-9"><input type="file" name="mainProfilePicutrePath" id="inp-mainProfile" class="form-control"></div>
+      <div class="col-sm-9"><input type="file" name="mainProfilePicturePath" id="inp-mainProfile" class="form-control"></div>
       <div class="col-sm-3"></div>
       <div class="col-sm-9" id="attach-main-list"></div>
     </div>
