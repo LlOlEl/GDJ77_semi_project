@@ -32,6 +32,10 @@ public interface PostMapper {
   int getHitCountByUserNo(int userNo);
   int checkLikeStatus(LikeDto like);
   
+  // 포스트 검색 메소드
+  int getSearchCount(Map<String, Object> map);
+  List<PostDto> getSearchList(Map<String, Object> map);
+  
   // 유저프로필 - 업로드한 게시글 가져오기(오채원)
   List<PostDto> getUserUploadList(Map<String, Object> map);
   // 유저 프로필 - 업로드한 게시글 개수

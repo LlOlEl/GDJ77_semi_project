@@ -259,6 +259,25 @@
         AND USER_NO = #{userNo}
    </select>
    
+   <!-- 포스트 검색 쿼리 -->
+  <select id="getSearchCount"
+          resultType="int">
+    SELECT COUNT(*)
+      FROM POST_T
+     WHERE CONTENTS LIKE '%' || #{q} || '%'
+  </select>
+  
+  <select id="getSearchList"
+          parameterType="Map"
+          resultMap="PostMap">
+    SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, CREATE_DT, MODIFY_DT, CATEGORY
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY P.POST_NO DESC) AS RN, P.POST_NO, P.TITLE, P.CONTENTS, P.HIT, U.USER_NO, U.EMAIL, P.CREATE_DT, P.MODIFY_DT, P.CATEGORY
+              FROM USER_T U INNER JOIN POST_T P
+                ON U.USER_NO = P.USER_NO
+             WHERE P.CONTENTS LIKE '%' || #{q} || '%')
+     WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
+   
    <!-- 유저프로필 - 업로드한 게시물 가져오기(오채원) -->
    <select id="getUserUploadList"
            parameterType="Map"
