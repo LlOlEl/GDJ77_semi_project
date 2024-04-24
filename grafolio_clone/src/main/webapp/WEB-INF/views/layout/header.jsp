@@ -72,7 +72,7 @@
       </div>
     
     
-      <div class="user-wrap">
+      <div class="header-user-wrap">
         <!-- Sign In 안 된 경우 -->
         <c:if test="${sessionScope.user == null}">  
           <button class="btn-signin">
