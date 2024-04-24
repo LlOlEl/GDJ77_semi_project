@@ -49,4 +49,8 @@ public interface UserMapper {
   // 팔로잉 개수 조회
   int fnGetFollowerCount(Map<String, Object> map);
 
+  // 유저 검색
+  int getSearchCount(Map<String, Object> map);
+  List<UserDto> getSearchList(Map<String, Object> map);
+
 }

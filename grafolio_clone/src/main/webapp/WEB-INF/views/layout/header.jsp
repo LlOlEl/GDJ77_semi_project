@@ -60,7 +60,21 @@
       </div>
     </div>
     
-    <div class="hedaer-right">
+    <div class="header-right">
+      <div class="header-search">
+        <form action="${contextPath}/search" method="GET">
+          <div class="input-outer input-bg-color-gray input-size-medium input-stretch input-rounded search">
+            <div class="input-wrapper">
+              <input class="input input-delete" name="q" type="text" placeholder="검색">
+              <div class="input-icon">
+                <img class="icon icon-search" src="${contextPath}/resources/svg/search_icon.svg">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    
+    
       <div class="user-wrap">
         <!-- Sign In 안 된 경우 -->
         <c:if test="${sessionScope.user == null}">  
