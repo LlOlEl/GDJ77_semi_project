@@ -22,6 +22,8 @@ var UploadListTotalPage = 0;
 // 좋아요 totalPage
 var LikeListTotalPage = 0;
 
+var loginUser = $('.profile').data('userNo');
+
 
 const fnGetContextPath = ()=>{
   const host = location.host;  /* localhost:8080 */
@@ -31,12 +33,26 @@ const fnGetContextPath = ()=>{
   return url.substring(begin, end);
 }
 
+// 기본 정보 수정 버튼
+const fnBtnModify = () => {
+  $('#btn-modify').on('click', (evt) => {
+    location.href = fnGetContextPath() + '/user/edit.do?userNo=' + evt.target.dataset.userNo;
+  });
+}
+
+// 수정 완료 결과
+const fnAfterModifyUpload = () => {
+  const modifyResult = $('.modify').data('modifyResult');
+  if(modifyResult !== '') {
+    alert(modifyResult);
+  }
+}
 
 // 프로필 팔로우 버튼
 const fnBtnProfileFollow = () => {
-	
+   
   $(document).on('click', '#btn-follow', function() {
-	// 로그인 여부 체크
+   // 로그인 여부 체크
     fnCheckSignin();
     if(!hasLogin) {
       return;
@@ -45,7 +61,7 @@ const fnBtnProfileFollow = () => {
       check = false;
       fnFollow(check);
     }
-})
+  })
 
   // 프로필의 언팔로우 버튼
   $(document).on('click', '#btn-unfollow', function() {
@@ -57,7 +73,7 @@ const fnBtnProfileFollow = () => {
 
 // 모달창 팔로우 버튼
 const fnBtnModalFollow = () => {
-	
+   
   // 팔로우 버튼 클릭 
   $(document).on('click', '.btn-modal-follow', function() {
     var buttonId = $(this).attr('id');
@@ -136,7 +152,7 @@ const fnActiveModal = () => {
   var userStatic2 = $('.user-statistic').eq(2);
  
   userStatic.on('click', () => {
-	$('.chow-scrollbar').off('scroll');
+   $('.chow-scrollbar').off('scroll');
     // 모달창 띄우기
     $('.modal-outer').css('display', 'flex');
   
@@ -166,32 +182,32 @@ const fnActiveModal = () => {
   $(document).on('click', '.nickname', function(event) {
       location.href = fnGetContextPath() + '/user/profile.do?userNo=' + $(this).data('userNo');
   });
-	
+   
 }
 
-//모달창 비활성화
+// 모달창 비활성화
 const fnDeactiveModal = () =>{
 
   // 레이어 - 모달창 나가기
   $('.modal-overlay').on('click', () => {
     $(".list.chow-scrollbar").empty();
     $('.chow-scrollbar').off('scroll');
-	$('.modal-outer').css('display', 'none');
-	$('.chow-scrollbar').scrollTop(0);
+   $('.modal-outer').css('display', 'none');
+   $('.chow-scrollbar').scrollTop(0);
   })
   
   // 확인 - 모달창 나가기
   $('.btn-confirm').on('click', () => {
     $(".list.chow-scrollbar").empty();
-	$('.chow-scrollbar').off('scroll');
-	$('.modal-outer').css('display', 'none');
-	$('.chow-scrollbar').scrollTop(0);
+   $('.chow-scrollbar').off('scroll');
+   $('.modal-outer').css('display', 'none');
+   $('.chow-scrollbar').scrollTop(0);
   })
 }
 
 // 업로드 & 좋아요 프로젝트
 const fnShowProject = () =>{
-	
+   
   // 업로드한 프로젝트 버튼 클릭 시
   $('.list-item').eq(0).on('click', () => {
     $('.list-item').eq(0).css('color', '#00b57f');
@@ -500,9 +516,9 @@ const fnGetFollowCount = () => {
 
 // 로그인 여부 체크
 const fnCheckSignin = () => {
-  if('${sessionScope.user}' === '') {
+  if(loginUser === '') {
     if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')) {
-      location.href = '${contextPath}/user/signin.page';
+      location.href = fnGetContextPath() + '/user/signin.page';
     } else {
       hasLogin = false;
     }
@@ -536,7 +552,7 @@ const fnFollowingScrollHandler = () => {
 const fnFollowerScrollHandler = () => {
   var timerId;
     $('.chow-scrollbar').on('scroll', (evt) => {
-	  
+     
       if (timerId) {  
         clearTimeout(timerId);
       }
@@ -619,7 +635,8 @@ const fnGetUserUploadList = () => {
             $('#like-count-' + upload.postNo).html('Error');
           });     
     })
-    if('${sessionScope.user}' !== '') {
+    var userNo = $('.profile').data('userNo');
+    if('userNo' !== '') {
       fnLikeCheck();
     }
   })
@@ -766,7 +783,7 @@ function displayThumbnail(imageUrl) {
 
 // postNo당 좋아요 수 가져오기
 const fnGetLikeCountByPostNo = (postNo) => {
-  return fetch('${contextPath}/post/get-like-count-by-postno?postNo=' + postNo, {
+  return fetch(fnGetContextPath() + '/post/get-like-count-by-postno?postNo=' + postNo, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -784,11 +801,17 @@ const fnGetLikeCountByPostNo = (postNo) => {
 // 좋아요 수 확인
 const fnLikeCheck = () => {
     const posts = document.querySelectorAll('.card');
+    let logintestUser = 0;
     // 모든 게시물에 대해 'Liked' 상태를 확인
     posts.forEach(post => {
       let postNo = post.dataset.postNo;
       // 서버에서 'liked' 상태 정보를 가져오는 fetch 요청
-      fetch('${contextPath}/post/check-like-status?postNo=' + postNo +'&userNo=${sessionScope.user.userNo}', {
+      if(loginUser === '') {
+        logintestUser = 0;
+      } else {
+        logintestUser = loginUser;
+      }
+      fetch(fnGetContextPath() + '/post/check-like-status?postNo=' + postNo +'&userNo=' + logintestUser, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -809,7 +832,7 @@ const fnLikeCheck = () => {
   
 // 좋아요, 조회수 가져오기
 const fnGetLikeCountByUserNo = () => {
-  return fetch('${contextPath}/post/get-like-count-by-userNo?userNo=' + $('.user-body').data('userNo'), {
+  return fetch(fnGetContextPath() + '/post/get-like-count-by-userNo?userNo=' + $('.user-body').data('userNo'), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -827,7 +850,7 @@ const fnGetLikeCountByUserNo = () => {
 
 // 조회수 가져오기
 const fnGetHitCountByUserNo = () => {
-  return fetch('${contextPath}/post/get-hit-count-by-userNo?userNo=' + $('.user-body').data('userNo'), {
+  return fetch(fnGetContextPath() + '/post/get-hit-count-by-userNo?userNo=' + $('.user-body').data('userNo'), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -850,16 +873,16 @@ const fnPostLike = () => {
   $(document).on('click', '.like-button', (evt) => {
       evt.stopPropagation(); // 이벤트 버블링을 중단
       var postNo = evt.target.closest('.card-options-header').dataset.postNo; // 게시물 번호 추출
-      var userNo = '${sessionScope.user.userNo}';
+      var userNo = $('.profile').data('userNo');
       var likeButton = evt.target.closest('.like-button'); // 좋아요 버튼 참조
-      if('${sessionScope.user}' === ''){
+      if(loginUser === ''){
         fnCheckSignin();
         return;
       }
       // 좋아요 버튼에 'liked' 클래스가 있는지 확인
       if (likeButton.classList.contains('liked')) {
           // 좋아요 취소 요청
-          fetch('${contextPath}/post/deletelikepost.do', {
+          fetch(fnGetContextPath() + '/post/deletelikepost.do', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -880,7 +903,7 @@ const fnPostLike = () => {
           });
       } else {
           // 좋아요 설정 요청
-          fetch('${contextPath}/post/likepost.do', {
+          fetch(fnGetContextPath() + '/post/likepost.do', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -906,6 +929,8 @@ const fnPostLike = () => {
 
 
 // 함수 호출
+fnBtnModify();
+fnAfterModifyUpload();
 fnCheckFollow();
 fnChangeBtn();
 fnGetFollowCount();

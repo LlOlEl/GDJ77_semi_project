@@ -5,28 +5,50 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <jsp:include page="../layout/header.jsp">
-  <jsp:param value="Modify" name="title"/>
+  <jsp:param value="edit" name="title"/>
 </jsp:include>
- 
+
+<style>
+#real-upload-mainProfile, #real-upload-miniProfile {
+  display: none;
+}
+</style>
+
 <div class="m-3">   <!-- signup.jsp 와 이 부분 수정할지 확인하기 -->
 
   <form method="POST"
+        enctype="multipart/form-data"
         action="${contextPath}/user/modify.do"
         id="frm-modify">
         
 	  <div class="profile_picture">
 	   <div class="main">
-	     <c:if test="${profile.mainProFilePicutrePath == ''}">
-	       <img src="${contextPath}/resources/img/default_cover.png">
-	     </c:if>
-	     <c:if test="${profile.mainProFilePicutrePath != ''}">
-	       ${profile.mainProfilePicturePath}
-	     </c:if>
-	     <img class="main-edit-btn" src="${contextPath}/resources/img/btn-edit.png">
+	     <div id="mainPreview">
+		     <c:if test="${profile.mainProfilePicturePath == null}">
+		       <img src="${contextPath}/resources/img/default_cover.png">
+		     </c:if>
+		     <c:if test="${profile.mainProfilePicturePath != null}">
+		       ${profile.mainProfilePicturePath}
+		     </c:if>
+	     </div>
+	     <div>
+		     <input type="file" name="mainProfilePicturePath" id="real-upload-mainProfile" onchange="fnUploadMainProfile()">
+		     <img class="main-upload-btn" id="upload-mainProfile" src="${contextPath}/resources/img/btn-edit.png">
+	     </div>
 	   </div>
      <div class="mini">
-       <img src="${contextPath}/resources/img/default_profile_image.png">
-       <img class="mini-edit-btn" src="${contextPath}/resources/img/btn-edit.png">
+       <div id="miniPreview">
+		     <c:if test="${profile.miniProfilePicturePath == null}">
+		       <img src="${contextPath}/resources/img/default_profile_image.png">
+		     </c:if>
+		     <c:if test="${profile.miniProfilePicturePath != null}">
+		       ${profile.miniProfilePicturePath}
+		     </c:if>
+       </div>
+	     <div>
+		     <input type="file" name="miniProfilePicturePath" id="real-upload-miniProfile" onchange="fnUploadMiniProfile()">
+         <img class="mini-upload-btn" id="upload-miniProfile" src="${contextPath}/resources/img/btn-edit.png">
+	     </div>
      </div>
 	  </div>
 
@@ -113,7 +135,47 @@
 -->
 
 <script>
+const realUploadMainProfile = document.getElementById('real-upload-mainProfile');  // 실제로 이미지 첨부되는 input 부분
+const uploadMainProfile = document.getElementById('upload-mainProfile');           // 이미지 첨부를 위한 img로 만들어진 버튼
+const realUploadMiniProfile = document.getElementById('real-upload-miniProfile');
+const uploadMiniProfile = document.getElementById('upload-miniProfile');
+
+uploadMainProfile.addEventListener('click', () => realUploadMainProfile.click());  // img로 만들어진 버튼을 눌렀을 때 실제 첨부 input이 실행되는 이벤트 
+uploadMiniProfile.addEventListener('click', () => realUploadMiniProfile.click());
+
+// 배경 이미지 업로드
+const fnUploadMainProfile = () => {
+  const mainPreview = document.getElementById('mainPreview');
   
+  const mainProfile = realUploadMainProfile.files[0];   // 첨부한 파일 가져오기
+  const reader = new FileReader();
+  reader.onloadend = () => {
+	  const img = document.createElement('img');     // <img> 만들기
+	  img.src = reader.result;
+	  // img.style.maxWidth = '200px';
+	  mainPreview.innerHTML = '';                    // 수정화면에서 보여졌던 이미지 초기화
+	  mainPreview.appendChild(img);                  // <img> 만들기
+  };
+  reader.readAsDataURL(mainProfile);
+}
+
+// 프로필 이미지 업로드
+const fnUploadMiniProfile = () => {
+	const miniPreview = document.getElementById('miniPreview');
+	
+	const miniProfile = realUploadMiniProfile.files[0];
+	const reader = new FileReader();
+	reader.onloadend = () => {
+		const img = document.createElement('img');
+		img.src = reader.result;
+		miniPreview.innerHTML = '';
+		miniPreview.appendChild(img);
+	};
+	reader.readAsDataURL(miniProfile);
+}
+
+
 </script>
+
   
 <%@ include file="../layout/footer.jsp" %>

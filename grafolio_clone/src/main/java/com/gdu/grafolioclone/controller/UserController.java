@@ -58,7 +58,7 @@ public class UserController {
   public String edit(HttpServletRequest request, Model model) {
     UserDto profile = userService.getProfileByUserNo(request);
     model.addAttribute("profile", profile);
-    return "user/modify";
+    return "user/edit";
   }
   
   @PostMapping("/modify.do")
