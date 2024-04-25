@@ -90,7 +90,12 @@
             <div class="dropdwon-trigger-wrapper">
               <div class="profile-image-wrap avatar owner" id="profile-move" data-user-no="${post.user.userNo}">
                 <div class="profile-image-wrapper profile-image-medium">
-                  ${user.miniProfilePicturePath } 
+                  <c:if test="${profile.miniProfilePicturePath != null}">
+                     ${profile.miniProfilePicturePath}
+                    </c:if>
+                    <c:if test="${profile.miniProfilePicturePath == null}">
+                     <img class="default-profile-image" alt="default-profile-image" src="../resources/img/default_profile_image.png"  width="40">
+                    </c:if>
                   
                 </div>
               </div>
@@ -165,7 +170,9 @@
   <form id="frm-comment" class="form">
   <div class="input-wrapper">
    <div  class="profile-image-wrap">
-    <img src="${contextPath}/resources/img/default_profile_image.png" width="40px" height="40px">
+    <c:if test="${SessionScope.userNo == userNo}">
+           <img alt="" src="${SessionScope.miniProfilePicturePath}">
+          </c:if>
    </div>
    <div class="input-outer input-stretch">
     <div data-v-ec5e8f9c class="input-wrapper">
@@ -203,7 +210,12 @@
       <div class="head-left" id="profile-list-move">
         <div class="profile-image-wrap avatar" id="avatar">
           <div  class="profile-image-wrapper profile-image-medium" >
-            <img  src="${contextPath}/resources/img/default_profile_image.png" width="40px" height="40px">
+           <c:if test="${user.miniProfilePicturePath != null}">
+                     ${user.miniProfilePicturePath}
+          </c:if>
+           <c:if test="${user.miniProfilePicturePath == null}">
+                     <img class="default-profile-image" alt="default-profile-image" src="../resources/img/default_profile_image.png"  width="40">
+          </c:if>
           </div>
         </div>
         
@@ -930,7 +942,7 @@ const getLikeStatus = () => {
               
               
               str += '<div class="comment-start" style="">';
-              str += '<i class="fa-regular fa-user"></i>'
+              
             } else {
               str += '<div class="comments-all" style="padding-left: 32px; display:none">';
             }
@@ -938,9 +950,10 @@ const getLikeStatus = () => {
             console.log(comment.state);
             if(comment.state === 1){
               str += '<div class="comment-top">';
-              str += comment.user.email;
+              str += comment.user.miniProfilePicturePath
+              str += comment.user.name;
               str += '<br>'
-              str += '(' + moment(comment.createDt).format('YYYY.MM.DD.') + ')';
+              str += '<span style="padding-left: 15px;">(' + moment(comment.createDt).format('YYYY.MM.DD.') + ')</span>';
               str += '</div>';
               str += '<div>' + comment.contents + '</div>';
               

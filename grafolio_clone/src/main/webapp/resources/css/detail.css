@@ -377,6 +377,9 @@
     position: relative;
  }
   
+  .comment-profile {
+   object-fit: cover;
+  }
 
  
   .comment-data-wrapper {
