@@ -23,7 +23,38 @@
     <div class="title-wraper">
      <div class="tag-wrapper">
        <div class="tag-round tag-round-size-small tag-round-color-gray tag-round-degree-large" id="ca-div">
-          <span>${post.category}</span>
+          <c:choose>
+    <c:when test="${post.category eq '0'}">
+        전체
+    </c:when>
+    <c:when test="${post.category eq '1'}">
+        일러스트
+    </c:when>
+    <c:when test="${post.category eq '2'}">
+        사진
+    </c:when>
+    <c:when test="${post.category eq '3'}">
+        디자인
+    </c:when>
+    <c:when test="${post.category eq '4'}">
+        회화
+    </c:when>
+    <c:when test="${post.category eq '5'}">
+        조소/공예
+    </c:when>
+    <c:when test="${post.category eq '6'}">
+        사운드
+    </c:when>
+    <c:when test="${post.category eq '7'}">
+        애니메이션
+    </c:when>
+    <c:when test="${post.category eq '8'}">
+        캘리그라피
+    </c:when>
+    <c:otherwise>
+        기타
+    </c:otherwise>
+</c:choose>
           </div>
         </div>
        <div class="title-inner-wrapper">
@@ -60,11 +91,7 @@
         
         <div class="content-bottom-wrapper">
           <div class="tab-wrapper">
-            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#사진</div>
-            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#인사동</div>
-            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#골목</div>
-            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#서울</div>
-            <div class="hashtag hashtag-size-medium hastag-color-default hastag btn">#거리</div>
+            
           </div>
           <div class="figure-data-wrapper">
             <div class="figure-data">
@@ -90,10 +117,10 @@
             <div class="dropdwon-trigger-wrapper">
               <div class="profile-image-wrap avatar owner" id="profile-move" data-user-no="${post.user.userNo}">
                 <div class="profile-image-wrapper profile-image-medium">
-                  <c:if test="${profile.miniProfilePicturePath != null}">
-                     ${profile.miniProfilePicturePath}
+                  <c:if test="${user.miniProfilePicturePath != null}">
+                     ${user.miniProfilePicturePath}
                     </c:if>
-                    <c:if test="${profile.miniProfilePicturePath == null}">
+                    <c:if test="${user.miniProfilePicturePath == null}">
                      <img class="default-profile-image" alt="default-profile-image" src="../resources/img/default_profile_image.png"  width="40">
                     </c:if>
                   
@@ -170,9 +197,11 @@
   <form id="frm-comment" class="form">
   <div class="input-wrapper">
    <div  class="profile-image-wrap">
-    <c:if test="${SessionScope.userNo == userNo}">
-           <img alt="" src="${SessionScope.miniProfilePicturePath}">
+   <div class="profile-image-wrapper profile-image-medium">
+    <c:if test="${sessionScope.user.userNo != null}">
+           ${sessionScope.user.miniProfilePicturePath}
           </c:if>
+    </div>      
    </div>
    <div class="input-outer input-stretch">
     <div data-v-ec5e8f9c class="input-wrapper">
@@ -232,7 +261,7 @@
       </div>
     </div>
      <ul data-v-e3383a90 class="list">
-      <button data-v-57eb2394 data-v-e3383a90 class="btn-text btn-disabled"  id="left-move">
+      <button data-v-57eb2394 data-v-e3383a90 class="btn-text btn-disabled"  id="left-move" disabled style="cursor:not-allowed;">
         <svg class="arrow-icon left" width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" ><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
         </svg>
       </button>
@@ -266,6 +295,8 @@
 
   <script>
   
+  console.log('${sessionScope.user.miniProfilePicturePath}');
+  
   // 팔로잉 여부
   var checkFollow = false;
   var hasLogin = true;
@@ -274,63 +305,73 @@
   
   
   // 게시물 4개씩 이동
+  let firstValue= 4;
   let currentIndex = 0; // 현재 보여지고 있는 슬라이드의 인덱스
   leftMoveBtn = document.getElementById('left-move');
   rightMoveBtn = document.getElementById('right-move');
 
 //왼쪽 이동 버튼 클릭 시
-document.getElementById('left-move').addEventListener('click', function() {
- moveSlides(-4); // 왼쪽으로 이동
-});
+  document.getElementById('left-move').addEventListener('click', function() {
+      moveSlides(-4); // 왼쪽으로 이동
+  });
 
-//오른쪽 이동 버튼 클릭 시
-document.getElementById('right-move').addEventListener('click', function() {
- moveSlides(4); // 오른쪽으로 이동
-});
+  //오른쪽 이동 버튼 클릭 시
+  document.getElementById('right-move').addEventListener('click', function() {
+      moveSlides(4); // 오른쪽으로 이동
+      $('#left-move').css('display', 'block');
+  });
 
+  function moveSlides(n) {
+      const slides = document.getElementsByClassName('carousel__slide');
+      const totalSlides = slides.length;
 
-function moveSlides(n) {
-    const slides = document.getElementsByClassName('carousel__slide');
-    const totalSlides = slides.length;
+      // 새로운 인덱스 계산
+      let newIndex = currentIndex + n;
 
-    // 새로운 인덱스 계산
-    let newIndex = currentIndex + n;
+      // 게시물이 4개 이하인 경우 버튼을 숨김
+      if (totalSlides <= 4) {
+          leftMoveBtn.style.display = 'none';
+          rightMoveBtn.style.display = 'none';
+      } else {
+          leftMoveBtn.style.display = 'block';
+          rightMoveBtn.style.display = 'block';
+      }
 
-    // 새로운 인덱스가 음수일 경우 현재 인덱스로 유지하고 버튼을 비활성화
-    if (newIndex < 0) {
-        leftMoveBtn.disabled = true;
-        leftMoveBtn.style.cursor = 'not-allowed';
-        return;
-    } else {
-        leftMoveBtn.disabled = false;
-        leftMoveBtn.style.cursor = 'pointer'; // 다시 활성화될 때 커서 스타일을 변경
-    }
+      // 새로운 인덱스가 음수일 경우 현재 인덱스로 유지하고 버튼을 비활성화
+      if (newIndex < 0) {
+          leftMoveBtn.disabled = true;
+          leftMoveBtn.style.cursor = 'not-allowed';
+          return;
+      } else {
+          leftMoveBtn.disabled = false;
+          leftMoveBtn.style.cursor = 'pointer'; // 다시 활성화될 때 커서 스타일을 변경
+      }
 
-    // 모든 슬라이드를 숨김
-    for (let i = 0; i < totalSlides; i++) {
-        slides[i].style.display = 'none';
-    }
+      // 모든 슬라이드를 숨김
+      for (let i = 0; i < totalSlides; i++) {
+          slides[i].style.display = 'none';
+      }
 
-    // 새로운 인덱스부터 보여줄 슬라이드 수 계산
-    let slidesToShow = Math.min(4, totalSlides - newIndex); // 남은 슬라이드 수와 4 중 작은 값을 사용
+      // 새로운 인덱스부터 보여줄 슬라이드 수 계산
+      let slidesToShow = Math.min(4, totalSlides - newIndex); // 남은 슬라이드 수와 4 중 작은 값을 사용
 
-    // 새로운 인덱스부터 보여줄 슬라이드를 순환하여 표시
-    for (let i = 0; i < slidesToShow; i++) {
-        slides[newIndex + i].style.display = 'block';
-    }
+      // 새로운 인덱스부터 보여줄 슬라이드를 순환하여 표시
+      for (let i = 0; i < slidesToShow; i++) {
+          slides[newIndex + i].style.display = 'block';
+      }
 
-    // 현재 인덱스 업데이트
-    currentIndex = newIndex;
+      // 현재 인덱스 업데이트
+      currentIndex = newIndex;
 
-    // 남은 인덱스가 4개보다 적으면 오른쪽 버튼 비활성화
-    if (slidesToShow < 4) {
-        rightMoveBtn.disabled = true;
-        rightMoveBtn.style.cursor = 'not-allowed';
-    } else {
-        rightMoveBtn.disabled = false;
-        rightMoveBtn.style.cursor = 'pointer'; // 다시 활성화될 때 커서 스타일을 변경
-    }
-}
+      // 남은 인덱스가 4개보다 적으면 오른쪽 버튼 비활성화
+      if (slidesToShow < 4) {
+          rightMoveBtn.disabled = true;
+          rightMoveBtn.style.cursor = 'not-allowed';
+      } else {
+          rightMoveBtn.disabled = false;
+          rightMoveBtn.style.cursor = 'pointer'; // 다시 활성화될 때 커서 스타일을 변경
+      }
+  }
 
   
   
@@ -388,7 +429,7 @@ function moveSlides(n) {
       .then(resData => {
         console.log(resData.userUploadList);
         let str2 = '<span  class="nickname">'+resData.userUploadList[0].user.name+'</span>';
-        $('#avatar').append(str2);
+        $('.head-left').append(str2);
         $.each(resData.userUploadList, (i, uploadList) => {
           
           var thumbnailUrl = extractFirstImage(uploadList.contents);
@@ -534,7 +575,7 @@ function moveSlides(n) {
   } 
   
   
-  // 팔로우 하기
+  
   // 팔로우 하기
 const fnFollow = () => {
     if (!checkFollow) {
@@ -938,9 +979,6 @@ const getLikeStatus = () => {
             // 댓글 들여쓰기 (댓글 여는 <div>)
             if(comment.depth === 0) {
               
-              
-              
-              
               str += '<div class="comment-start" style="">';
               
             } else {
@@ -950,7 +988,9 @@ const getLikeStatus = () => {
             console.log(comment.state);
             if(comment.state === 1){
               str += '<div class="comment-top">';
+              str += '<div class="profile-image-wrapper profile-image-medium">'
               str += comment.user.miniProfilePicturePath
+              str += '</div>'
               str += comment.user.name;
               str += '<br>'
               str += '<span style="padding-left: 15px;">(' + moment(comment.createDt).format('YYYY.MM.DD.') + ')</span>';
@@ -1006,6 +1046,7 @@ const getLikeStatus = () => {
         }
       })
     }
+    
     
     const fnBtnReply = () => {
       $(document).on('click', '.btn-reply', (evt) => {
