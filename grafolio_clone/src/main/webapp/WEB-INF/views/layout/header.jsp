@@ -94,7 +94,7 @@
                   ${sessionScope.user.miniProfilePicturePath}
                 </c:if>
                 <c:if test="${sessionScope.user.miniProfilePicturePath == null}">
-				  <img alt="default-profile-image" class="default-profile-image" src="../resources/img/default_profile_image.png">
+				          <img alt="default-profile-image" class="default-profile-image" src="${contextPath}/resources/img/default_profile_image.png">
                 </c:if>
               </div>
             </div>
