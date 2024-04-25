@@ -41,4 +41,9 @@ public interface PostMapper {
   List<PostDto> getUserLikeListByUserNo(Map<String, Object> map);
   // 유저프로필 - 좋아요한 게시글 개수
   int getUserLikeCountByUserNo(int userNo);
+  
+  // 게시물 상세- 댓글수(김규식)
+  int getCommentCountByPostNo(int postNo);
+  // 게시물 상세- 조회수(김규식)
+  int getHitCountByPostNo(int postNo);
 }

@@ -305,4 +305,18 @@
       WHERE USER_NO = #{userNo}
    </select>
    
+   <!-- 댓글 수 (김규식) -->
+   <select id="getCommentCountByPostNo"
+           resultType="int">
+     SELECT COUNT(*)
+       FROM COMMENT_T
+      WHERE POST_NO = #{postNo}
+   </select>
+   <!-- 조회 수 (김규식) -->
+   <select id="getHitCountByPostNo"
+           resultType="int">
+     SELECT  HIT
+       FROM POST_T
+      WHERE POST_NO = #{postNo}
+   </select>
 </mapper>

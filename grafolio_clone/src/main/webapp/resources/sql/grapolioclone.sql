@@ -155,6 +155,7 @@ INSERT INTO USER_T VALUES(
 
 commit;
 
+
 /************************* 트리거 *************************/
 /*
   1. DML (INSERT, UPDATE, DELETE) 작업 이후 자동으로 실행되는 데이터베이스 객체이다.
