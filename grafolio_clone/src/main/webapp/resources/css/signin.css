@@ -1,0 +1,179 @@
+@charset "UTF-8";
+
+@media (min-width: 640px) {
+    .layout {
+        width: 588px;
+    }
+}
+
+@media (min-width: 640px) {
+    .login-frm {
+        padding-top: 120px;
+    }
+}
+
+/* 로그인 창 전체 화면 */
+@media (min-width: 640px) {
+    .layout-page{
+        width: 475px;
+    }
+}
+
+@media (min-width: 640px) {
+    .layout-logo {
+        margin-top: 112px;
+    }
+}
+
+@media (min-width: 640px) {
+    .text-input {
+        padding-bottom: 13px;
+    }
+}
+
+/* email 칸이랑 pw 칸 사이의 거리 */
+@media (min-width: 640px) {
+    .login-frm-pw {
+        padding-top: 42px;
+    }
+}
+
+@media (min-width: 640px) {
+    .login-btn {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 640px) {
+    .login-frm-btn {
+        padding-top: 96px;
+    }
+}
+
+@media (min-width: 640px) {
+    .login-btn-wrap {
+        height: 50px;
+    }
+}
+
+
+#app {
+	background-color: #f5f5f5;
+}
+
+.layout {
+	width: 588px;
+    height: 100vh;
+	background-color: white;
+	margin: 0 auto;
+	overflow: auto;
+}
+
+/* 로고 */
+.layout-logo {
+	/*margin-top: 55px;*/
+	margin-top: 112px;
+	text-align: center;
+}
+
+.layout-logo > img {
+	cursor: pointer;
+}
+
+.layout-page {
+	/*width: 320px;*/
+	width: 475px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* 폼 아래의 모든 요소 세로정렬 */
+.login-frm > div {
+	display: flex;
+    flex-direction: column;
+}
+
+/* 레이블 모음 */
+.login-label {
+    color: #596569;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 100%;
+}
+
+/* input 박스 */
+.login-input {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #d8dfdf;
+    margin-top: 16px;
+}
+
+/*
+.login-input > input:focus {
+	border-bottom: 1px solid black;
+}
+*/
+
+.login-frm-pw {
+    padding-top: 35px;
+}
+
+.text-input {
+	color: #040606;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 130%;
+    border: none;
+    background: transparent;
+    width: 100%;
+    /*padding-bottom: 10px;*/
+    padding-bottom: 13px;
+    padding-left: 4px;
+}
+
+.login-frm-btn {
+    /*padding-top: 64px;*/
+    padding-top: 96px;
+}
+
+.login-btn-wrap {
+    display: flex;
+    height: 46px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 5px;
+}
+
+.login-btn {
+    width: 100%;
+    background-color: black;
+    border: none;
+    color: white;
+    height: 100%;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 130%;
+    font-weight: 500;
+}
+
+.login-btn:disabled {
+	background-color: #d8dfdf;
+}
+
+.signup-nav {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 100%;
+}
+
+input:focus {
+	outline: none;
+}
+
+
+
+

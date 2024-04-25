@@ -14,6 +14,7 @@ public interface PostService {
 	ResponseEntity<Map<String, Object>> summernoteImageUpload(MultipartFile multipartFile);
 	int registerPost(HttpServletRequest request);
 	ResponseEntity<Map<String, Object>> getPostList(HttpServletRequest request);
+
 	int updateHit(int postNo);
 	PostDto getPostByNo(int postNo);
 	int modifyPost(PostDto post);
@@ -28,6 +29,9 @@ public interface PostService {
 	int getLikeCountByUserNo(int userNo);
 	int getHitCountByUserNo(int userNo);
 	int checkLikeStatus(int postNo, int userNo);
+	
+	// 포스트 검색 메소드
+	ResponseEntity<Map<String, Object>> searchPosts(HttpServletRequest request);
 	
   // 유저프로필 - 업로드한 게시글 가져오기(오채원)
 	ResponseEntity<Map<String, Object>> getUserUploadList(HttpServletRequest request);

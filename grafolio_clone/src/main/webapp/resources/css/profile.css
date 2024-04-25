@@ -51,6 +51,7 @@
     flex-direction: column;
 }
 
+/* 프로필 */
 .profile-top {
     align-items: center;
     display: flex;
@@ -61,10 +62,9 @@
     margin: 50px 6.5% 80px;
 }
 
+/* 프로필 커버 이미지 */
 .profile-cover-wrap {
     height: 100%;
-    -webkit-user-select: none;
-    -moz-user-select: none;
     user-select: none;
     width: 1000px;
 }
@@ -72,6 +72,11 @@
 .profile-cover-image > img {
     max-width: 1000px;
     height: 360px;
+    transition: all 0.1s linear;
+}
+
+.profile-image-wrap > img:hover {
+  transform: scale(1.2);
 }
 
 .profile-cover {
@@ -91,6 +96,7 @@
     z-index: -1;
 }
 
+/* 유저 프로필 */
 .user-wrap {
   max-width: 450px;
   width: 100%;

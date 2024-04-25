@@ -14,16 +14,21 @@
 
   <h1 class="title">모든 크리에이터</h1>
   <p class="description">OGQ 그라폴리오에서 활동하는 모든 크리에이터를 만나보세요.</p>
+  <input type="hidden" class="loginId" data-user-no="${sessionScope.user.userNo}"/>
   
   
   <div id="creator-list">
     
   </div>
   
+  
+  
   <script>
     // 전역 변수
     var page = 1;
     var totalPage = 0;
+    
+    var hasLogin = true;
     
     const fnGetUserList = () => {
       // page에 해당하는 목록 요청 
@@ -35,6 +40,7 @@
           // 응답
           dataType: 'json',
           success: (resData) => {  // resData = {"postList": [], "totalPage": 10}
+          console.log(resData);
             totalPage = resData.totalPage;
             $.each(resData.userList, (i, user) => {
 
@@ -71,7 +77,9 @@
               str += '</a>'
               str += '      </div>';
               str += '      <span class="txt-card-type">';
-              str += user.profileCategory;
+              if(user.profileCategory){
+            	  str += user.profileCategory;
+              }
               str += '</span>'
               str += '    </div>';
               str += '  </div>';
@@ -113,8 +121,19 @@
               str += '</span>'
               str += '    </div>';
               str += '  </div>';
-              str += '</div>';
+              str += '  <div class="button-wrapper list">';
+              // 팔로잉, 팔로워 버튼 추가
+              if(user.isFollow === 1) {
+	            str += '    <button class="btn-detail btn-unfollow" id="following_' + user.userNo + '" data-user-no="' + user.userNo + '">';
+	            str += '      <div class="btn-text">팔로잉</div>';
+	            str += '    </button>';
+	          } else {
+	            str += '    <button class="btn-detail btn-follow" id="following_' + user.userNo + '" data-user-no="' + user.userNo + '">';
+	            str += '      <div class="btn-text">팔로우하기</div>';
+	            str += '    </button>';
+	          }
               
+              str += '</div>';
               str += '</div>';
               
               $('#creator-list').append(str);
@@ -291,6 +310,96 @@
         }
       }
     }
+    
+    
+    // 팔로우
+    $(document).on('click', '.btn-follow', function() {
+	  
+	  // 자기 자신 검사
+	  if($('.loginId').data('userNo') === $(this).data('userNo')) {
+		  return;
+	  }
+	  
+	  // 로그인 여부 검사
+	  fnFollowCheckSignin();
+	  if(!hasLogin) {
+	    return;
+	  } else {
+	    
+	    // 로그인 여부 통과되었으므로 fetch 진행
+	    fetch('${contextPath}/user/follow.do', {
+	      method: 'POST',
+	      headers: {
+	        'Content-Type': 'application/json'
+	      },
+	      body: JSON.stringify({
+	        'toUser': $(this).data('userNo')
+	      })
+	      })
+	      .then(response=> response.json())
+	      .then(resData=> {
+	        if(resData.insertFollowCount === 1) {
+	          // 팔로우 성공 시, 버튼 스타일 바꿈.
+	          $(this).text('팔로잉');
+	          $(this).css('background-color', '#425052');
+	          $(this).css('color', 'white');
+	          $(this).css('border-color', '#425052');
+	          $(this).attr('class', 'btn-detail btn-unfollow');
+	        }
+	      })
+	  }
+
+	});
+    
+    
+    // 언팔로우
+    $(document).on('click', '.btn-unfollow', function() {
+  
+	  // 자기 자신 검사
+	  if($('.loginId').data('userNo') === $(this).data('userNo')) {
+		  return;
+	  }
+		
+	  // 로그인 여부 통과되었으므로 fetch 진행
+	  fetch('${contextPath}/user/unfollow.do', {
+	    method: 'POST',
+	    headers: {
+	      'Content-Type': 'application/json'
+	    },
+	    body: JSON.stringify({
+	      'toUser': $(this).data('userNo')
+	    })
+	    })
+	    .then(response=> response.json())
+	    .then(resData=> {
+	      if(resData.deleteFollowCount === 1) {
+	        // 언팔로우 성공 시, 버튼 스타일 바꿈.
+	        $(this).text('팔로우하기');
+	        $(this).css('background-color', '#00b57f');
+	        $(this).css('color', 'white');
+	        $(this).css('border-color', '#00b57f');
+	        $(this).attr('class', 'btn-detail btn-follow');
+	      }
+	    })
+	});
+    
+    const fnFollowCheckSignin = () => {
+   	  if('${sessionScope.user}' === '') {
+   	    if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')) {
+   	      location.href = '${contextPath}/user/signin.page';
+   	    } else {
+   	      hasLogin = false;
+   	    }
+   	  }
+   	}
+
+
+    
+    
+    
+    
+    
+    
 
     fnGetUserList();
     fnScrollHander();

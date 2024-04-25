@@ -52,28 +52,70 @@
           <a href="${contextPath}/post/list.page">프로젝트</a>
         </div>
         <div class="hedaer-menu">
-          <div class="profile-test" data-user-no="${sessionScope.user.userNo}">마이페이지</div>
-        </div>
-        <div class="hedaer-menu">
           <a href="${contextPath}/user/creators.page">크리에이터</a>
         </div>
       </div>
     </div>
     
-    <div class="hedaer-right">
-      <div class="user-wrap">
+    <div class="header-right">
+      <div class="header-search">
+        <form action="${contextPath}/search" method="GET">
+          <div class="input-outer input-bg-color-gray input-size-medium input-stretch input-rounded search">
+            <div class="input-wrapper">
+              <input class="input input-delete" name="q" type="text" placeholder="검색">
+              <div class="input-icon">
+                <img class="icon icon-search" src="${contextPath}/resources/svg/search_icon.svg">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    
+    
+      <div class="header-user-wrap">
         <!-- Sign In 안 된 경우 -->
         <c:if test="${sessionScope.user == null}">  
-          <a href="${contextPath}/user/signin.page"><i class="fa-solid fa-arrow-right-to-bracket"></i>Sign In</a>
-          <a href="${contextPath}/user/signup.page"><i class="fa-solid fa-user-plus"></i>Sign Up</a>
+          <button class="btn-signin">
+			<div class="btn-text">로그인</div>
+		  </button>
+          <!--  -->
         </c:if>
         <!-- Sign In 된 경우 -->
+        
+       <div class="header-detail">
+       <!-- <a href="${contextPath}/user/signout.do">Sign Out</a> -->
         <c:if test="${sessionScope.user != null}">
           <a href="${contextPath}/post/write.page">프로젝트 올리기</a>
-          ${sessionScope.user.name}님 반갑습니다
-          <a href="${contextPath}/user/signout.do"><i class="fa-solid fa-arrow-right-from-bracket"></i>Sign Out</a>
-          <a href="${contextPath}/user/leave.do"><i class="fa-solid fa-user-minus"></i>회원탈퇴</a>
+          <div class="dropdown-outer">
+            <!-- 프로필 사진 -->
+            <div class="dropdown-trigger-block">
+              <div class="profile-image-wrap">
+                <c:if test="${sessionScope.user.miniProfilePicturePath != null}">
+                  ${sessionScope.user.miniProfilePicturePath}
+                </c:if>
+                <c:if test="${sessionScope.user.miniProfilePicturePath == null}">
+				  <img alt="default-profile-image" class="default-profile-image" src="../resources/img/default_profile_image.png">
+                </c:if>
+              </div>
+            </div>
+            <!-- 드롭다운 메뉴 -->
+            <div class="dropdown-menu-block">
+              <div class="dropdown-menu-wrap">
+                <div class="dropdown-menu-list">
+                  <div class="menu-item"><span>프로필</span></div>
+                  <div class="menu-item"><span>로그아웃</span></div>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+          
+          <!-- <a href="${contextPath}/user/leave.do"><i class="fa-solid fa-user-minus"></i>회원탈퇴</a> -->
         </c:if>
+       </div>
+        
+        
+        
       </div>
     </div>
 
@@ -81,4 +123,56 @@
   </div>
 
   <div class="main-wrap">
+  
+  
+  <script>
+  
+  const fnGetProfile = () => {
+  	$('.profile').on('click', (evt) => {
+  		if(evt.target.dataset.userNo === '') {
+	  		console.log(evt.target.dataset.userNo);
+	  		location.href="${contextPath}/user/profile.do?userNo=" + 1;
+  		} else {
+  	  		console.log(evt.target.dataset.userNo);
+  	  		location.href="${contextPath}/user/profile.do?userNo=" + evt.target.dataset.userNo;
+  		}
+  	})
+  }
+  
+  const fnLoginLink = () => {
+    $('.btn-signin').on('click', () => {
+      location.href="${contextPath}/user/signin.page";
+    })
+  }
+  
+  const fnShowDrop = () => {
+	$('.dropdown-outer').on('click', () => {
+	  $('.dropdown-menu-wrap').toggle();
+	})
+  }
+  
+  const fnDropdownMenu = () => {
+	  
+    $('.menu-item:eq(0)').on('click', () => {
+      location.href="${contextPath}/user/profile.do?userNo=" + "${sessionScope.user.userNo}";
+    })
+    
+    $('.menu-item:eq(1)').on('click', () => {
+      location.href="${contextPath}/user/signout.do";
+    })
+  }
+  
+
+  
+  
+  fnGetProfile();
+  fnLoginLink();
+  fnShowDrop();
+  fnDropdownMenu();
+  
+  
+  </script>
+  
+  
+  
   
