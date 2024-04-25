@@ -22,6 +22,8 @@ var UploadListTotalPage = 0;
 // 좋아요 totalPage
 var LikeListTotalPage = 0;
 
+var loginUser = $('.profile').data('userNo');
+
 
 const fnGetContextPath = ()=>{
   const host = location.host;  /* localhost:8080 */
@@ -500,9 +502,9 @@ const fnGetFollowCount = () => {
 
 // 로그인 여부 체크
 const fnCheckSignin = () => {
-  if('${sessionScope.user}' === '') {
+  if(loginUser === '') {
     if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')) {
-      location.href = '${contextPath}/user/signin.page';
+      location.href = fnGetContextPath() + '/user/signin.page';
     } else {
       hasLogin = false;
     }
@@ -619,7 +621,8 @@ const fnGetUserUploadList = () => {
             $('#like-count-' + upload.postNo).html('Error');
           });     
     })
-    if('${sessionScope.user}' !== '') {
+    var userNo = $('.profile').data('userNo');
+    if('userNo' !== '') {
       fnLikeCheck();
     }
   })
@@ -766,7 +769,7 @@ function displayThumbnail(imageUrl) {
 
 // postNo당 좋아요 수 가져오기
 const fnGetLikeCountByPostNo = (postNo) => {
-  return fetch('${contextPath}/post/get-like-count-by-postno?postNo=' + postNo, {
+  return fetch(fnGetContextPath() + '/post/get-like-count-by-postno?postNo=' + postNo, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -784,11 +787,17 @@ const fnGetLikeCountByPostNo = (postNo) => {
 // 좋아요 수 확인
 const fnLikeCheck = () => {
     const posts = document.querySelectorAll('.card');
+    let logintestUser = 0;
     // 모든 게시물에 대해 'Liked' 상태를 확인
     posts.forEach(post => {
       let postNo = post.dataset.postNo;
       // 서버에서 'liked' 상태 정보를 가져오는 fetch 요청
-      fetch('${contextPath}/post/check-like-status?postNo=' + postNo +'&userNo=${sessionScope.user.userNo}', {
+      if(loginUser === '') {
+        logintestUser = 0;
+      } else {
+        logintestUser = loginUser;
+      }
+      fetch(fnGetContextPath() + '/post/check-like-status?postNo=' + postNo +'&userNo=' + logintestUser, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -809,7 +818,7 @@ const fnLikeCheck = () => {
   
 // 좋아요, 조회수 가져오기
 const fnGetLikeCountByUserNo = () => {
-  return fetch('${contextPath}/post/get-like-count-by-userNo?userNo=' + $('.user-body').data('userNo'), {
+  return fetch(fnGetContextPath() + '/post/get-like-count-by-userNo?userNo=' + $('.user-body').data('userNo'), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -827,7 +836,7 @@ const fnGetLikeCountByUserNo = () => {
 
 // 조회수 가져오기
 const fnGetHitCountByUserNo = () => {
-  return fetch('${contextPath}/post/get-hit-count-by-userNo?userNo=' + $('.user-body').data('userNo'), {
+  return fetch(fnGetContextPath() + '/post/get-hit-count-by-userNo?userNo=' + $('.user-body').data('userNo'), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -850,16 +859,16 @@ const fnPostLike = () => {
   $(document).on('click', '.like-button', (evt) => {
       evt.stopPropagation(); // 이벤트 버블링을 중단
       var postNo = evt.target.closest('.card-options-header').dataset.postNo; // 게시물 번호 추출
-      var userNo = '${sessionScope.user.userNo}';
+      var userNo = $('.profile').data('userNo');
       var likeButton = evt.target.closest('.like-button'); // 좋아요 버튼 참조
-      if('${sessionScope.user}' === ''){
+      if(loginUser === ''){
         fnCheckSignin();
         return;
       }
       // 좋아요 버튼에 'liked' 클래스가 있는지 확인
       if (likeButton.classList.contains('liked')) {
           // 좋아요 취소 요청
-          fetch('${contextPath}/post/deletelikepost.do', {
+          fetch(fnGetContextPath() + '/post/deletelikepost.do', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -880,7 +889,7 @@ const fnPostLike = () => {
           });
       } else {
           // 좋아요 설정 요청
-          fetch('${contextPath}/post/likepost.do', {
+          fetch(fnGetContextPath() + '/post/likepost.do', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'

@@ -147,8 +147,6 @@ changeBorder();
 changeBtn();
 
 </script>
-
-	
 	
 	
 </body>

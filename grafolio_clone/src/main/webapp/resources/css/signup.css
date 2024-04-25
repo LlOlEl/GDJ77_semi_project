@@ -1,0 +1,188 @@
+@charset "UTF-8";
+
+
+body {
+  width: 100%;
+  max-width: 68rem;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  color: #4d4d4d;
+}
+
+
+@media (min-width: 640px) {
+    .layout {
+        width: 588px;
+    }
+}
+
+/* 로그인 창 전체 화면 */
+@media (min-width: 640px) {
+    .layout-page{
+        width: 475px;
+    }
+}
+
+@media (min-width: 640px) {
+    .layout-logo {
+        margin-top: 112px;
+    }
+}
+
+@media (min-width: 640px) {
+    .text-massage {
+        margin-top: 87px;
+    }
+}
+
+
+/* 배경 */
+#app {
+	background-color: #f5f5f5;
+}
+
+/* 전체 레이아웃 */
+.layout {
+	width: 588px;
+    height: 100vh;
+	background-color: white;
+	margin: 0 auto;
+	overflow: auto;
+}
+
+/* 로고 */
+.layout-logo {
+	/*margin-top: 55px;*/
+	margin-top: 112px;
+	text-align: center;
+}
+
+/* 로고 */
+.layout-logo > img {
+	cursor: pointer;
+}
+
+/* 로고 아래 내용 전체 */
+.layout-page {
+  /*width: 320px;*/
+  width: 475px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 이메일 input + button */
+.signup-frm-email {
+  display: flex;
+  align-items: end;	
+}
+
+/* input 감싸는 div 요소 */
+.signup-input {
+  display: flex;
+  border-bottom: 1px solid #d8dfdf;
+  margin-top: 16px;
+  width: 80%;
+}
+
+/* 비밀번호, 닉네임, 휴대폰 input */
+.signup-frm-pw > .signup-input, 
+.signup-frm-name > .signup-input,
+.signup-frm-mobile > .signup-input {
+    width: 100%;
+}
+
+/* label */
+.signup-label {
+  font-size: 13px;
+}
+
+/* input */
+.input-text {
+  color: #040606;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 130%;
+  border: none;
+  background: transparent;
+  width: 85%;
+  padding-bottom: 13px;
+  padding-left: 4px;
+}
+
+/* input 테두리 없앰 */
+input:focus {
+	outline: none;
+}
+
+/* 안내메시지 */
+.text-massage {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 130%;
+  /*margin-top: 70px;*/
+  margin-top: 87px;
+  margin-bottom: 20%;
+}
+
+/* 안내메시지 - 초록색 글자 부분 */
+.highlight-text-message {
+  color: #00996e;
+  font-weight: 700;
+}
+
+/* 다음 버튼 감싸는 div */
+.signup-btn-wrap {
+  display: flex;
+  height: 46px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 50%;
+  border-radius: 5px;	
+}
+
+/* 이름, 휴대전화 다음 버튼 */
+#section-name .signup-btn-wrap,
+#section-mobile .signup-btn-wrap {
+  margin-top: 65%;
+}
+
+/* 인증요청, 인증하기 버튼 */
+.btn-code {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 30px;
+    height: 100%;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    margin-left: 3%;
+}
+
+/* 다음 버튼 */
+.signup-btn {
+    width: 100%;
+    background-color: black;
+    border: none;
+    color: white;
+    height: 100%;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 130%;
+    font-weight: 500;
+} 
+
+/* 하단 안내메시지 */
+.message-field {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2%;
+}
+
+/* 가입하기버튼 disabled 시 */
+.signup-btn:disabled {
+	background-color: #d8dfdf;
+}
+
+
