@@ -43,51 +43,81 @@
 		        enctype="multipart/form-data"
 		        action="${contextPath}/user/signup.do"
 		        id="frm-signup">
-		      <span>OGQ 계정으로 사용할 이메일 주소를 입력해주세요</span>
-		      
+		      <div class="text-massage">
+		        <span>OGQ 계정으로 사용할</span>
+		        <div>
+		          <span class="highlight-text-message text-message">이메일</span>
+		          <span>주소를 입력해주세요</span>  
+	            </div>
+		      </div>
 			  <div id="section-email">
-			    <div class="sign-frm-email">
-			      <input type="text" id="inp-email" name="email" class="input-text" placeholder="example@example.com">
-			      <button type="button" id="btn-code" class="btn-code">인증코드받기</button>
-			      <div class="msg-email" id="msg-email"></div>
-			    </div>
 			    <div class="signup-frm-email">
-			      <input type="text" id="inp-code" class="input-text" placeholder="인증코드입력" disabled>
-			      <button type="button" id="btn-verify-code" class="btn-verify-code" disabled>인증하기</button>
+			      <div class="signup-input">
+			        <input type="text" id="inp-email" name="email" class="input-text" placeholder="example@example.com">
+			      </div>
+			      <button type="button" id="btn-code" class="btn-code">인증요청</button>
+			      <!-- <div class="msg-email" id="msg-email"></div> -->
 			    </div>
-			    <button type="button" id="btn-confirmCode" disabled>다음</button>
+			    <div class="msg-email" id="msg-email"></div>
+			    <div class="signup-frm-email">
+			      <div class="signup-input">
+			        <input type="text" id="inp-code" class="input-text" placeholder="인증코드입력" disabled>
+			      </div>
+			      <button type="button" id="btn-verify-code" class="btn-code" disabled>인증하기</button>
+			    </div>
+			    <div class="msg-emailCode" id="msg-emailCode"></div>
+			    <div class="message-field">
+			      <span>· 입력한 이메일 주소로 인증번호가 발송됩니다.</span>
+			      <span>· 인증메일을 받을 수 있도록 자주 쓰는 이메일을 입력해 주세요.</span>
+			    </div>
+			    <div class="signup-btn-wrap">
+			      <button type="button" id="btn-confirmCode" class="signup-btn" disabled>다음</button>
+			    </div>
 			  </div>
 			  
 			  <div id="section-pw" style="display:none">
 			    <div class="signup-frm-pw">
 			      <label for="inp-pw" class="signup-label">비밀번호</label>
-			      <input type="password" id="inp-pw" name="pw" class="input-pw">
+			      <div class="signup-input">
+			        <input type="password" id="inp-pw" name="pw" class="input-text" placeholder="비밀번호를 입력해주세요. (8~20자리)">
+			      </div>
 			      <div class="msg-pw" id="msg-pw"></div>
 			    </div>
-			    <div class="signup-frm-pwCheck">
-			      <label for="inp-pw2" class="signup-label">비밀번호 확인</label>
-			      <input type="password" id="inp-pw2" class="inp-pw2">
+			    <div class="signup-frm-pw">
+			      <div class="signup-input">
+			        <input type="password" id="inp-pw2" class="input-text" placeholder="확인을 위해 비밀번호를 재입력해주세요.">
+			      </div>
 			      <div class="msg-pw2" id="msg-pw2"></div>
 			    </div>
-			    <button type="button" id="btn-confirmPw" disabled>다음</button>
+			    <div class="signup-btn-wrap">
+			      <button type="button" id="btn-confirmPw" class="signup-btn" disabled>다음</button>
+			    </div>
 			  </div>
 			  
 			  <div id="section-name" style="display:none">
 			   <div class="signup-frm-name">
 			     <label for="inp-name" class="signup-label">이름</label>
-			     <input type="text" name="name" id="inp-name" class="input-text">
+			     <div class="signup-input">
+			       <input type="text" name="name" id="inp-name" class="input-text" placeholder="닉네임을 입력해주세요. (5~30자)">
+			     </div>
 			     <div class="msg-name" id="msg-name"></div>
 			   </div>
-			   <button type="button" id="btn-confirmName" disabled>다음</button>
+			   <div class="signup-btn-wrap">
+			     <button type="button" id="btn-confirmName" class="signup-btn" disabled>다음</button>
+			   </div>
 			  </div>
 				
 			  <div id="section-mobile" style="display:none">
 			    <div class="signup-frm-mobile">
 			      <label for="inp-mobile" class="signup-label">휴대전화번호</label>
-			      <input type="text" name="mobile" id="inp-mobile" class="input-text">
+			      <div class="signup-input">
+			        <input type="text" name="mobile" id="inp-mobile" class="input-text">
+			      </div>
 			      <div class="msg-mobile" id="msg-mobile"></div>
 			    </div>
-			    <button type="button" id="btn-confirmMobile" disabled>다음</button>
+			    <div class="signup-btn-wrap">
+			      <button type="button" id="btn-confirmMobile" class="signup-btn" disabled>다음</button>
+			    </div>
 			  </div>
 			  
 			  <div id="section-options" style="display:none">
@@ -124,7 +154,7 @@
 			      <div class="signup-category-label"><p>3개 이하로 선택 가능합니다.</p></div>
 			      <div class="msg-category" id="msg-category"></div>
 			    </div>
-			    <button type="submit" id="btn-signup" class="btn btn-primary">가입하기</button>
+			    <button type="submit" id="btn-signup" class="btn-signup">가입하기</button>
 			  </div>
 		  </form>
       </div>
@@ -134,6 +164,17 @@
   </div>
 </div>
 
+
+<script>
+const LogoMain = () => {
+  $('.layout-logo').find('img').on('click', () => {
+    location.href = "${contextPath}/main.page";
+  })
+}
+
+LogoMain();
+
+</script>
 
 <script src="${contextPath}/resources/js/signup.js?dt=${dt}"></script>
 
