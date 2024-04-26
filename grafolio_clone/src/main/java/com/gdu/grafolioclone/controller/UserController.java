@@ -56,9 +56,18 @@ public class UserController {
   
   @GetMapping("/edit.do")
   public String edit(HttpServletRequest request, Model model) {
-    UserDto profile = userService.getProfileByUserNo(request);
-    model.addAttribute("profile", profile);
+//    UserDto profile = userService.getProfileByUserNo(request);
+    model.addAttribute("profile", userService.getProfileByUserNo(request));
     return "user/edit";
+  }
+  
+  @PostMapping("/checkPw.do")
+  public String checkPw(HttpServletRequest request, HttpServletResponse response) {
+//    if() {
+//      return 0;
+//    }
+//    return 1;
+    return null;
   }
   
   @PostMapping("/modify.do")

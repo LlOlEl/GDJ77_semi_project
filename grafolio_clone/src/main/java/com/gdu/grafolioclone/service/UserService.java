@@ -33,6 +33,9 @@ public interface UserService {
   
   int modifyUser(MultipartHttpServletRequest multipartRequest);
   
+  // 수정 페이지에 사용자 정보 가져오기
+//  Map<String, Object> getEditPageByUserNo(HttpServletRequest request);
+  
   // 프로필 정보 가져오기 - 오채원
   UserDto getProfileByUserNo(HttpServletRequest request);
   // 프로필 목록 가져오기 - 최연승

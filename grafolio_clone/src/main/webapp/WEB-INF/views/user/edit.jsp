@@ -19,7 +19,7 @@
   <form method="POST"
         enctype="multipart/form-data"
         action="${contextPath}/user/modify.do"
-        id="frm-modify">
+        id="frm-edit">
         
 	  <div class="profile_picture">
 	   <div class="main">
@@ -76,9 +76,10 @@
 		    <span>비밀번호</span>
 		    <div>
 		      <div>
-		        <input type="password" name="currPw" placeholder="현재 비밀번호를 입력해 주세요.">
+		        <input type="password" name="currPw" id="inp-currPw" placeholder="현재 비밀번호를 입력해 주세요.">
 		        <div id="msg-pw"></div>
 		      </div>
+		      <div><button type="button" id="checkPw">확인</button></div>
 		      <div>
 		        <input type="password" id="inp-pw1" name="pw" placeholder="새 비밀번호를 입력해 주세요.(8~20자리)">
 		        <div id="msg-pw1"></div>
@@ -91,10 +92,10 @@
 		  </div>
 		  <div class="row">
 		    <span>한줄 소개</span>
-		    <c:if test="${profile.descript == ''}">
+		    <c:if test="${profile.descript == null}">
 		      <div><input type="text" id="descript" name="descript" placeholder="작가님을 한 마디로 표현해주세요. (100자 이내)"></div>
 		    </c:if>
-		    <c:if test="${profile.descript != ''}">
+		    <c:if test="${profile.descript != null}">
 		      <div><input type="text" id="descript" name="descript" value="${profile.descript}"></div>
 		    </c:if>
 		  </div>
@@ -104,21 +105,21 @@
 		      <p>3개 이하로 선택 가능합니다.</p>
 		    </div>
 		    <div>
-		      <input type="checkbox" name="profileCategory" value="일러스트">일러스트
-		      <input type="checkbox" name="profileCategory" value="사진">사진
-		      <input type="checkbox" name="profileCategory" value="디자인">디자인
-		      <input type="checkbox" name="profileCategory" value="회화">회화
-		      <input type="checkbox" name="profileCategory" value="조소/공예">조소/공예
-		      <input type="checkbox" name="profileCategory" value="사운드">사운드
-		      <input type="checkbox" name="profileCategory" value="애니메이션">애니메이션
-		      <input type="checkbox" name="profileCategory" value="캘리그라피">캘리그라피
-		      <input type="checkbox" name="profileCategory" value="기타">기타
+		      <input type="checkbox" name="profileCategory" id="category_일러스트" value="일러스트">일러스트
+		      <input type="checkbox" name="profileCategory" id="category_사진" value="사진">사진
+		      <input type="checkbox" name="profileCategory" id="category_디자인" value="디자인">디자인
+		      <input type="checkbox" name="profileCategory" id="category_회화" value="회화">회화
+		      <input type="checkbox" name="profileCategory" id="category_조소/공예" value="조소/공예">조소/공예
+		      <input type="checkbox" name="profileCategory" id="category_사운드" value="사운드">사운드
+		      <input type="checkbox" name="profileCategory" id="category_애니메이션" value="애니메이션">애니메이션
+		      <input type="checkbox" name="profileCategory" id="category_캘리그라피" value="캘리그라피">캘리그라피
+		      <input type="checkbox" name="profileCategory" id="category_기타" value="기타">기타
 		    </div>
 		  </div>
 	    <div>
 	      <input type="hidden" name="userNo" value="${user.userNo}">
 		    <button type="submit" id="btn-modify" class="btn btn-primary">저장하기</button>
-		    <button type="button" id="btn-next" class="btn btn-secondary">취소하기</button>
+		    <button type="button" id="btn-back" class="btn btn-secondary">취소하기</button>
 	    </div>
 	   
 	  </div>
@@ -135,13 +136,15 @@
 -->
 
 <script>
-const realUploadMainProfile = document.getElementById('real-upload-mainProfile');  // 실제로 이미지 첨부되는 input 부분
-const uploadMainProfile = document.getElementById('upload-mainProfile');           // 이미지 첨부를 위한 img로 만들어진 버튼
-const realUploadMiniProfile = document.getElementById('real-upload-miniProfile');
-const uploadMiniProfile = document.getElementById('upload-miniProfile');
+var realUploadMainProfile = document.getElementById('real-upload-mainProfile');  // 실제로 이미지 첨부되는 input 부분
+var uploadMainProfile = document.getElementById('upload-mainProfile');           // 이미지 첨부를 위한 img로 만들어진 버튼
+var realUploadMiniProfile = document.getElementById('real-upload-miniProfile');
+var uploadMiniProfile = document.getElementById('upload-miniProfile');
 
-uploadMainProfile.addEventListener('click', () => realUploadMainProfile.click());  // img로 만들어진 버튼을 눌렀을 때 실제 첨부 input이 실행되는 이벤트 
-uploadMiniProfile.addEventListener('click', () => realUploadMiniProfile.click());
+var passwordCheck = false;
+var passwordConfirm = false;
+var inpPw1 = document.getElementById('inp-pw1');
+var inpPw2 = document.getElementById('inp-pw2');
 
 // 배경 이미지 업로드
 const fnUploadMainProfile = () => {
@@ -173,6 +176,114 @@ const fnUploadMiniProfile = () => {
 	};
 	reader.readAsDataURL(miniProfile);
 }
+
+const fnCheckPassword = () => {
+  // 비밀번호 4 ~ 12자, 영문/숫자/특수문자 중 2개 이상 포함
+  let msgPw1 = document.getElementById('msg-pw1');
+  // 영문 포함되어 있으면 true
+  let validCount = /[A-Za-z]/.test(inpPw1.value)    // 영문 포함되어 있으면 true
+                 + /[0-9]/.test(inpPw1.value)       // 숫자 포함되어 있으면 true
+                 + /[A-Za-z0-9]/.test(inpPw1.test); // 영문/숫자가 아니면 true
+  let regPw = /^[A-Za-z0-9-_]{2,}@[A-Za-z0-9]+(\.[A-Za-z]{2,6}){1,2}$/;
+  let passwordLength = inpPw1.value.length;
+  passwordCheck = passwordLength >= 4
+               && passwordLength <= 12
+               && validCount >= 2;
+  
+  if(passwordCheck){
+    msgPw1.innerHTML = '사용 가능한 비밀번호입니다.';
+    msgPw1.style.color = '#475993';
+    msgPw1.style.fontSize = '13px';
+  } else {
+    msgPw1.innerHTML = '비밀번호 4 ~ 12자, 영문/숫자/특수문자 중 2개 이상 포함 ';
+    msgPw1.style.color = 'red';
+    msgPw1.style.fontSize = '13px';
+  }
+}
+
+const fnConfirmPassword = () => {
+  passwordConfirm = (inpPw1.value != '') && (inpPw1.value === inpPw2.value);
+  let msgPw2 = document.getElementById('msg-pw2');
+  if(passwordConfirm) {
+    msgPw2.innerHTML = ''; 
+    btnConfirmPw.removeAttribute('disabled');
+  } else {
+    msgPw2.innerHTML = '비밀번호 입력을 확인하세요.';
+    msgPw2.style.color = 'red';
+    msgPw2.style.fontSize = '13px';
+    
+    btnConfirmPw.setAttribute('disabled', true);
+  }
+}
+
+const fnEditUser = () => {
+	let inpCurrPw = document.getElementById('inp-currPw');
+	
+  document.getElementById('frm-edit').addEventListener('submit', (evt) => {
+    if(!emailCheck) {
+      alert('이메일을 확인하세요.');
+      evt.preventDefault();
+      return;
+    } else if(!passwordCheck || !passwordConfirm) {
+      alert('비밀번호를 확인하세요.');
+      evt.preventDefault();
+      return;
+    } else if(!nameCheck) {
+      alert('이름을 확인하세요.');
+      evt.preventDefault();
+      return;
+    } else if(!mobileCheck) {
+      alert('휴대전화를 확인하세요.');
+      evt.preventDefault();
+      return;
+    }
+    
+    fetch('${contextPath}/user/pwCheck.do', {
+    	method: 'POST',
+    	headers: {
+    		'Content-Type': 'application/json'
+    	},
+    	body: JSON.stringify({
+    		'currPw': inpCurrPw.value
+    	})
+    })
+    .then(response => response.json())
+    .then(resData => {
+    	if(resData === 0) {
+    		alert('현재 패스워드와 입력한 패스워드가 일치하지 않습니다.');
+    		evt.preventDefault();
+    		inpCurrPw.focus();
+    	}
+    })
+    
+  });
+}
+
+uploadMainProfile.addEventListener('click', () => realUploadMainProfile.click());  // img로 만들어진 버튼을 눌렀을 때 실제 첨부 input이 실행되는 이벤트 
+uploadMiniProfile.addEventListener('click', () => realUploadMiniProfile.click());
+
+inpPw1.addEventListener('keyup', fnCheckPassword);
+inpPw2.addEventListener('keyup', fnConfirmPassword);
+
+fnEditUser();
+
+
+
+const getCategoryList = () => {
+	var selectedCategories = "${profile.profileCategory}";
+	let arr = selectedCategories.split(", ");
+ 	arr.forEach((category)=>{
+ 		var checkbox = document.getElementById('category_' + category);
+ 		if(checkbox) {
+ 			checkbox.checked = true;
+ 		}
+ 	})
+ }
+getCategoryList();
+
+
+
+
 
 
 </script>

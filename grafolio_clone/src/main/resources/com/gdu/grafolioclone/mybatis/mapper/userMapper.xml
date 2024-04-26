@@ -67,6 +67,18 @@
          , PROFILE_CATEGORY = #{profileCategory}
      WHERE USER_NO = #{userNo}
   </update>
+  
+  <update id="updateUserExceptPw"
+          parameterType="UserDto">
+    UPDATE USER_T
+       SET NAME = #{name}
+         , MOBILE = #{mobile}
+         , MINI_PROFILE_PICTURE_PATH = #{miniProfilePicturePath}
+         , MAIN_PROFILE_PICTURE_PATH = #{mainProfilePicturePath}
+         , DESCRIPT = #{descript}
+         , PROFILE_CATEGORY = #{profileCategory}
+     WHERE USER_NO = #{userNo}
+  </update>
 
   <select id="getLeaveUserBymap"
           parameterType="Map"

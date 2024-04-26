@@ -23,6 +23,7 @@ public interface UserMapper {
   
   // 기본 정보 수정 - 장윤수
   int updateUser(UserDto user);
+  int updateUserExceptPw(UserDto user);
   
   // 프로필 정보 가져오기 - 오채원
   UserDto getProfileByUserNo(int userNo);
