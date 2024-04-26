@@ -1054,7 +1054,7 @@ const getLikeStatus = () => {
 
     const fnBtnCommentShow = () => {
         $(document).on('click', '.btn-comment-show', (evt) => {
-            $(evt.target).closest('.comment-start').next('.comments-all').toggle();
+            $(evt.target).closest('.comment-start').nextUntil('.comment-start').toggle();
         });
     }
 
