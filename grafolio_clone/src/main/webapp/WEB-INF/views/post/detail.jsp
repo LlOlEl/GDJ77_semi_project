@@ -116,13 +116,9 @@
           <div class="dropdwon-trigger-block">
             <div class="dropdwon-trigger-wrapper">
               <div class="profile-image-wrap avatar owner" id="profile-move" data-user-no="${post.user.userNo}">
-                <div class="profile-image-wrapper profile-image-medium">
-                  <c:if test="${user.miniProfilePicturePath != null}">
-                     ${user.miniProfilePicturePath}
-                    </c:if>
-                    <c:if test="${user.miniProfilePicturePath == null}">
-                     <img class="default-profile-image" alt="default-profile-image" src="../resources/img/default_profile_image.png"  width="40">
-                    </c:if>
+                <div class="profile-image-wrapper profile-image-medium" id="profile-navi">
+                   
+                    
                   
                 </div>
               </div>
@@ -165,7 +161,6 @@
     </div>
     
   
-    
     <c:if test="${sessionScope.user.userNo == post.user.userNo}">
       <form id="frm-btn" method="POST">  
         <input type="hidden" name="postNo" value="${post.postNo}">
@@ -173,7 +168,6 @@
         <button type="button" id="btn-remove" class="btn btn-danger btn-sm">삭제</button>
       </form>
     </c:if>
- 
   
  
   
@@ -201,12 +195,15 @@
     <c:if test="${sessionScope.user.userNo != null}">
            ${sessionScope.user.miniProfilePicturePath}
           </c:if>
+    <c:if test="${sessionScope.user.userNo == null}">
+           <img class="default-profile-image" alt="default-profile-image" src="../resources/img/default_profile_image.png"  width="40">
+          </c:if>
     </div>      
    </div>
    <div class="input-outer input-stretch">
     <div data-v-ec5e8f9c class="input-wrapper">
       <div class="input-inner-wrap">
-        <input type="text" id="contents" name="contents" placeholder="댓글을 입력해주세요"></input>
+        <input class="input" type="text" id="contents" name="contents" placeholder="댓글을 입력해주세요"></input>
         <button id="btn-comment-register" type="button" disabled class="btn btn-size-small btn-color-black button write-button">
         <div data-v-2862dfae class="btn-text">
           등록하기
@@ -239,19 +236,16 @@
       <div class="head-left" id="profile-list-move">
         <div class="profile-image-wrap avatar" id="avatar">
           <div  class="profile-image-wrapper profile-image-medium" >
-           <c:if test="${user.miniProfilePicturePath != null}">
-                     ${user.miniProfilePicturePath}
-          </c:if>
-           <c:if test="${user.miniProfilePicturePath == null}">
-                     <img class="default-profile-image" alt="default-profile-image" src="../resources/img/default_profile_image.png"  width="40">
-          </c:if>
+         
           </div>
         </div>
         
       </div>
       <div class="head-right">
-        <div class="figure-wrapper">
-          
+        <div class="figure-wrapper">          
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
         <button data-v-2862dfae data-v-e3383a90  class="btn btn-size-small btn-color-primary btn-rounded follow-button" id="btn-follow">
           <div data-v-09a3cce7 class="btn-text">
@@ -262,8 +256,7 @@
     </div>
      <ul data-v-e3383a90 class="list">
       <button data-v-57eb2394 data-v-e3383a90 class="btn-text btn-disabled"  id="left-move" disabled style="cursor:not-allowed;">
-        <svg class="arrow-icon left" width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" ><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
-        </svg>
+        <img class="arrow-icon" src="${contextPath}/resources/svg/arrow-icon_left.svg">
       </button>
       <section data-v-e3383a90 class="carousel carousel__wrapper" dir="ltr" aria-label="Gallery" tabindex="0">
         <div class="carousel__viewport">
@@ -275,8 +268,7 @@
       </section>
       
       <button data-v-57eb2394 data-v-e3383a90 class="btn-text" id="right-move" >
-        <svg class="arrow-icon right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-        </svg>
+        <img class="arrow-icon right" src="${contextPath}/resources/svg/arrow-icon_right.svg">
       </button>
     </ul>
   </div>
@@ -294,7 +286,8 @@
 
 
   <script>
-  
+  console.log('${post.user.userNo}');
+  console.log('${post.user.miniProfilePicturePath}');
   console.log('${sessionScope.user.miniProfilePicturePath}');
   
   // 팔로잉 여부
@@ -321,6 +314,17 @@
       $('#left-move').css('display', 'block');
   });
 
+  function moveDisable() {
+	  const slides = $('.carousel__slide');
+	  const totalSlides = slides.length;
+	  if (totalSlides <= 4) {
+          leftMoveBtn.style.display = 'none';
+          rightMoveBtn.style.display = 'none';
+          rightMoveBtn.disable = true;
+          leftMoveBtn.disable = true;
+      }
+  }
+  
   function moveSlides(n) {
       const slides = document.getElementsByClassName('carousel__slide');
       const totalSlides = slides.length;
@@ -328,14 +332,7 @@
       // 새로운 인덱스 계산
       let newIndex = currentIndex + n;
 
-      // 게시물이 4개 이하인 경우 버튼을 숨김
-      if (totalSlides <= 4) {
-          leftMoveBtn.style.display = 'none';
-          rightMoveBtn.style.display = 'none';
-      } else {
-          leftMoveBtn.style.display = 'block';
-          rightMoveBtn.style.display = 'block';
-      }
+      
 
       // 새로운 인덱스가 음수일 경우 현재 인덱스로 유지하고 버튼을 비활성화
       if (newIndex < 0) {
@@ -348,16 +345,16 @@
       }
 
       // 모든 슬라이드를 숨김
-      for (let i = 0; i < totalSlides; i++) {
+       for (let i = 0; i < totalSlides; i++) {
           slides[i].style.display = 'none';
-      }
+      } 
 
       // 새로운 인덱스부터 보여줄 슬라이드 수 계산
       let slidesToShow = Math.min(4, totalSlides - newIndex); // 남은 슬라이드 수와 4 중 작은 값을 사용
 
       // 새로운 인덱스부터 보여줄 슬라이드를 순환하여 표시
       for (let i = 0; i < slidesToShow; i++) {
-          slides[newIndex + i].style.display = 'block';
+          slides[newIndex + i].style.display = 'flex';
       }
 
       // 현재 인덱스 업데이트
@@ -430,6 +427,17 @@
         console.log(resData.userUploadList);
         let str2 = '<span  class="nickname">'+resData.userUploadList[0].user.name+'</span>';
         $('.head-left').append(str2);
+        let str3 = '';
+        let str4 = '';
+        if(resData.userUploadList[0].user.miniProfilePicturePath !== null){
+         str3 += '<span>'+resData.userUploadList[0].user.miniProfilePicturePath +'</span>';
+         str4 += '<span>'+resData.userUploadList[0].user.miniProfilePicturePath +'</span>';
+        } else {
+        	str3 += '<img class="default-profile-image" alt="default-profile-image" src="../resources/img/default_profile_image.png"  width="40">'
+        	str4 += '<img class="default-profile-image" alt="default-profile-image" src="../resources/img/default_profile_image.png"  width="40">'
+        }
+        $('.profile-image-medium').append(str3);
+        $('#profile-navi').append(str4);
         $.each(resData.userUploadList, (i, uploadList) => {
           
           var thumbnailUrl = extractFirstImage(uploadList.contents);
@@ -477,11 +485,11 @@
                $('#like-count-' + uploadList.postNo).html('Error'); // Display error in the like count placeholder
              });
             if('${sessionScope.user}' !== ''){
-            	getLikeStatus();
+              getLikeStatus();
                }
           fnPostMove();
         }) 
-        
+        moveDisable();
       })
        .catch(error => {
               console.error('데이터를 불러오는 중 오류가 발생했습니다:', error);
@@ -501,12 +509,12 @@
   
   // 게시물로 이동
   const fnPostMove = ()=>{
-	  document.querySelectorAll('.card-wrap').forEach(card => {
-		    let postNo = card.dataset.postNo;
-		    card.addEventListener('click', (evt) => {
-		        location.href= '${contextPath}/post/detail.do?postNo=' + postNo;
-		    });
-		});
+    document.querySelectorAll('.card-wrap').forEach(card => {
+        let postNo = card.dataset.postNo;
+        card.addEventListener('click', (evt) => {
+            location.href= '${contextPath}/post/detail.do?postNo=' + postNo;
+        });
+    });
     }
   
   
@@ -534,14 +542,14 @@
   
    // 조회수
   const fnGetHitCountByPostNo = () => {
-	  let btnLike = document.getElementById('post');
+    let btnLike = document.getElementById('post');
     let postNo = btnLike.dataset.postNo;
     fetch('${contextPath}/post/get-hit-count-by-postno?postNo=' + postNo,{
-    	method: 'GET',
+      method: 'GET',
     })
     .then(response => response.json())
     .then(resData => {
-    	 let str = '<div>';
+       let str = '<div>';
         str += '<span>' + resData.hitCount + '</span>'; // resData는 댓글 수를 나타냅니다.
         str += '</div>';
         
@@ -549,7 +557,7 @@
         $('.figure-data-wrapper').find('.figure-data').eq(n).append(str);
     })
       .catch(error => {
-    	  alert('Error getting hit count: ' + error); // 에러 처리
+        alert('Error getting hit count: ' + error); // 에러 처리
       })
   }
   
@@ -657,63 +665,65 @@ const fnCheckFollow = () => {
   
   // 전체 좋아요
   const fnGetLikeCountByUserNo = () => {
-	    
-	    let userNo = document.getElementById('profile-move').dataset.userNo;
-	     fetch('${contextPath}/post/get-like-count-by-userNo?userNo=' + $('#profile-move').data('userNo'), {
-	      method: 'GET',
-	      headers: {
-	        'Content-Type': 'application/json',
-	      }
-	    })
-	    .then(response => response.json())
-	    .then(resData => {
-	      let str = '<span>좋아요 '+resData.likeCount+'</span>';
-	      $('.figure-wrapper').append(str);
-	      
-	    })
-	    .catch(error => {
-	        console.log('Error likecount the post.'); // 에러 처리
-	    });
-	  }
+      
+      let userNo = document.getElementById('profile-move').dataset.userNo;
+       fetch('${contextPath}/post/get-like-count-by-userNo?userNo=' + $('#profile-move').data('userNo'), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(response => response.json())
+      .then(resData => {
+        let str = '좋아요 '+resData.likeCount;
+        const n = 0; // n은 0부터 시작하여 해당 위치를 지정 (예: 0은 첫 번째, 1은 두 번째)
+        $('.figure-wrapper').find('span').eq(n).text(str);
+      })
+      .catch(error => {
+          console.log('Error likecount the post.'); // 에러 처리
+      });
+    }
   
   // 전체 팔로워 수
   const fnGetFollowCount = () => {
-	  
-	  fetch(  '${contextPath}/user/getFollowCount.do?', {
-	      method: 'POST',
-	      headers: {
-	        'Content-Type': 'application/json'
-	      },
-	      body: JSON.stringify({
-	        'userNo': $('#profile-move').data('userNo')
-	      })
-	    })
-	    .then(response=> response.json())
-	    .then(resData=> {
-	    	let str = '<span>팔로워 '+resData.followerCount+'</span>';
-	      $('.figure-wrapper').append(str);
-	    })
-	}
+    
+    fetch(  '${contextPath}/user/getFollowCount.do?', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'userNo': $('#profile-move').data('userNo')
+        })
+      })
+      .then(response=> response.json())
+      .then(resData=> {
+        let str = '팔로워 '+resData.followerCount;
+        const n = 1; // n은 0부터 시작하여 해당 위치를 지정 (예: 0은 첫 번째, 1은 두 번째)
+        $('.figure-wrapper').find('span').eq(n).text(str);
+      })
+  }
   
   // 전체 조회 수
   const fnGetHitCountByUserNo = () => {
-	  let userNo = document.getElementById('profile-move').dataset.userNo;
-	   fetch('${contextPath}/post/get-hit-count-by-userNo?userNo=' + $('#profile-move').data('userNo'), {
-	    method: 'GET',
-	    headers: {
-	      'Content-Type': 'application/json',
-	    }
-	  })
-	  .then(response => response.json())
-	  .then(resData => {
-	    
-		  let str = '<span>조회수 '+resData.hitCount+'</span>';
-	     $('.figure-wrapper').append(str);
-	  })
-	  .catch(error => {
-	      console.log('Error hitcount the post.'); // 에러 처리
-	  });
-	}
+    let userNo = document.getElementById('profile-move').dataset.userNo;
+     fetch('${contextPath}/post/get-hit-count-by-userNo?userNo=' + $('#profile-move').data('userNo'), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => response.json())
+    .then(resData => {
+      
+      let str = '조회수 '+resData.hitCount;
+      const n = 2; // n은 0부터 시작하여 해당 위치를 지정 (예: 0은 첫 번째, 1은 두 번째)
+      $('.figure-wrapper').find('span').eq(n).text(str);
+    })
+    .catch(error => {
+        console.log('Error hitcount the post.'); // 에러 처리
+    });
+  }
   
   
   
@@ -958,107 +968,96 @@ const getLikeStatus = () => {
     var page = 1;
     
     const fnCommentList = () => {
-      $.ajax({
-        type: 'GET',
-        url: '${contextPath}/post/comment/list.do',
-        data: 'postNo=${post.postNo}&page=' + page,
-        dataType: 'json',
-        success: (resData) => { // resData = {"commentList": [], "paging": "< 1 2 3 4 5 >"}
-          let commentList = $('.comment-item');
-          let paging = $('#paging');
-          let profileWrap = $('.profile-image-wrap-avatar')
-          commentList.empty();
-          paging.empty();
-          if(resData.commentList.length === 0){
-            commentList.append('<div>댓글이 없습니다.</div>');
-            paging.empty();
-            return;
-          }
-          $.each(resData.commentList, (i, comment) => {
-            let str = '';
-            // 댓글 들여쓰기 (댓글 여는 <div>)
-            if(comment.depth === 0) {
-              
-              str += '<div class="comment-start" style="">';
-              
-            } else {
-              str += '<div class="comments-all" style="padding-left: 32px; display:none">';
-            }
-            // 댓글 내용 표시
-            console.log(comment.state);
-            if(comment.state === 1){
-              str += '<div class="comment-top">';
-              str += '<div class="profile-image-wrapper profile-image-medium">'
-              str += comment.user.miniProfilePicturePath
-              str += '</div>'
-              str += comment.user.name;
-              str += '<br>'
-              str += '<span style="padding-left: 15px;">(' + moment(comment.createDt).format('YYYY.MM.DD.') + ')</span>';
-              str += '</div>';
-              str += '<div>' + comment.contents + '</div>';
-              
-              // 답글 버튼
-              str += '<div clas="btn-bottom-reply">'
-              str += '<button type="button" class="btn-reply" >답글</button>';
-              str += '<button type="button" id="btn-comment-show" >답글보기</button>';
-              str += '</div>'
-              if(comment.depth === 0) {
-                  
-              }
-              /* 답글 입력 화면 */
-              str += '<div class="blind" style="display:none;">';
-              str += '  <form class="frm-reply">';
-              str += '    <input type="hidden" name="groupNo" value="' + comment.groupNo + '">';
-              str += '    <input type="hidden" name="postNo" value="${post.postNo}">';
-              str += '    <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">';
-              str += '    <textarea name="contents" placeholder="답글 입력"></textarea>';
-              str += '    <button type="button" class="btn btn-warning btn-register-reply">작성완료</button>';
-              str += '  </form>';
-              str += '</div>';
-              /*                */
-              // 삭제 버튼 (내가 작성한 댓글에만 삭제 버튼이 생성됨)
-              if(Number('${sessionScope.user.userNo}') === comment.user.userNo) {
-                str += '<button type="button" class="btn btn-danger btn-remove" data-comment-no="' + comment.commentNo + '">삭제</button>'
-                
-              }
-            } else {
-              str += '<span>삭제된 댓글입니다.</span>'
-            }
-            // 댓글 닫는 <div>
-            str += '</div>';
-            
-            // 목록에 댓글 추가
-            commentList.append(str);
-          })
-          // 페이징 표시
-          paging.append(resData.paging);
-          
-          
-            $('#btn-comment-show').on('click', ()=> {
-              // 현재 클릭한 답글 보기 버튼에 해당하는 댓글의 답글 목록을 토글
-             $('.comments-all').toggle();
-            });  
-            
-          
-        },
-        error: (jqXHR) => {
-          alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-        }
-      })
-    }
-    
-    
-    const fnBtnReply = () => {
-      $(document).on('click', '.btn-reply', (evt) => {
-        // Sign In 체크
-        fnCheckSignin();
-        // 답글 작성 화면 조작하기
+        $.ajax({
+            type: 'GET',
+            url: '${contextPath}/post/comment/list.do',
+            data: 'postNo=${post.postNo}&page=' + page,
+            dataType: 'json',
+            success: (resData) => {
+                let commentList = $('.comment-item');
+                let paging = $('#paging');
+                let profileWrap = $('.profile-image-wrap-avatar');
+                commentList.empty();
+                paging.empty();
+                if (resData.commentList.length === 0) {
+                    commentList.append('<div>댓글이 없습니다.</div>');
+                    paging.empty();
+                    return;
+                }
+                $.each(resData.commentList, (i, comment) => {
+                    let str = '';
+                    if (comment.depth === 0) {
+                        str += '<div class="comment-start" style="">';
+                    } else {
+                        str += '<div class="comments-all" style="padding-left: 32px; display:none">';
+                    }
+                    if (comment.state === 1) {
+                        str += '<div class="comment-top">';
+                        str += '<div class="profile-image-wrapper profile-image-medium">'
+                         if(comment.user.miniProfilePicturePath === null){
+                        	 str +='<img class="default-profile-image" alt="default-profile-image" src="../resources/img/default_profile_image.png"  width="40">';
+                         }   
+                        str += comment.user.miniProfilePicturePath
+                            str += '</div>'
+                        str += '<div class="comment-data-wrapper">';
+                        str += '<div class="comment-data">'
+                        str += '<span class="username">'+comment.user.name+'</span>'; 
+                        str += '<span class="date">' + moment(comment.createDt).format('YYYY.MM.DD.') +'</span>';
+                        str += '</div>';
+                        
+                        str += '<div class="comment-txt">'
+                        str += '<div class="comment-txt-wrap">'
+                        str += '<span class="comment-txt-html">' + comment.contents + '</span>';
+                        str += '</div>'
+                        str += '</div>'
+                        str += '<div class="btn-bottom-reply">';
+                        str += '<button type="button" class="btn-reply">답글</button>';
+                        str += '<span class="comment-break"> • </span>'
+                        str += '<button type="button" class="btn-comment-show">답글보기</button>';
+                        if (Number('${sessionScope.user.userNo}') === comment.user.userNo) {
+                        	  str += '<span class="comment-break"> • </span>'
+                            str += '<button type="button" class="btn-remove" data-comment-no="' + comment.commentNo + '">삭제</button>';
+                        }
+                        str += '</div>';
+                        if (comment.depth === 0) {
+                        str += '<div class="blind" style="display:none;">';
+                        str += '  <form class="frm-reply">';
+                        str += '    <input type="hidden" name="groupNo" value="' + comment.groupNo + '">';
+                        str += '    <input type="hidden" name="postNo" value="${post.postNo}">';
+                        str += '    <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">';
+                        str += '    <textarea name="contents" placeholder="답글 입력"></textarea>';
+                        str += '    <button type="button" class="btn btn-warning btn-register-reply">작성완료</button>';
+                        str += '  </form>';
+                        str += '</div>';
+                        str += '</div>';
+                        }
 
-        $('.blind').toggle();
-         
-        
-      })
+                    } else {
+                        str += '<span>삭제된 댓글입니다.</span>';
+                    }
+                    str += '</div>';
+                    commentList.append(str);
+                });
+                paging.append(resData.paging);
+            },
+            error: (jqXHR) => {
+                alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+            }
+        });
     }
+
+    const fnBtnReply = () => {
+        $(document).on('click', '.btn-reply', (evt) => {
+            $(evt.target).closest('.comment-start').find('.blind').toggle();
+        });
+    }
+
+    const fnBtnCommentShow = () => {
+        $(document).on('click', '.btn-comment-show', (evt) => {
+            $(evt.target).closest('.comment-start').next('.comments-all').toggle();
+        });
+    }
+
     
     const fnBtnRemove = () => {
       $(document).on('click', '.btn-remove', (evt) => {
@@ -1167,6 +1166,7 @@ const getLikeStatus = () => {
         });
       });
    
+    fnBtnCommentShow();
     fnKeyup();
     fnBtnRemove();
     $('#contents').on('click', fnCheckSignin);
@@ -1188,7 +1188,6 @@ const getLikeStatus = () => {
     fnGetFollowCount();
     fnGetHitCountByUserNo();
     fnCheckFollow();
-    
   </script>
   
 <%@ include file="../layout/footer.jsp" %>
