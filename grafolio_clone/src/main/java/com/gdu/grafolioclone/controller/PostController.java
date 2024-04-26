@@ -163,4 +163,17 @@ public class PostController {
 				, HttpStatus.OK);
 
 	}
+	// 댓글 수 (김규식)
+	@GetMapping(value="/get-comment-count-by-postno", produces="application/json")
+	public ResponseEntity<Map<String, Object>> getCommentCount(@RequestParam("postNo") int postNo) {
+	  return new ResponseEntity<>(Map.of("commentCount", postSerivce.getPostCommentCount(postNo))
+	                          , HttpStatus.OK);
+	}
+	// 조회 수 (김규식)
+	@GetMapping(value="/get-hit-count-by-postno", produces="application/json")
+	public ResponseEntity<Map<String, Object>> getHitCount(@RequestParam("postNo") int postNo) {
+	  return new ResponseEntity<>(Map.of("hitCount", postSerivce.getHitCountByPostNo(postNo))
+	      , HttpStatus.OK);
+	}
+	
 }
