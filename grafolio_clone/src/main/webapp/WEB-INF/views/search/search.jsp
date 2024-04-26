@@ -732,6 +732,13 @@
     	});
       
       fnSearch();
+      
+      const profileImage = () => {
+   	    $('.default-profile-image').attr('src', './resources/img/default_profile_image.png');
+   	  }  
+   	  
+   	  profileImage();
+      
   </script>
 
 <%@ include file="../layout/footer.jsp" %>
