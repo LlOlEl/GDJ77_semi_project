@@ -202,7 +202,7 @@
    </div>
    <div class="input-outer input-stretch">
     <div data-v-ec5e8f9c class="input-wrapper">
-      <div class="input-inner-wrap">
+      <div class="input-inner-wrap input-focus">
         <input class="input" type="text" id="contents" name="contents" placeholder="댓글을 입력해주세요"></input>
         <button id="btn-comment-register" type="button" disabled class="btn btn-size-small btn-color-black button write-button">
         <div data-v-2862dfae class="btn-text">
@@ -911,19 +911,31 @@ const getLikeStatus = () => {
   }
    
   
-  const fnKeyup = ()=> {
-    let btnChange = document.getElementById('btn-comment-register');
-    document.getElementById('contents').addEventListener('input', (evt)=>{
-      if( evt.target.value !== ''){
-        btnChange.style.backgroundColor = 'rgba(0,240,0,0.5)';
-        btnChange.style.color = 'rgba(0,240,0,0.5)';
-        btnChange.disabled = false;
-      } else {
-        btnChange.disabled = true;
-        btnChange.style.backgroundColor = 'rgb(130,130,130)';
-      }
-    })
-  }
+  
+  const fnKeyup = () => {
+	    let btnChange = document.getElementById('btn-comment-register');
+	    let originalBackgroundColor = btnChange.style.backgroundColor;
+	    let originalColor = btnChange.style.color;
+
+	    document.getElementById('contents').addEventListener('input', (evt) => {
+	        if (evt.target.value !== '') {
+	            btnChange.style.backgroundColor = '#425052';
+	            btnChange.style.color = '#fff';
+	            btnChange.disabled = false;
+	        } else {
+	            btnChange.disabled = true;
+	            btnChange.style.backgroundColor = '#d8dfdf';
+	        }
+	    });
+
+	    btnChange.addEventListener('click', () => {
+	        // 댓글 등록 후에 버튼 스타일을 원래대로 되돌립니다.
+	        btnChange.style.backgroundColor = originalBackgroundColor;
+	        btnChange.style.color = originalColor;
+	        btnChange.disabled = true;
+	        document.getElementById('contents').value = ''; // 댓글 입력창 비우기
+	    });
+	}
   
     
     
