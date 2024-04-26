@@ -210,6 +210,9 @@ const fnCheckName = () => {
     msgName.style.fontSize = '13px';
     btnConfirmName.setAttribute('disabled', 'true');
   } else {
+    msgName.innerHTML = '사용가능한 닉네임입니다.'
+    msgName.style.color = 'black';
+    msgName.style.fontSize = '13px';
     btnConfirmName.removeAttribute('disabled');
     msgName.innerHTML = ''
   }
