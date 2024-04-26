@@ -640,7 +640,17 @@
     position: relative;
     transition: transform .3s;
     white-space: nowrap;
+    color: #fff;
  }
+ #btn-comment-register {
+   background-color: #d8dfdf;
+   border: var(--mono-100);
+ }
+ 
+ .input:focus-within {
+  outline: solid rgba(0, 181, 127, .2);
+ }
+ 
  
   .info-wrapper {
     display: flex;
