@@ -523,7 +523,10 @@
     --profile-image-size: 40px;
  }
  
- 
+ .profile-image-medium:hover {
+  transform: scale(1.2); 
+  transition: transform 125ms;
+ }
  
  .comments-all{
    display:flex;
