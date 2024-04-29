@@ -928,13 +928,13 @@ const getLikeStatus = () => {
 	        }
 	    });
 
-	    btnChange.addEventListener('click', () => {
+	     btnChange.addEventListener('click', () => {
 	        // 댓글 등록 후에 버튼 스타일을 원래대로 되돌립니다.
 	        btnChange.style.backgroundColor = originalBackgroundColor;
 	        btnChange.style.color = originalColor;
 	        btnChange.disabled = true;
-	        document.getElementById('contents').value = ''; // 댓글 입력창 비우기
-	    });
+	        
+	    }); 
 	}
   
     
