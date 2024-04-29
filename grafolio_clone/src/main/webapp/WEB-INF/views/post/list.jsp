@@ -6,13 +6,13 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
  <jsp:include page="../layout/header.jsp">
-   <jsp:param value="블로그 리스트" name="title"/>
+   <jsp:param value="프로젝트 리스트" name="title"/>
  </jsp:include>
  
 <!-- include custom css/js -->
 <link rel="stylesheet" href="${contextPath}/resources/css/list.css?dt=${dt}">
  
-  <h1 class="title">블로그 목록</h1>
+  <h1 class="title">포스트 목록</h1>
   
   <div class="categories-wrap" >
     <div class="categories"><!--[-->
@@ -162,7 +162,7 @@
         var div = document.createElement('div');
         div.innerHTML = htmlContent; // HTML 문자열을 DOM으로 변환
         var image = div.querySelector('img'); // 첫 번째 이미지 태그 선택
-        return image ? image.src : null; // 이미지의 src 속성 반환
+        return image ? image.src : '${contextPath}/resources/img/image-not-found.jpg'; // 이미지의 src 속성 반환
     }
   
     function displayThumbnail(imageUrl, postTitle, postDate) {
@@ -247,9 +247,9 @@
       let insertCount = '${insertCount}';
       if(insertCount !== ''){
         if(insertCount === '1') {
-          alert('블로그가 등록되었습니다.');
+          alert('포스트가 등록되었습니다.');
         } else {
-          alert('블로그 등록이 실패했습니다.');;
+          alert('포스트 등록이 실패했습니다.');
         }
       }
     }
