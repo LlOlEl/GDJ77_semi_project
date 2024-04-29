@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+  a {
+    color: inherit; /* 링크 색상을 부모 요소의 색상으로 상속 */
+    text-decoration: none; /* 밑줄 제거 */
+  }
+  
+  .container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      max-width: 95%;
+      margin: auto;
+  }
+  
+  .form-label {
+      font-weight: bold;
+  }

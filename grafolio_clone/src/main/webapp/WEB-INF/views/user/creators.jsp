@@ -6,7 +6,7 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
  <jsp:include page="../layout/header.jsp">
-   <jsp:param value="블로그 리스트" name="title"/>
+   <jsp:param value="크리에이터 리스트" name="title"/>
  </jsp:include>
  
 <!-- include custom css/js -->

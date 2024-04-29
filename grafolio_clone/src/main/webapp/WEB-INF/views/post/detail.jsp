@@ -9,7 +9,7 @@
 
  
  <jsp:include page="../layout/header.jsp">
-   <jsp:param value="${post.postNo}번 블로그" name="title"/>
+   <jsp:param value="${post.postNo}번 포스트" name="title"/>
  </jsp:include>
   
   <link rel="stylesheet" href="${contextPath}/resources/css/detail.css?dt=${dt}">
@@ -1127,7 +1127,7 @@ const getLikeStatus = () => {
     
     const fnRemovePost = () => {
       $('#btn-remove').on('click', (evt) => {
-        if(confirm('블로그를 삭제하면 모든 댓글이 함께 삭제됩니다. 삭제할까요?')){
+        if(confirm('포스트를 삭제하면 모든 댓글이 함께 삭제됩니다. 삭제할까요?')){
           frmBtn.attr('action', '${contextPath}/post/remove.do');
           frmBtn.submit();
         }

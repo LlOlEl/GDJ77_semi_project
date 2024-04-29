@@ -59,7 +59,7 @@
     )
   </insert>
   
-  <!-- 전체 블로그 게시글 수 -->
+  <!-- 전체 포스트 게시글 수 -->
   <select id="getPostCount"
           resultType="int">
     SELECT COUNT(*)
@@ -67,7 +67,7 @@
   </select>
   
   
-  <!-- 블로그 게시글 목록 -->
+  <!-- 포스트 게시글 목록 -->
   <select id="getPostList"
           parameterType="Map"
           resultMap="PostMap">
@@ -78,7 +78,7 @@
      WHERE RN BETWEEN #{begin} AND #{end}
   </select>
   
-  <!-- 블로그 게시글 목록 카테고리로 검색 -->
+  <!-- 포스트 게시글 목록 카테고리로 검색 -->
   <select id="getPostListByCategory"
           parameterType="Map"
           resultMap="PostMap">
@@ -97,7 +97,7 @@
      WHERE POST_NO = #{postNo}
   </update>
   
-  <!-- 블로그 게시글 내용 -->
+  <!-- 포스트 게시글 내용 -->
   <select id="getPostByNo"
           resultMap="PostMap">
     SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, CREATE_DT, MODIFY_DT, CATEGORY
