@@ -37,7 +37,7 @@
       
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>
-            <input type="text" name="title" id="title" class="form-control">
+            <input type="text" name="title" id="title" class="form-control" value="${post.title}">
         </div>
       
       <div class="mb-3">
