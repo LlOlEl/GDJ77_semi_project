@@ -44,7 +44,7 @@ body {
 /* 전체 레이아웃 */
 .layout {
 	width: 588px;
-    height: 100vh;
+  height: 100vh;
 	background-color: white;
 	margin: 0 auto;
 	overflow: auto;
@@ -93,7 +93,7 @@ body {
 
 /* label */
 .signup-label {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* input */
@@ -185,4 +185,7 @@ input:focus {
 	background-color: #d8dfdf;
 }
 
+.signup-check {
+  display: flex;
+}
 

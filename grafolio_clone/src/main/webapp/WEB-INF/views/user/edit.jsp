@@ -8,124 +8,149 @@
   <jsp:param value="edit" name="title"/>
 </jsp:include>
 
-<style>
-#real-upload-mainProfile, #real-upload-miniProfile {
-  display: none;
-}
-</style>
+<link rel="stylesheet" href="${contextPath}/resources/css/edit.css?dt=${dt}">
 
-<div class="m-3">   <!-- signup.jsp 와 이 부분 수정할지 확인하기 -->
+<div class="content">
+  <div class="settings-wrapper">
 
-  <form method="POST"
-        enctype="multipart/form-data"
-        action="${contextPath}/user/modify.do"
-        id="frm-edit">
-        
-	  <div class="profile_picture">
-	   <div class="main">
-	     <div id="mainPreview">
-		     <c:if test="${profile.mainProfilePicturePath == null}">
-		       <img src="${contextPath}/resources/img/default_cover.png">
-		     </c:if>
-		     <c:if test="${profile.mainProfilePicturePath != null}">
-		       ${profile.mainProfilePicturePath}
-		     </c:if>
-	     </div>
-	     <div>
-		     <input type="file" name="mainProfilePicturePath" id="real-upload-mainProfile" onchange="fnUploadMainProfile()">
-		     <img class="main-upload-btn" id="upload-mainProfile" src="${contextPath}/resources/img/btn-edit.png">
-	     </div>
-	   </div>
-     <div class="mini">
-       <div id="miniPreview">
-		     <c:if test="${profile.miniProfilePicturePath == null}">
-		       <img src="${contextPath}/resources/img/default_profile_image.png">
-		     </c:if>
-		     <c:if test="${profile.miniProfilePicturePath != null}">
-		       ${profile.miniProfilePicturePath}
-		     </c:if>
-       </div>
-	     <div>
-		     <input type="file" name="miniProfilePicturePath" id="real-upload-miniProfile" onchange="fnUploadMiniProfile()">
-         <img class="mini-upload-btn" id="upload-miniProfile" src="${contextPath}/resources/img/btn-edit.png">
-	     </div>
-     </div>
-	  </div>
-
-	  <div id="section-profile">
-	    <div class="row">
-		    <span>이메일</span>
-		    <div>
-		      <span>${sessionScope.user.email}</span>
-		      <div><a href="${contextPath}/user/signout.do">로그아웃</a></div>
-		    </div>
-		  </div>
-		  <div class="row">
-		    <span>닉네임</span>
-		    <div>
-		      <input type="text" name="name" id="name" value="${profile.name}">
-		    </div>
-		  </div>
-		  <div class="row">
-		    <span>휴대전화번호</span>
-		    <div>
-		      <input type="text" name="mobile" id="mobile" value="${profile.mobile}">
-		    </div>
-		  </div>
-		  <div class="row">
-		    <span>비밀번호</span>
-		    <div>
-		      <div>
-		        <input type="password" name="currPw" id="inp-currPw" placeholder="현재 비밀번호를 입력해 주세요.">
-		        <div id="msg-pw"></div>
-		      </div>
-		      <div><button type="button" id="checkPw">확인</button></div>
-		      <div>
-		        <input type="password" id="inp-pw1" name="pw" placeholder="새 비밀번호를 입력해 주세요.(8~20자리)">
-		        <div id="msg-pw1"></div>
-		      </div>
-		      <div>
-		        <input type="password" id="inp-pw2" placeholder="확인을 위해 새 비밀번호를 재입력해 주세요.">
-		        <div id="msg-pw2"></div>
-		      </div>
-		    </div>
-		  </div>
-		  <div class="row">
-		    <span>한줄 소개</span>
-		    <c:if test="${profile.descript == null}">
-		      <div><input type="text" id="descript" name="descript" placeholder="작가님을 한 마디로 표현해주세요. (100자 이내)"></div>
-		    </c:if>
-		    <c:if test="${profile.descript != null}">
-		      <div><input type="text" id="descript" name="descript" value="${profile.descript}"></div>
-		    </c:if>
-		  </div>
-		  <div class="row">
-		    <div>
-		      <span>관심 카테고리</span>
-		      <p>3개 이하로 선택 가능합니다.</p>
-		    </div>
-		    <div>
-		      <input type="checkbox" name="profileCategory" id="category_일러스트" value="일러스트">일러스트
-		      <input type="checkbox" name="profileCategory" id="category_사진" value="사진">사진
-		      <input type="checkbox" name="profileCategory" id="category_디자인" value="디자인">디자인
-		      <input type="checkbox" name="profileCategory" id="category_회화" value="회화">회화
-		      <input type="checkbox" name="profileCategory" id="category_조소/공예" value="조소/공예">조소/공예
-		      <input type="checkbox" name="profileCategory" id="category_사운드" value="사운드">사운드
-		      <input type="checkbox" name="profileCategory" id="category_애니메이션" value="애니메이션">애니메이션
-		      <input type="checkbox" name="profileCategory" id="category_캘리그라피" value="캘리그라피">캘리그라피
-		      <input type="checkbox" name="profileCategory" id="category_기타" value="기타">기타
-		    </div>
-		  </div>
-	    <div>
-	      <input type="hidden" name="userNo" value="${user.userNo}">
-		    <button type="submit" id="btn-modify" class="btn btn-primary">저장하기</button>
-		    <button type="button" id="btn-back" class="btn btn-secondary">취소하기</button>
-	    </div>
-	   
-	  </div>
+    <nav class="settings-navbar">
     
-  </form>
+    </nav>
 
+    <div class="settings-content">
+      <span class="title">기본정보 수정</span>
+		  <form method="POST"
+		        enctype="multipart/form-data"
+		        action="${contextPath}/user/modify.do"
+		        id="frm-edit"
+		        onsubmit="return fnSubmitForm()">
+		        
+			  <div class="profile_picture">
+			   <div class="main">
+			     <div id="mainPreview">
+				     <c:if test="${profile.mainProfilePicturePath == null}">
+				       <img src="${contextPath}/resources/img/default_cover.png">
+				     </c:if>
+				     <c:if test="${profile.mainProfilePicturePath != null}">
+				       ${profile.mainProfilePicturePath}
+				     </c:if>
+			     </div>
+			     <div>
+			       <input type="file" name="miniProfilePicturePath" id="hasMainProfile">
+				     <input type="file" name="mainProfilePicturePath" id="real-upload-mainProfile" onchange="fnUploadMainProfile()">
+				     <img class="main-upload-btn" id="upload-mainProfile" src="${contextPath}/resources/img/btn-edit.png">
+			     </div>
+			   </div>
+			   <div class="mypage-profile">
+			     <div class="mini">
+			       <div id="miniPreview">
+					     <c:if test="${profile.miniProfilePicturePath == null}">
+					       <img src="${contextPath}/resources/img/default_profile_image.png">
+					     </c:if>
+					     <c:if test="${profile.miniProfilePicturePath != null}">
+					       ${profile.miniProfilePicturePath}
+					     </c:if>
+			       </div>
+				     <div>
+				       <input type="file" name="miniProfilePicturePath" id="hasMiniProfile">
+					     <input type="file" name="miniProfilePicturePath" id="real-upload-miniProfile" onchange="fnUploadMiniProfile()">
+			         <img class="mini-upload-btn" id="upload-miniProfile" src="${contextPath}/resources/img/btn-edit.png">
+				     </div>
+			     </div>
+		     </div>
+		     
+			  </div>
+		
+			  <div class="content-section">
+			    <div class="title-wrapper">
+				    <span class="title-txt">이메일</span>
+				  </div>
+			    <div class="input-wrapper">
+			      <span>${sessionScope.user.email}</span>
+			      <div><a href="${contextPath}/user/signout.do">로그아웃</a></div>
+			    </div>
+				</div>
+				<div class="content-section">
+				  <div class="title-wrapper">
+				    <span class="title-txt">닉네임</span>
+				  </div>
+			    <div class="input-wrapper">
+			      <input type="text" name="name" id="name" value="${profile.name}">
+			    </div>
+				</div>
+				<div class="content-section">
+				  <div class="title-wrapper">
+				    <span>휴대전화번호</span>
+				  </div>
+			    <div class="input-wrapper">
+			      <input type="text" name="mobile" id="mobile" value="${profile.mobile}">
+			    </div>
+				</div>
+				<div class="content-section">
+				  <div class="title-wrapper">
+				    <span>비밀번호</span>
+				  </div>
+			    <div>
+			      <div>
+			        <input type="password" name="currPw" id="inp-currPw" placeholder="현재 비밀번호를 입력해 주세요.">
+			        <div id="msg-pw"></div>
+			      </div>
+			      <div><button type="button" id="checkPw">확인</button></div>
+			      <div>
+			        <input type="password" id="inp-pw1" name="pw" placeholder="새 비밀번호를 입력해 주세요.(8~20자리)">
+			        <div id="msg-pw1"></div>
+			      </div>
+			      <div>
+			        <input type="password" id="inp-pw2" placeholder="확인을 위해 새 비밀번호를 재입력해 주세요.">
+			        <div id="msg-pw2"></div>
+			      </div>
+			    </div>
+				</div>
+				  <div class="content-section">
+				    <div class="title-wrapper">
+				      <span class="title-txt">한줄 소개</span>
+				    </div>
+				    <div class="input-wrapper">
+					    <c:if test="${profile.descript == null}">
+					      <input type="text" id="descript" name="descript" placeholder="작가님을 한 마디로 표현해주세요. (100자 이내)">
+					    </c:if>
+					    <c:if test="${profile.descript != null}">
+					      <input type="text" id="descript" name="descript" value="${profile.descript}">
+					    </c:if>
+				    </div>
+				  </div>
+				  <div class="content-section">
+				    <div class="title-wrapper">
+				      <span class="title-txt">관심 카테고리</span>
+				      <p class="description">3개 이하로 선택 가능합니다.</p>
+				    </div>
+				    <div>
+				      <input type="checkbox" name="profileCategory" class="cb" value="일러스트">
+				      <label class="cb-label" for="category_일러스트">일러스트</label>
+				      
+				      <input type="checkbox" name="profileCategory" class="cb" id="category_사진" value="사진">사진
+				      <input type="checkbox" name="profileCategory" class="cb" id="category_디자인" value="디자인">디자인
+				      <input type="checkbox" name="profileCategory" class="cb" id="category_회화" value="회화">회화
+				      <input type="checkbox" name="profileCategory" class="cb" id="category_조소/공예" value="조소/공예">조소/공예
+				      <input type="checkbox" name="profileCategory" class="cb" id="category_사운드" value="사운드">사운드
+				      <input type="checkbox" name="profileCategory" class="cb" id="category_애니메이션" value="애니메이션">애니메이션
+				      <input type="checkbox" name="profileCategory" class="cb" id="category_캘리그라피" value="캘리그라피">캘리그라피
+				      <input type="checkbox" name="profileCategory" class="cb" id="category_기타" value="기타">기타
+				    </div>
+				  </div>
+			    <div>
+			      <input type="hidden" name="userNo" value="${user.userNo}">
+				    <button type="submit" id="btn-modify" class="btn btn-primary">저장하기</button>
+				    <button type="button" id="btn-back" class="btn btn-secondary">취소하기</button>
+			    </div>
+			   
+			  
+		    
+		  </form>
+    </div>
+
+
+  </div>
 </div>
 
 <!--
@@ -257,6 +282,19 @@ const fnEditUser = () => {
     })
     
   });
+}
+
+// 첨부한 메인 프로필, 미니 프로필이 없을 경우 기존 DB에 저장된 이미지가 저장되도록 하는 함수
+const fnSubmitForm = () => {
+	if(realUploadMainProfile.value === null || realUploadMainProfile.trim() === "") {
+		const originalMainProfilePath = "${profile.mainProfilePicturePath}";
+		document.getElementById('hasMainProfile').value = originalMainProfilePath;
+	}
+	if(realUploadMiniProfile.value === null || realUploadMiniProfile.trim() === "") {
+		const originalMiniProfilePath = "${profile.miniProfilePicturePath}";
+		document.getElementById('hasMiniProfile').value = originalMiniProfilePath;
+	}
+	return true;
 }
 
 uploadMainProfile.addEventListener('click', () => realUploadMainProfile.click());  // img로 만들어진 버튼을 눌렀을 때 실제 첨부 input이 실행되는 이벤트 

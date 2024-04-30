@@ -48,7 +48,7 @@
 		        <div>
 		          <span class="highlight-text-message text-message">이메일</span>
 		          <span>주소를 입력해주세요</span>  
-	            </div>
+	          </div>
 		      </div>
 			  <div id="section-email">
 			    <div class="signup-frm-email">
@@ -56,7 +56,6 @@
 			        <input type="text" id="inp-email" name="email" class="input-text" placeholder="example@example.com">
 			      </div>
 			      <button type="button" id="btn-code" class="btn-code">인증요청</button>
-			      <!-- <div class="msg-email" id="msg-email"></div> -->
 			    </div>
 			    <div class="msg-email" id="msg-email"></div>
 			    <div class="signup-frm-email">
@@ -125,22 +124,28 @@
 			     <span>프로필 수정을 통해 언제든지 변경할 수 있어요.</span>  
 			    <div class="signup-frm-profileImage">
 			      <label for="inp-miniProfile" class="signup-label">프로필 이미지</label>
-			      <input type="file" name="miniProfilePicturePath" id="inp-miniProfile" class="inp-miniProfile">
+			      <div class="signup-input">
+			        <input type="file" name="miniProfilePicturePath" id="inp-miniProfile" class="inp-miniProfile">
+			      </div>
 			      <div class="attach-mini-list" id="attach-mini-list"></div>
 			    </div>
 			    <div class="signup-frm-coverImage">
 			      <label for="inp-mainProfile" class="signup-label">프로필 배경 이미지</label>
-			      <input type="file" name="mainProfilePicturePath" id="inp-mainProfile" class="inp-mainProfile">
+			      <div class="signup-input">
+			        <input type="file" name="mainProfilePicturePath" id="inp-mainProfile" class="inp-mainProfile">
+			      </div>
 			      <div class="attach-main-list" id="attach-main-list"></div>
 			    </div>
 			    <div class="signup-frm-describe">
 			      <label for="inp-descript" class="signup-label">한 줄 소개</label>
-			      <input type="text" name="descript" id="inp-descript" placeholder="작가님을 한 마디로 표현해주세요. (100자 이내)" class="input-text">
+			      <div class="signup-input">
+			        <input type="text" name="descript" id="inp-descript" class="input-text" placeholder="작가님을 한 마디로 표현해주세요. (100자 이내)">
+			      </div>
 			      <div class="msg-describe" id="msg-describe"></div>
 			    </div>
 			    <div class="signup-frm-category">
 			      <label for="inp-category" class="signup-label">관심 카테고리</label>
-			      <div class="col-sm-9">
+			      <div class="signup-check">
 				      <input type="checkbox" name="profileCategory" value="일러스트">일러스트
 				      <input type="checkbox" name="profileCategory" value="사진">사진
 				      <input type="checkbox" name="profileCategory" value="디자인">디자인
@@ -154,7 +159,9 @@
 			      <div class="signup-category-label"><p>3개 이하로 선택 가능합니다.</p></div>
 			      <div class="msg-category" id="msg-category"></div>
 			    </div>
-			    <button type="submit" id="btn-signup" class="btn-signup">가입하기</button>
+			    <div class="signup-btn-wrap">
+			      <button type="submit" id="btn-signup" class="signup-btn">가입 하기</button>
+			    </div>
 			  </div>
 		  </form>
       </div>
