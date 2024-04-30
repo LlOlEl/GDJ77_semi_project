@@ -383,6 +383,17 @@ public class PostServiceImpl implements PostService {
                                   , "totalPage", totalPage));
   }
   
+  // 게시글 상세 댓글수 (김규식)
+  @Override
+  public int getPostCommentCount(int postNo) {
+    return postMapper.getCommentCountByPostNo(postNo);
+  }
+  
+  //게시글 상세 조회수 (김규식)
+  @Override
+  public int getHitCountByPostNo(int postNo) {
+    return postMapper.getHitCountByPostNo(postNo);
+  }
 
   
 }

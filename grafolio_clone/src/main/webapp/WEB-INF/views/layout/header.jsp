@@ -86,24 +86,24 @@
        <!-- <a href="${contextPath}/user/signout.do">Sign Out</a> -->
         <c:if test="${sessionScope.user != null}">
           <a href="${contextPath}/post/write.page">프로젝트 올리기</a>
-          <div class="dropdown-outer">
+          <div class="profile-dropdown-outer">
             <!-- 프로필 사진 -->
-            <div class="dropdown-trigger-block">
+            <div class="profile-dropdown-trigger-block">
               <div class="profile-image-wrap">
                 <c:if test="${sessionScope.user.miniProfilePicturePath != null}">
                   ${sessionScope.user.miniProfilePicturePath}
                 </c:if>
                 <c:if test="${sessionScope.user.miniProfilePicturePath == null}">
-				  <img alt="default-profile-image" class="default-profile-image" src="../resources/img/default_profile_image.png">
+				          <img alt="default-profile-image" class="default-profile-image" src="${contextPath}/resources/img/default_profile_image.png">
                 </c:if>
               </div>
             </div>
             <!-- 드롭다운 메뉴 -->
-            <div class="dropdown-menu-block">
-              <div class="dropdown-menu-wrap">
-                <div class="dropdown-menu-list">
-                  <div class="menu-item"><span>프로필</span></div>
-                  <div class="menu-item"><span>로그아웃</span></div>
+            <div class="profile-dropdown-menu-block">
+              <div class="profile-dropdown-menu-wrap">
+                <div class="profile-dropdown-menu-list">
+                  <div class="profile-menu-item"><span>프로필</span></div>
+                  <div class="profile-menu-item"><span>로그아웃</span></div>
                 </div>
               </div>
             
@@ -146,18 +146,18 @@
   }
   
   const fnShowDrop = () => {
-	$('.dropdown-outer').on('click', () => {
-	  $('.dropdown-menu-wrap').toggle();
+	$('.profile-dropdown-outer').on('click', () => {
+	  $('.profile-dropdown-menu-wrap').toggle();
 	})
   }
   
   const fnDropdownMenu = () => {
 	  
-    $('.menu-item:eq(0)').on('click', () => {
+    $('.profile-menu-item:eq(0)').on('click', () => {
       location.href="${contextPath}/user/profile.do?userNo=" + "${sessionScope.user.userNo}";
     })
     
-    $('.menu-item:eq(1)').on('click', () => {
+    $('.profile-menu-item:eq(1)').on('click', () => {
       location.href="${contextPath}/user/signout.do";
     })
   }

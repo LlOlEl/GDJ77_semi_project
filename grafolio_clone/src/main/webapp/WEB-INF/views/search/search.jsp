@@ -38,7 +38,12 @@
             </div>
             <div class="input-outer input-bg-color-gray input-size-medium input-stretch input-search" type="text">
               <div class="input-wrapper">
-                <input class="input input-delete" type="text" placeholder="검색어를 입력해주세요" value="${q}">
+                <c:if test="${q != null}">  
+                  <input class="input input-delete" type="text" placeholder="검색어를 입력해주세요" value="${q}">
+                </c:if>
+                <c:if test="${q == null}">
+                  <input class="input input-delete" type="text" placeholder="검색어를 입력해주세요">
+                </c:if>
                 <div class="input-icon">
                   <img class="icon icon-search" src="${contextPath}/resources/svg/search_icon.svg">
                   <img class="icon icon-delete default" src="${contextPath}/resources/svg/search_icon_delete.svg">
@@ -727,6 +732,13 @@
     	});
       
       fnSearch();
+      
+      const profileImage = () => {
+   	    $('.default-profile-image').attr('src', './resources/img/default_profile_image.png');
+   	  }  
+   	  
+   	  profileImage();
+      
   </script>
 
 <%@ include file="../layout/footer.jsp" %>

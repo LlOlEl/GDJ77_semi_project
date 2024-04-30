@@ -33,6 +33,8 @@
    <association property="user" javaType="UserDto">
      <id     property="userNo" column="USER_NO" />
      <result property="email"  column="EMAIL" />
+     <result property="name"  column="NAME" />
+     <result property="miniProfilePicturePath"  column="MINI_PROFILE_PICTURE_PATH" />
    </association>
   </resultMap>
 
@@ -57,7 +59,7 @@
     )
   </insert>
   
-  <!-- 전체 블로그 게시글 수 -->
+  <!-- 전체 포스트 게시글 수 -->
   <select id="getPostCount"
           resultType="int">
     SELECT COUNT(*)
@@ -65,7 +67,7 @@
   </select>
   
   
-  <!-- 블로그 게시글 목록 -->
+  <!-- 포스트 게시글 목록 -->
   <select id="getPostList"
           parameterType="Map"
           resultMap="PostMap">
@@ -76,7 +78,7 @@
      WHERE RN BETWEEN #{begin} AND #{end}
   </select>
   
-  <!-- 블로그 게시글 목록 카테고리로 검색 -->
+  <!-- 포스트 게시글 목록 카테고리로 검색 -->
   <select id="getPostListByCategory"
           parameterType="Map"
           resultMap="PostMap">
@@ -95,7 +97,7 @@
      WHERE POST_NO = #{postNo}
   </update>
   
-  <!-- 블로그 게시글 내용 -->
+  <!-- 포스트 게시글 내용 -->
   <select id="getPostByNo"
           resultMap="PostMap">
     SELECT POST_NO, TITLE, CONTENTS, HIT, USER_NO, EMAIL, CREATE_DT, MODIFY_DT, CATEGORY
@@ -155,10 +157,10 @@
    <select id="getCommentList"
            parameterType="Map"
            resultMap="CommentMap">
-     SELECT COMMENT_NO, CONTENTS, CREATE_DT, STATE, DEPTH, GROUP_NO, USER_NO, EMAIL, POST_NO
+     SELECT COMMENT_NO, CONTENTS, CREATE_DT, STATE, DEPTH, GROUP_NO, USER_NO, EMAIL, POST_NO, MINI_PROFILE_PICTURE_PATH,NAME
        FROM (SELECT ROW_NUMBER() OVER(ORDER BY C.GROUP_NO DESC, C.DEPTH ASC, C.COMMENT_NO DESC) AS RN
                   , C.COMMENT_NO, C.CONTENTS, C.STATE, C.DEPTH, C.GROUP_NO, C.CREATE_DT, C.POST_NO
-                  , U.USER_NO, U.EMAIL
+                  , U.USER_NO, U.EMAIL, U.MINI_PROFILE_PICTURE_PATH, U.NAME
               FROM USER_T U INNER JOIN COMMENT_T C
                 ON U.USER_NO = C.USER_NO
              WHERE C.POST_NO = #{postNo})
@@ -324,4 +326,18 @@
       WHERE USER_NO = #{userNo}
    </select>
    
+   <!-- 댓글 수 (김규식) -->
+   <select id="getCommentCountByPostNo"
+           resultType="int">
+     SELECT COUNT(*)
+       FROM COMMENT_T
+      WHERE POST_NO = #{postNo}
+   </select>
+   <!-- 조회 수 (김규식) -->
+   <select id="getHitCountByPostNo"
+           resultType="int">
+     SELECT  HIT
+       FROM POST_T
+      WHERE POST_NO = #{postNo}
+   </select>
 </mapper>

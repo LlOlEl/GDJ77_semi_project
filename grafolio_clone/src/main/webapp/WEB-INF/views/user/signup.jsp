@@ -70,8 +70,8 @@
 			      <span>· 인증메일을 받을 수 있도록 자주 쓰는 이메일을 입력해 주세요.</span>
 			    </div>
 			    <div class="signup-btn-wrap">
-			      <button type="button" id="btn-confirmCode" class="signup-btn" disabled>다음</button>
-			    </div>
+		          <button type="button" id="btn-confirmCode" class="signup-btn" disabled>다음</button>
+		        </div>
 			  </div>
 			  
 			  <div id="section-pw" style="display:none">
