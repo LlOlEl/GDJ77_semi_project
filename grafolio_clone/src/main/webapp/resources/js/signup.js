@@ -4,7 +4,7 @@
  
 var emailCheck = false;
 var passwordCheck = false;
-var passwordConfirm = false
+var passwordConfirm = false;
 var nameCheck = false;
 var mobileCheck = false;
 var secEmail = document.getElementById('section-email');
@@ -161,7 +161,7 @@ const fnCheckPassword = () => {
   let passwordLength = inpPw.value.length;
   passwordCheck = passwordLength >= 4
                && passwordLength <= 12
-               && validCount >= 2
+               && validCount >= 2;
   
   if(passwordCheck){
     msgPw.innerHTML = '사용 가능한 비밀번호입니다.';
@@ -185,7 +185,7 @@ const fnConfirmPassword = () => {
     } else {
       msgPw2.innerHTML = '비밀번호 입력을 확인하세요.';
       msgPw2.style.color = 'red';
-	  msgPw2.style.fontSize = '13px';
+	    msgPw2.style.fontSize = '13px';
       
       btnConfirmPw.setAttribute('disabled', true);
     }
@@ -267,10 +267,8 @@ const fnAttachMain = () => {
   })
 }
 
-
 const fnSignup = () => {
   document.getElementById('frm-signup').addEventListener('submit', (evt) => {
-    fnCheckAgree();
     if(!emailCheck) {
       alert('이메일을 확인하세요.');
       evt.preventDefault();
@@ -305,39 +303,40 @@ btnVerifyCode.addEventListener('click', () => {
 })
 
 btnConfirmCode.addEventListener('click', () => {
-    secEmail.style.display = 'none';
-    secPw.style.display = '';
-    str = '<span>OGQ 계정으로 사용할</span><div>';
-    str += '<span class="highlight-text-message text-message">비밀번호</span>';
-    str += '<span>를 등록해주세요</span>';
-    str += '</div>';
-    msg.innerHTML = str;
-	            
-})
-btnConfirmPw.addEventListener('click', () => {
-    secPw.style.display = 'none';
-    secName.style.display = '';
-    str = '<span>OGQ 계정</span><div>';
-    str += '<span class="highlight-text-message text-message">닉네임</span>';
-    str += '<span>을 입력해주세요</span>';
-    str += '</div>';
-    msg.innerHTML = str;
-})
-btnConfirmName.addEventListener('click', () => {
-    secName.style.display = 'none';
-    secMobile.style.display = '';
-    str = '<span>회원정보 확인 및 계정 찾기를 위해</span><div>';
-    str += '<span class="highlight-text-message text-message">휴대폰 번호</span>';
-    str += '<span>를 입력해주세요</span>';
-    str += '</div>';
-    msg.innerHTML = str;    
-})
-btnConfirmMobile.addEventListener('click', () => {
-    secMobile.style.display = 'none';
-    secOptions.style.display = '';
-    str = '<span class="highlight-text-message text-message">환영합니다!</span>';
-    msg.innerHTML = str;    
+  secEmail.style.display = 'none';
+  secPw.style.display = '';
+  str = '<span>OGQ 계정으로 사용할</span><div>';
+  str += '<span class="highlight-text-message text-message">비밀번호</span>';
+  str += '<span>를 등록해주세요</span>';
+  str += '</div>';
+  msg.innerHTML = str;
 })
 
+btnConfirmPw.addEventListener('click', () => {
+  secPw.style.display = 'none';
+  secName.style.display = '';
+  str = '<span>OGQ 계정</span><div>';
+  str += '<span class="highlight-text-message text-message">닉네임</span>';
+  str += '<span>을 입력해주세요</span>';
+  str += '</div>';
+  msg.innerHTML = str;
+})
+
+btnConfirmName.addEventListener('click', () => {
+  secName.style.display = 'none';
+  secMobile.style.display = '';
+  str = '<span>회원정보 확인 및 계정 찾기를 위해</span><div>';
+  str += '<span class="highlight-text-message text-message">휴대폰 번호</span>';
+  str += '<span>를 입력해주세요</span>';
+  str += '</div>';
+  msg.innerHTML = str;    
+})
+
+btnConfirmMobile.addEventListener('click', () => {
+  secMobile.style.display = 'none';
+  secOptions.style.display = '';
+  str = '<span class="highlight-text-message text-message">환영합니다!</span>';
+  msg.innerHTML = str;    
+})
 
 fnSignup();

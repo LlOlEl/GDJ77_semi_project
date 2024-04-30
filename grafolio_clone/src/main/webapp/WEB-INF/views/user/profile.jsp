@@ -59,8 +59,10 @@
                 </c:if>
                 <c:if test="${sessionScope.user.userNo == profile.userNo}">
                   <button type="button" class="profile-btn" id="btn-modify" data-user-no="${profile.userNo}">기본정보수정</button>
+                  <input type="hidden" class="modify" data-modify-result="${modifyResult}">
                 </c:if>
               </div>
+              
               
               <div class="user-statistic-wrap">
                 <div class="user-statistic">
@@ -131,5 +133,9 @@
  </div>
  
 <script src="${contextPath}/resources/js/profile.js?dt=${dt}"></script>
+
+<script>
+
+</script>
  
 <%@ include file="../layout/footer.jsp" %>

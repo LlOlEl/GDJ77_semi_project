@@ -33,12 +33,26 @@ const fnGetContextPath = ()=>{
   return url.substring(begin, end);
 }
 
+// 기본 정보 수정 버튼
+const fnBtnModify = () => {
+  $('#btn-modify').on('click', (evt) => {
+    location.href = fnGetContextPath() + '/user/edit.do?userNo=' + evt.target.dataset.userNo;
+  });
+}
+
+// 수정 완료 결과
+const fnAfterModifyUpload = () => {
+  const modifyResult = $('.modify').data('modifyResult');
+  if(modifyResult !== '') {
+    alert(modifyResult);
+  }
+}
 
 // 프로필 팔로우 버튼
 const fnBtnProfileFollow = () => {
-	
+   
   $(document).on('click', '#btn-follow', function() {
-	// 로그인 여부 체크
+   // 로그인 여부 체크
     fnCheckSignin();
     if(!hasLogin) {
       return;
@@ -47,7 +61,7 @@ const fnBtnProfileFollow = () => {
       check = false;
       fnFollow(check);
     }
-})
+  })
 
   // 프로필의 언팔로우 버튼
   $(document).on('click', '#btn-unfollow', function() {
@@ -59,7 +73,7 @@ const fnBtnProfileFollow = () => {
 
 // 모달창 팔로우 버튼
 const fnBtnModalFollow = () => {
-	
+   
   // 팔로우 버튼 클릭 
   $(document).on('click', '.btn-modal-follow', function() {
     var buttonId = $(this).attr('id');
@@ -138,7 +152,7 @@ const fnActiveModal = () => {
   var userStatic2 = $('.user-statistic').eq(2);
  
   userStatic.on('click', () => {
-	$('.chow-scrollbar').off('scroll');
+   $('.chow-scrollbar').off('scroll');
     // 모달창 띄우기
     $('.modal-outer').css('display', 'flex');
   
@@ -168,32 +182,32 @@ const fnActiveModal = () => {
   $(document).on('click', '.nickname', function(event) {
       location.href = fnGetContextPath() + '/user/profile.do?userNo=' + $(this).data('userNo');
   });
-	
+   
 }
 
-//모달창 비활성화
+// 모달창 비활성화
 const fnDeactiveModal = () =>{
 
   // 레이어 - 모달창 나가기
   $('.modal-overlay').on('click', () => {
     $(".list.chow-scrollbar").empty();
     $('.chow-scrollbar').off('scroll');
-	$('.modal-outer').css('display', 'none');
-	$('.chow-scrollbar').scrollTop(0);
+   $('.modal-outer').css('display', 'none');
+   $('.chow-scrollbar').scrollTop(0);
   })
   
   // 확인 - 모달창 나가기
   $('.btn-confirm').on('click', () => {
     $(".list.chow-scrollbar").empty();
-	$('.chow-scrollbar').off('scroll');
-	$('.modal-outer').css('display', 'none');
-	$('.chow-scrollbar').scrollTop(0);
+   $('.chow-scrollbar').off('scroll');
+   $('.modal-outer').css('display', 'none');
+   $('.chow-scrollbar').scrollTop(0);
   })
 }
 
 // 업로드 & 좋아요 프로젝트
 const fnShowProject = () =>{
-	
+   
   // 업로드한 프로젝트 버튼 클릭 시
   $('.list-item').eq(0).on('click', () => {
     $('.list-item').eq(0).css('color', '#00b57f');
@@ -538,7 +552,7 @@ const fnFollowingScrollHandler = () => {
 const fnFollowerScrollHandler = () => {
   var timerId;
     $('.chow-scrollbar').on('scroll', (evt) => {
-	  
+     
       if (timerId) {  
         clearTimeout(timerId);
       }
@@ -915,6 +929,8 @@ const fnPostLike = () => {
 
 
 // 함수 호출
+fnBtnModify();
+fnAfterModifyUpload();
 fnCheckFollow();
 fnChangeBtn();
 fnGetFollowCount();

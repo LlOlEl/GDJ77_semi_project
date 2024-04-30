@@ -31,6 +31,7 @@
       <mapping path="/bbs/write.page"/>
       <mapping path="/post/write.page"/>
       <mapping path="/upload/write.page" />
+      <mapping path="/user/edit.page" />
       <beans:bean class="com.gdu.grafolioclone.interceptor.RequiredSigninInterceptor" />
     </interceptor>
     

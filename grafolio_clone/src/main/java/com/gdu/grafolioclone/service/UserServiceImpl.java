@@ -25,7 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.gdu.grafolioclone.dto.PostDto;
 import com.gdu.grafolioclone.dto.UserDto;
 import com.gdu.grafolioclone.mapper.UserMapper;
 import com.gdu.grafolioclone.utils.MyFileUtils;
@@ -462,7 +461,10 @@ public class UserServiceImpl implements UserService {
     
     String name = MySecurityUtils.getPreventXss(multipartRequest.getParameter("name"));
     String mobile = multipartRequest.getParameter("mobile");
-    String pw = MySecurityUtils.getSha256(multipartRequest.getParameter("pw"));
+    String pw = "";
+    if(!multipartRequest.getParameter("pw").equals("")) {
+      pw = MySecurityUtils.getSha256(multipartRequest.getParameter("pw"));
+    }
     String descript = MySecurityUtils.getPreventXss(multipartRequest.getParameter("descript"));
     String[] profileCategoryValues = multipartRequest.getParameterValues("profileCategory");
     
@@ -485,7 +487,14 @@ public class UserServiceImpl implements UserService {
                       .descript(descript)
                     .build();
     
-    return userMapper.updateUser(user);
+    int updateCount = 0;
+    if(pw.equals("")) {
+      updateCount = userMapper.updateUserExceptPw(user);
+    } else {
+      updateCount = userMapper.updateUser(user);
+    }
+    
+    return updateCount;
   }
   
   // 유저 프로필 조회 - 오채원
